@@ -4,7 +4,7 @@ Repository for the Software Architecture Design course project (Laurea Magistral
 
 -The Directory First Iteration contains all of the files related to the Inception Phase
 
-# TO DO
+# To-do List
 
 -Create a Product Backlog on Trello with the Use Cases (SCRUM)
 
