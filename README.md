@@ -2,15 +2,7 @@
 
 Repository for the Software Architecture Design course project (Laurea Magistrale Università degli studi di Napoli Federico II).
 
-- The Directory First Iteration contains all of the files related to the Inception Phase
-
-# To-do List
-
-- Create a Product Backlog on Trello with the Use Cases (SCRUM)
-
-- Integration of the Sprint concept (SCRUM)
-
-- Research on other useful agile methods
+- The Directory **First Iteration** contains all of the files related to the Inception Phase
 
 # 2nd Iteration Objectives
 
@@ -18,7 +10,7 @@ Repository for the Software Architecture Design course project (Laurea Magistral
 
 - **Obj 2** : Diagram Class Refinement
 
-- **Obj 3** : Trello Setup
+- **Obj 3** : Trello Setup (Product Backlog Setup)
 
 - **Obj 4** : Use Case Refinement (fully description) + Sequence Diagram associated
 
