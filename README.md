@@ -14,10 +14,10 @@ Repository for the Software Architecture Design course project (Laurea Magistral
 
 # 2nd Iteration Objectives
 
-- ## Obj 1 : Architecture Online
-- ## Obj 2 : Diagram Class Refinement
-- ## Obj 3 : Trello Setup
-- Obj 4 : Use Case Refinement (fully description) + Sequence Diagram associated
-- Obj 5 : "Crea Partita" Prototype
+- **Obj 1** : Architecture Online
+- **Obj 2** : Diagram Class Refinement
+- **Obj 3** : Trello Setup
+- **Obj 4** : Use Case Refinement (fully description) + Sequence Diagram associated
+- **Obj 5** : "Crea Partita" Prototype
 
 Obj 4 and 3 should take priority. Obj 1 follows immediately after.
