@@ -6,7 +6,7 @@ Repository for the Software Architecture Design course project (Laurea Magistral
 
 # 2nd Iteration Objectives
 
-- **Obj 1** : Architecture Online
+- **Obj 1** : Architecture Outline
 
 - **Obj 2** : Diagram Class Refinement
 
