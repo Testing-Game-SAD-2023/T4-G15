@@ -7,7 +7,7 @@ Our progress can be seen [here](https://trello.com/invite/sadtask4/ATTI54e0f32b2
 - The Directory **Second Iteration** contains all the files created from 01/05 to 09/05 2023
 
 Here a general outline of our architecture.
-![Alt Text](Second Iteration/DiagramsPNGs/Architecture Diagram.png)
+![Model](Second Iteration/DiagramsPNGs/Architecture Diagram.png)
 
 # 2nd Iteration Objectives
 
