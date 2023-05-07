@@ -6,10 +6,6 @@ Our progress can be seen [here](https://trello.com/invite/sadtask4/ATTI54e0f32b2
 - The Directory **First Iteration** contains all of the files related to the Inception Phase
 - The Directory **Second Iteration** contains all the files created from 01/05 to 09/05 2023
 
-# General Architecture Outline
-
-![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Architecture%20Diagram.png)
-
 # 2nd Iteration Objectives
 
 - <del>**Obj 1** : Architecture Outline</del>
@@ -23,3 +19,8 @@ Our progress can be seen [here](https://trello.com/invite/sadtask4/ATTI54e0f32b2
 - **Obj 5** : "Crea Partita" Prototype
 
 Obj 4 and 3 should take priority. Obj 1 follows immediately after.
+
+# General Architecture Outline
+
+![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Architecture%20Diagram.png)
+
