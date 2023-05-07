@@ -1,7 +1,7 @@
 # SAD-Project-T4 Introduction
 
 Repository for the Software Architecture Design course project (Laurea Magistrale Università degli studi di Napoli Federico II).
-Our progress can be seen [here][https://trello.com/invite/sadtask4/ATTI54e0f32b2eb2ddf0aab52c944a6a26f4ACEF84C6]
+Our progress can be seen [here](https://trello.com/invite/sadtask4/ATTI54e0f32b2eb2ddf0aab52c944a6a26f4ACEF84C6).
 
 - The Directory **First Iteration** contains all of the files related to the Inception Phase
 
