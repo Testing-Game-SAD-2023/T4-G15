@@ -24,3 +24,9 @@ Obj 4 and 3 should take priority. Obj 1 follows immediately after.
 
 ![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Architecture%20Diagram.png)
 
+# Entity Layer 
+
+The following layer maps the data taken from the DB for eventual manipulation by the classes of the Controller Layer.
+
+![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Class%20Diagram%20Design%20Games%20Repository.png)
+
