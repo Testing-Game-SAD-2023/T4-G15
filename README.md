@@ -14,5 +14,5 @@ Our progress and current iteration objectives can be seen [here](https://trello.
 
 The following layer maps the data taken from the DB for eventual manipulation by the classes of the Controller Layer.
 
-![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Class%20Diagram%20Design%20Games%20Repository.png)
+![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Class%20Diagram%20Games%20Repository.png)
 
