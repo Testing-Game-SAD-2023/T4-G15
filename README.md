@@ -8,11 +8,16 @@ Our progress and current iteration objectives can be seen [here](https://trello.
 
 # General Architecture Outline
 
-![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Architecture%20Diagram.png)
+The WebServer GameRepository is a [Multi-layered architecture](https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/ch01.html).
+The Controller Layer contains different handlers. These handlers call the required use cases implemented in the Service Layer.
+The Data Access Layer contains all the classes required for database queries and the entities.
+Other Design Patterns utilized are the [Repository Pattern](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design) and Facade Pattern.
 
-# Entity Layer 
+![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Third%20Iteration/Diagrams%20PNGs/Architecture%20Diagram%20Spike%201.png)
 
-The following layer maps the data taken from the DB for eventual manipulation by the classes of the Controller Layer.
+# Entity Diagram 
+
+The following diagram describes the entities contained in the Data Access Layer, **at the moment**.
 
 ![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Class%20Diagram%20Games%20Repository.png)
 
