@@ -1,6 +1,6 @@
 # SAD-Project-T4 Introduction
 
-Repository for the Software Architecture Design (SAD) course project: Testing Game.
+Repository for the Software Architecture Design (SAD) course project.
 
 Our progress and current iteration objectives can be seen [here](https://trello.com/b/fC4JYB2y/task-4) on our trello board for the project.
 
