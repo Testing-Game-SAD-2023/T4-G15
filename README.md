@@ -11,8 +11,8 @@ Our progress and current iteration objectives can be seen [here](https://trello.
 
 The WebServer GameRepository is a [Multi-layered architecture](https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/ch01.html).
 
-The Controller Layer contains different handlers. These handlers call the required use cases implemented in the Service Layer.
-The Data Access Layer contains all the classes required for database queries and the entities described in the Class Diagram.
+The Controller Layer contains different handlers. These handlers call the requested use cases implemented in the Service Layer.
+The Data Access Layer contains all the classes required for database queries (DAO and Repository patterns) and all the entities described in the Class Diagram.
 
 Other Design Patterns utilized are the [Repository Pattern](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design) and Facade Pattern.
 
