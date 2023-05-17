@@ -2,7 +2,7 @@
 
 Repository for the Software Architecture Design (SAD) course project: Testing Game.
 
-Our progress and current iteration objectives can be seen [here](https://trello.com/invite/sadtask4/ATTI54e0f32b2eb2ddf0aab52c944a6a26f4ACEF84C6) on our trello board for the project.
+Our progress and current iteration objectives can be seen [here](https://trello.com/b/fC4JYB2y/task-4) on our trello board for the project.
 
 - The Directory **First Iteration** contains all of the files related to the Inception Phase
 - The Directory **Second Iteration** contains all the files created from 01/05 to 09/05 2023
