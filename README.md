@@ -16,7 +16,7 @@ The Data Access Layer contains all the classes required for database queries and
 
 Other Design Patterns utilized are the [Repository Pattern](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design) and Facade Pattern.
 
-![Model](https://github.com/micvita/SAD-Project-T4/blob/main/doc/Third%20Iteration/Diagrams%20PNGs/Architecture%20Diagram%20Spike%201.png)
+![Model](https://github.com/micvita/SAD-Project-T4/blob/main/doc/Third%20Iteration/DiagramsPNGs/Architecture%20Diagram%20Spike%201.png)
 
 # Entity Diagram 
 
