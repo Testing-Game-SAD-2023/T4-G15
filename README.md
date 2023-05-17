@@ -22,5 +22,5 @@ Other Design Patterns utilized are the [Repository Pattern](https://learn.micros
 
 The following diagram describes the entities contained in the Data Access Layer, **at the moment**.
 
-![Model](https://github.com/micvita/SAD-Project-T4/blob/main/Second%20Iteration/DiagramsPNGs/Class%20Diagram%20Games%20Repository.png)
+![Model](https://github.com/micvita/SAD-Project-T4/blob/main/doc/Second%20Iteration/DiagramsPNGs/Class%20Diagram%20Games%20Repository.png)
 
