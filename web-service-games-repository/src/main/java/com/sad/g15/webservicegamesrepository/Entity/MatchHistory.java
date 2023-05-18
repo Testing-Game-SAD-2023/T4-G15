@@ -3,6 +3,7 @@ package com.sad.g15.webservicegamesrepository.Entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+//This Class is also named StoricoPartita
 public class MatchHistory {
 
     private String id;
