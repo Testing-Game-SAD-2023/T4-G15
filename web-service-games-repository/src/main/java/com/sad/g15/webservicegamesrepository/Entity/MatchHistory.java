@@ -8,15 +8,15 @@ public class MatchHistory {
 
     private String id;
     private String scenario;
-    private LocalDateTime startdate;
-    private LocalDateTime enddate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private Boolean result;
 
     public MatchHistory(String id) {
         this.id = id;
         this.scenario = scenario;
-        this.startdate = startdate;
-        this.enddate = enddate;
+        this.startdate = startDate;
+        this.enddate = endDate;
         this.result = result;
     }
 
@@ -37,20 +37,20 @@ public class MatchHistory {
         this.scenario = scenario;
     }
 
-    public LocalDateTime getStartdate() {
+    public LocalDateTime getStartDate() {
         return startdate;
     }
 
-    public void setStartdate(LocalDateTime startdate) {
-        this.startdate = startdate;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getEnddate() {
-        return enddate;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setEnddate(LocalDateTime enddate) {
-        this.enddate = enddate;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public Boolean getResult() {
@@ -66,8 +66,8 @@ public class MatchHistory {
         return "MatchHistory{" +
                 "id='" + id + '\'' +
                 ", scenario='" + scenario + '\'' +
-                ", startdate=" + startdate +
-                ", enddate=" + enddate +
+                ", startdate=" + startDate +
+                ", enddate=" + endDate +
                 ", result=" + result +
                 '}';
     }
