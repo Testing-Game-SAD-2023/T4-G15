@@ -2,17 +2,27 @@ package com.sad.g15.webservicegamesrepository.Entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import javax.persistance.Entity;
+import javax.persistance.Id;
+import javax.persistance.GeneratedValue;
+import javax.persistance.GeneratedType;
+
+
+
 
 //This Class is also named StoricoPartita
+@Entity
 public class MatchHistory {
 
+	@Id
+	@GeneratedValue
     private String id;
     private String scenario;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Boolean result;
 
-    public MatchHistory(String id) {
+    public MatchHistory(String id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result) {
         this.id = id;
         this.scenario = scenario;
         this.startdate = startDate;
