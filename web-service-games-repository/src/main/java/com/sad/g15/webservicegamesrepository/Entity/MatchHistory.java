@@ -1,11 +1,10 @@
 package com.sad.g15.webservicegamesrepository.Entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.persistance.Entity;
-import javax.persistance.Id;
-import javax.persistance.GeneratedValue;
-import javax.persistance.GeneratedType;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 
 
@@ -25,8 +24,8 @@ public class MatchHistory {
     public MatchHistory(String id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result) {
         this.id = id;
         this.scenario = scenario;
-        this.startdate = startDate;
-        this.enddate = endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.result = result;
     }
 
@@ -48,7 +47,7 @@ public class MatchHistory {
     }
 
     public LocalDateTime getStartDate() {
-        return startdate;
+        return startDate;
     }
 
     public void setStartDate(LocalDateTime startDate) {
