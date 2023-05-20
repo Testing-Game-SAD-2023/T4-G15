@@ -15,13 +15,13 @@ public class MatchHistory {
 
 	@Id
 	@GeneratedValue
-    private String id;
+    private int id;
     private String scenario;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Boolean result;
 
-    public MatchHistory(String id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result) {
+    public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result) {
         this.id = id;
         this.scenario = scenario;
         this.startDate = startDate;
@@ -30,11 +30,11 @@ public class MatchHistory {
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
