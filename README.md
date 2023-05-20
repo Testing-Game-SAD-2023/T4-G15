@@ -4,6 +4,7 @@ Repository for the Software Architecture Design (SAD) course project.
 
 Our progress and current iteration objectives can be seen [here](https://trello.com/b/fC4JYB2y/task-4) on our trello board for the project.
 
+In the doc Directory we have all the UML documentation files:
 - The Directory **First Iteration** contains all of the files related to the Inception Phase
 - The Directory **Second Iteration** contains all the files created from 01/05 to 09/05 2023
 
@@ -18,7 +19,15 @@ Other Design Patterns utilized are the [Repository Pattern](https://learn.micros
 
 ![Model](https://github.com/micvita/SAD-Project-T4/blob/main/doc/Third%20Iteration/DiagramsPNGs/Architecture%20Diagram%20Spike%201.png)
 
-# Entity Diagram 
+# Service Layer
+
+![Model]()
+
+# Repository Diagram (DAL)
+
+![Model]()
+
+# Entity Diagram (DAL)
 
 The following diagram describes the entities contained in the Data Access Layer, **at the moment**.
 
