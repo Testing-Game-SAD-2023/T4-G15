@@ -6,4 +6,5 @@ import com.sad.g15.webservicegamesrepository.Entity.TestCase;
 
 public interface TestCaseRepository extends JpaRepository<TestCase, Integer>{
 
+	//Override services here
 }

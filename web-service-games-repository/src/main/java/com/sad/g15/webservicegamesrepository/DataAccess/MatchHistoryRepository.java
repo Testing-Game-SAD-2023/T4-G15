@@ -5,6 +5,6 @@ import com.sad.g15.webservicegamesrepository.Entity.MatchHistory;
 
 public interface MatchHistoryRepository extends JpaRepository<MatchHistory,String> {
 
-    //Repository of the Match History Class, every entity class has one (implemnt other Repos)
+    //Repository of the Match History Class, every entity class has one (implement other Repos)
 
 }
