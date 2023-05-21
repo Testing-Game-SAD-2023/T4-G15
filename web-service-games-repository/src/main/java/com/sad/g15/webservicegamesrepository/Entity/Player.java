@@ -1,21 +1,35 @@
 package com.sad.g15.webservicegamesrepository.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-@Entity
+/*	ATTENTION!
+	Our application should not add players in the DB. The table mapped to this entity should be already populated with
+	all the players registered to the service, but for testing we need to populate this table ourselves so @SequenceGen
+	and @GenValue are specified anyway.
+*/
+
+@Entity (name = "Player")
+@Table (name = "player")
 public class Player {
+
+	@Id
+	@SequenceGenerator(
+			name = "player_sequence",
+			sequenceName = "player_sequence",
+			allocationSize = 1
+	)
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "player_sequence"
+	)
+	private int id;
+	private String username;
 
 	public Player(int id, String username) {
 		super();
 		this.id = id;
 		this.username = username;
 	}
-
-	@Id
-	private int id;
-
-	private String username;
 
 	public int getId() {
 		return id;
@@ -35,7 +49,9 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [id=" + id + ", username=" + username + "]";
+		return "Player{" +
+				"id=" + id +
+				", username='" + username + '\'' +
+				'}';
 	}
-
 }

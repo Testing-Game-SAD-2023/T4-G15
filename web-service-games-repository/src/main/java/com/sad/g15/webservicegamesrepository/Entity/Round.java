@@ -1,23 +1,32 @@
 package com.sad.g15.webservicegamesrepository.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-@Entity
+@Entity (name = "Round")
+@Table (name = "round")
 public class Round {
 
-	public Round(int id, Boolean result) {
-		super();
+	@Id
+	@SequenceGenerator(
+			name = "round_sequence",
+			sequenceName = "round_sequence",
+			allocationSize = 1
+	)
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "round_sequence"
+	)
+	private int id;
+	private Boolean result;
+	private int robotId;		//aggregation 1 to 1 converted into attribute.
+	private TestCaseCollection testCases;
+
+	public Round(int id, Boolean result, int robotId, TestCaseCollection testCases) {
 		this.id = id;
 		this.result = result;
+		this.robotId = robotId;
+		this.testCases = testCases;
 	}
-
-	@Id
-	private int id;
-	
-	private Boolean result;
-	
-	private int robotId;
 
 	public int getId() {
 		return id;
@@ -43,9 +52,21 @@ public class Round {
 		this.result = result;
 	}
 
-	@Override
-	public String toString() {
-		return "Round [id=" + id + ", result=" + result + "]";
+	public TestCaseCollection getTestCases() {
+		return testCases;
 	}
 
+	public void setTestCases(TestCaseCollection testCases) {
+		this.testCases = testCases;
+	}
+
+	@Override
+	public String toString() {
+		return "Round{" +
+				"id=" + id +
+				", result=" + result +
+				", robotId=" + robotId +
+				", testCases=" + testCases +
+				'}';
+	}
 }

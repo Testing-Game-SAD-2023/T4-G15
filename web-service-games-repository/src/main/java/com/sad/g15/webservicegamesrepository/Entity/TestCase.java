@@ -1,15 +1,37 @@
 package com.sad.g15.webservicegamesrepository.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-@Entity
+@Entity (name ="TestCase")
+@Table	(name ="testCase")
 public class TestCase {
 
+	@Id
+	@SequenceGenerator(
+			name = "testCase_sequence",
+			sequenceName = "testCase_sequence",
+			allocationSize = 1
+	)
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "testCase_sequence"
+	)
+	private int id;
+	private Long totalResult;
+	private Long compilingResult;
+	private Long coverageMNEResult;
+	private Long coverageMethodResult;
+	private Long coverageWMResult;
+	private Long coverageLineResult;
+	private Long coverageOutputResult;
+	private Long coverageBranchResult;
+	private Long coverageCBResult;
+	private Long coverageExceptionResult;
+	private int idTestClass;
+
 	public TestCase(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult,
-			Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult,
-			Long coverageCBResult, Long coverageExceptionResult, int idTestClass) {
-		super();
+					Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult,
+					Long coverageCBResult, Long coverageExceptionResult, int idTestClass) {
 		this.id = id;
 		this.totalResult = totalResult;
 		this.compilingResult = compilingResult;
@@ -23,31 +45,6 @@ public class TestCase {
 		this.coverageExceptionResult = coverageExceptionResult;
 		this.idTestClass = idTestClass;
 	}
-
-	@Id
-	private int id;
-
-	private Long totalResult;
-
-	private Long compilingResult;
-
-	private Long coverageMNEResult;
-
-	private Long coverageMethodResult;
-
-	private Long coverageWMResult;
-
-	private Long coverageLineResult;
-
-	private Long coverageOutputResult;
-
-	private Long coverageBranchResult;
-
-	private Long coverageCBResult;
-
-	private Long coverageExceptionResult;
-
-	private int idTestClass;
 
 	public int getId() {
 		return id;
