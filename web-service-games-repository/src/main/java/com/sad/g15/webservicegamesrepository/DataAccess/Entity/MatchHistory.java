@@ -28,21 +28,23 @@ public class MatchHistory {
     private LocalDateTime endDate;
     private Boolean result;
     private List<Round> rounds;
-    private PlayerCollection players;   //Composition 1 to 1 can be simplified into an attribute for the
-                                        //container class.
+    private List<Player> players;       //ATTENTION! We need some policy to specify the **OWNER of Match History**
 
+    /* We need a constructor for rounds because of the composition relationship with MatchHistory
+     (ref. Entity Class Diagram).
+     Well...this could get ugly so, we could change the relationship into an aggregation one if problems arise.
+     */
 
-    public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result,
-                        List<Round> rounds, PlayerCollection players) {
+    public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result, List<Round> rounds, List<Player> players) {
         this.id = id;
         this.scenario = scenario;
         this.startDate = startDate;
         this.endDate = endDate;
         this.result = result;
-        this.rounds = new ArrayList<Round>();    //We need a constructor for rounds because of the composition
-        this.players = players;                  //relationship with MatchHistory (ref. Entity Class Diagram).
-    }                                            //Well...this could get ugly so, we could change the relationship
-                                                 //into an aggregation one if problems arise.
+        this.rounds = new ArrayList<Round>();
+        this.players = players;
+    }
+
     public int getId() {
         return id;
     }
@@ -83,11 +85,11 @@ public class MatchHistory {
         this.result = result;
     }
 
-    public PlayerCollection getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(PlayerCollection players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 

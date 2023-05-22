@@ -2,6 +2,9 @@ package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity (name = "Round")
 @Table (name = "round")
 public class Round {
@@ -18,14 +21,14 @@ public class Round {
 	)
 	private int id;
 	private Boolean result;
-	private int robotId;		//aggregation 1 to 1 converted into attribute.
-	private TestCaseCollection testCases;
+	private int robotId;					//aggregation 1 to 1 converted into attribute.
+	private List<TestCase> testCases;
 
-	public Round(int id, Boolean result, int robotId, TestCaseCollection testCases) {
+	public Round(int id, Boolean result, int robotId, List<TestCase> testCases) {
 		this.id = id;
 		this.result = result;
 		this.robotId = robotId;
-		this.testCases = testCases;
+		this.testCases = new ArrayList<TestCase>();
 	}
 
 	public int getId() {
@@ -52,11 +55,11 @@ public class Round {
 		this.result = result;
 	}
 
-	public TestCaseCollection getTestCases() {
+	public List<TestCase> getTestCases() {
 		return testCases;
 	}
 
-	public void setTestCases(TestCaseCollection testCases) {
+	public void setTestCases(List<TestCase> testCases) {
 		this.testCases = testCases;
 	}
 
