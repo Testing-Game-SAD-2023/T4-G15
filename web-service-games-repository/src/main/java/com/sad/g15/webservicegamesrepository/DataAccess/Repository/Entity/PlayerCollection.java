@@ -1,4 +1,4 @@
-package com.sad.g15.webservicegamesrepository.Entity;
+package com.sad.g15.webservicegamesrepository.DataAccess.Repository.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
