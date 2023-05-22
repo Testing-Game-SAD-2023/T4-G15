@@ -1,4 +1,4 @@
-package com.sad.g15.webservicegamesrepository.DataAccess.Repository.Entity;
+package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
 import jakarta.persistence.*;
 
