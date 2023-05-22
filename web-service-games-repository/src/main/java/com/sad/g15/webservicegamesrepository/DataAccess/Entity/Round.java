@@ -22,6 +22,7 @@ public class Round {
 	private int id;
 	private Boolean result;
 	private int robotId;					//aggregation 1 to 1 converted into attribute.
+	@OneToMany
 	private List<TestCase> testCases;
 
 	public Round(int id, Boolean result, int robotId, List<TestCase> testCases) {
@@ -29,6 +30,10 @@ public class Round {
 		this.result = result;
 		this.robotId = robotId;
 		this.testCases = new ArrayList<TestCase>();
+	}
+
+	public Round() {
+
 	}
 
 	public int getId() {

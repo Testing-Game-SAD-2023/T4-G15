@@ -22,12 +22,17 @@ public class MatchHistory {
             strategy = GenerationType.SEQUENCE,
             generator = "matchHistory_sequence"
     )
+    @Column(name = "id", updatable = false)
     private int id;
     private String scenario;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Boolean result;
+
+    @OneToMany(orphanRemoval = true)
     private List<Round> rounds;
+
+    @OneToMany(orphanRemoval = true)
     private List<Player> players;       //ATTENTION! We need some policy to specify the **OWNER of Match History**
 
     /* We need a constructor for rounds because of the composition relationship with MatchHistory
@@ -43,6 +48,10 @@ public class MatchHistory {
         this.result = result;
         this.rounds = new ArrayList<Round>();
         this.players = players;
+    }
+
+    public MatchHistory() {
+
     }
 
     public int getId() {

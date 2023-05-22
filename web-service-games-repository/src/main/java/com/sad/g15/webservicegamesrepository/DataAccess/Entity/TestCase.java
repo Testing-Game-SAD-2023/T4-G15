@@ -46,6 +46,10 @@ public class TestCase {
 		this.idTestClass = idTestClass;
 	}
 
+	public TestCase() {
+
+	}
+
 	public int getId() {
 		return id;
 	}
