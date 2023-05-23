@@ -1,37 +1,21 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
-@Entity (name ="TestCase")
-@Table	(name ="testCase")
+@Entity(name = "TestCase")
+@Table(name = "testCase")
 public class TestCase {
 
-	@Id
-	@SequenceGenerator(
-			name = "testCase_sequence",
-			sequenceName = "testCase_sequence",
-			allocationSize = 1
-	)
-	@GeneratedValue(
-			strategy = GenerationType.SEQUENCE,
-			generator = "testCase_sequence"
-	)
-	private int id;
-	private Long totalResult;
-	private Long compilingResult;
-	private Long coverageMNEResult;
-	private Long coverageMethodResult;
-	private Long coverageWMResult;
-	private Long coverageLineResult;
-	private Long coverageOutputResult;
-	private Long coverageBranchResult;
-	private Long coverageCBResult;
-	private Long coverageExceptionResult;
-	private int idTestClass;
-
 	public TestCase(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult,
-					Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult,
-					Long coverageCBResult, Long coverageExceptionResult, int idTestClass) {
+			Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult,
+			Long coverageCBResult, Long coverageExceptionResult, int idTestClass, Player player, Round round) {
+		super();
 		this.id = id;
 		this.totalResult = totalResult;
 		this.compilingResult = compilingResult;
@@ -44,6 +28,35 @@ public class TestCase {
 		this.coverageCBResult = coverageCBResult;
 		this.coverageExceptionResult = coverageExceptionResult;
 		this.idTestClass = idTestClass;
+		this.player = player;
+		this.round = round;
+	}
+
+	@Id
+	@SequenceGenerator(name = "testCase_sequence", sequenceName = "testCase_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "testCase_sequence")
+	private int id;
+
+	private Long totalResult;
+	private Long compilingResult;
+	private Long coverageMNEResult;
+	private Long coverageMethodResult;
+	private Long coverageWMResult;
+	private Long coverageLineResult;
+	private Long coverageOutputResult;
+	private Long coverageBranchResult;
+	private Long coverageCBResult;
+	private Long coverageExceptionResult;
+	private int idTestClass;
+
+	@ManyToOne
+	private Player player;
+
+	@ManyToOne
+	private Round round;
+
+	public TestCase() {
+
 	}
 
 	public int getId() {
@@ -142,6 +155,22 @@ public class TestCase {
 		this.idTestClass = idTestClass;
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public Round getRound() {
+		return round;
+	}
+
+	public void setRound(Round round) {
+		this.round = round;
+	}
+
 	@Override
 	public String toString() {
 		return "TestCase [id=" + id + ", totalResult=" + totalResult + ", compilingResult=" + compilingResult
@@ -149,7 +178,9 @@ public class TestCase {
 				+ ", coverageWMResult=" + coverageWMResult + ", coverageLineResult=" + coverageLineResult
 				+ ", coverageOutputResult=" + coverageOutputResult + ", coverageBranchResult=" + coverageBranchResult
 				+ ", coverageCBResult=" + coverageCBResult + ", coverageExceptionResult=" + coverageExceptionResult
-				+ "]";
+				+ ", idTestClass=" + idTestClass + ", player=" + player + ", round=" + round + "]";
 	}
+
+	
 
 }

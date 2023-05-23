@@ -13,6 +13,7 @@ import jakarta.persistence.*;
 public class Player {
 
 	@Id
+	@Column(name = "player_id")
 	@SequenceGenerator(
 			name = "player_sequence",
 			sequenceName = "player_sequence",
@@ -29,6 +30,10 @@ public class Player {
 		super();
 		this.id = id;
 		this.username = username;
+	}
+
+	public Player() {
+
 	}
 
 	public int getId() {
