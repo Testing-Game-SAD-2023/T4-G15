@@ -32,22 +32,13 @@ public class MatchHistory {
     @OneToMany(orphanRemoval = true)
     private List<Round> rounds;
 
-    @OneToOne(orphanRemoval = true)
-    private PlayerCollection playerCollection;       //ATTENTION! We need some policy to specify the **OWNER of Match History**
-
-    /* We need a constructor for rounds because of the composition relationship with MatchHistory
-     (ref. Entity Class Diagram).
-     Well...this could get ugly so, we could change the relationship into an aggregation one if problems arise.
-     */
-
-    public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result, List<Round> rounds, PlayerCollection players) {
+    public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, Boolean result, List<Round> rounds) {
         this.id = id;
         this.scenario = scenario;
         this.startDate = startDate;
         this.endDate = endDate;
         this.result = result;
         this.rounds = new ArrayList<Round>();
-        this.playerCollection = players;
     }
 
     public MatchHistory() {
@@ -94,14 +85,6 @@ public class MatchHistory {
         this.result = result;
     }
 
-    public PlayerCollection getPlayers() {
-        return playerCollection;
-    }
-
-    public void setPlayers(PlayerCollection players) {
-        this.playerCollection = players;
-    }
-
     public List<Round> getRounds() {
         return rounds;
     }
@@ -119,7 +102,6 @@ public class MatchHistory {
                 ", endDate=" + endDate +
                 ", result=" + result +
                 ", rounds=" + rounds +
-                ", players=" + playerCollection +
                 '}';
     }
 }

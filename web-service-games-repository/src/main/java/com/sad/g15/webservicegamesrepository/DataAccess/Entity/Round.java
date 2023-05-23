@@ -5,23 +5,17 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity (name = "Round")
-@Table (name = "round")
+@Entity(name = "Round")
+@Table(name = "round")
 public class Round {
 
 	@Id
-	@SequenceGenerator(
-			name = "round_sequence",
-			sequenceName = "round_sequence",
-			allocationSize = 1
-	)
-	@GeneratedValue(
-			strategy = GenerationType.SEQUENCE,
-			generator = "round_sequence"
-	)
+	@SequenceGenerator(name = "round_sequence", sequenceName = "round_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "round_sequence")
 	private int id;
 	private Boolean result;
-	private int robotId;					//aggregation 1 to 1 converted into attribute.
+	private int robotId; // aggregation 1 to 1 converted into attribute.
+
 	@OneToMany
 	private List<TestCase> testCases;
 
@@ -43,7 +37,7 @@ public class Round {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public int getRobotId() {
 		return robotId;
 	}
@@ -70,11 +64,6 @@ public class Round {
 
 	@Override
 	public String toString() {
-		return "Round{" +
-				"id=" + id +
-				", result=" + result +
-				", robotId=" + robotId +
-				", testCases=" + testCases +
-				'}';
+		return "Round{" + "id=" + id + ", result=" + result + ", robotId=" + robotId + ", testCases=" + testCases + '}';
 	}
 }
