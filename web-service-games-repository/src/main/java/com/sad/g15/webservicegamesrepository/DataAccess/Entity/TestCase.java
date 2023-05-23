@@ -1,20 +1,17 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
 
-@Entity(name = "TestCase")
-@Table(name = "testCase")
+@MappedSuperclass
 public class TestCase {
 
 	public TestCase(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult,
 			Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult,
-			Long coverageCBResult, Long coverageExceptionResult, int idTestClass, Player player, Round round) {
+			Long coverageCBResult, Long coverageExceptionResult, int idTestClass) {
 		super();
 		this.id = id;
 		this.totalResult = totalResult;
@@ -28,8 +25,6 @@ public class TestCase {
 		this.coverageCBResult = coverageCBResult;
 		this.coverageExceptionResult = coverageExceptionResult;
 		this.idTestClass = idTestClass;
-		this.player = player;
-		this.round = round;
 	}
 
 	@Id
@@ -48,12 +43,6 @@ public class TestCase {
 	private Long coverageCBResult;
 	private Long coverageExceptionResult;
 	private int idTestClass;
-
-	@ManyToOne
-	private Player player;
-
-	@ManyToOne
-	private Round round;
 
 	public TestCase() {
 
@@ -155,22 +144,6 @@ public class TestCase {
 		this.idTestClass = idTestClass;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	public Round getRound() {
-		return round;
-	}
-
-	public void setRound(Round round) {
-		this.round = round;
-	}
-
 	@Override
 	public String toString() {
 		return "TestCase [id=" + id + ", totalResult=" + totalResult + ", compilingResult=" + compilingResult
@@ -178,9 +151,7 @@ public class TestCase {
 				+ ", coverageWMResult=" + coverageWMResult + ", coverageLineResult=" + coverageLineResult
 				+ ", coverageOutputResult=" + coverageOutputResult + ", coverageBranchResult=" + coverageBranchResult
 				+ ", coverageCBResult=" + coverageCBResult + ", coverageExceptionResult=" + coverageExceptionResult
-				+ ", idTestClass=" + idTestClass + ", player=" + player + ", round=" + round + "]";
+				+ ", idTestClass=" + idTestClass + "]";
 	}
-
-	
 
 }

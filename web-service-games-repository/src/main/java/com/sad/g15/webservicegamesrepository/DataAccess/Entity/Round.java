@@ -1,13 +1,28 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
-import jakarta.persistence.*;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 @Entity(name = "Round")
 @Table(name = "round")
 public class Round {
+
+	public Round(int id, Boolean result, int robotId, List<TestCasePlayer> testCasesPlayer,
+			List<TestCaseRobot> testCasesRobot) {
+		super();
+		this.id = id;
+		this.result = result;
+		this.robotId = robotId;
+		this.testCasesPlayer = testCasesPlayer;
+		this.testCasesRobot = testCasesRobot;
+	}
 
 	@Id
 	@SequenceGenerator(name = "round_sequence", sequenceName = "round_sequence", allocationSize = 1)
@@ -17,14 +32,10 @@ public class Round {
 	private int robotId; // aggregation 1 to 1 converted into attribute.
 
 	@OneToMany
-	private List<TestCase> testCases;
+	private List<TestCasePlayer> testCasesPlayer;
 
-	public Round(int id, Boolean result, int robotId, List<TestCase> testCases) {
-		this.id = id;
-		this.result = result;
-		this.robotId = robotId;
-		this.testCases = new ArrayList<TestCase>();
-	}
+	@OneToMany
+	private List<TestCaseRobot> testCasesRobot;
 
 	public Round() {
 
@@ -54,16 +65,25 @@ public class Round {
 		this.result = result;
 	}
 
-	public List<TestCase> getTestCases() {
-		return testCases;
+	public List<TestCasePlayer> getTestCasesPlayer() {
+		return testCasesPlayer;
 	}
 
-	public void setTestCases(List<TestCase> testCases) {
-		this.testCases = testCases;
+	public void setTestCasesPlayer(List<TestCasePlayer> testCasesPlayer) {
+		this.testCasesPlayer = testCasesPlayer;
+	}
+
+	public List<TestCaseRobot> getTestCasesRobot() {
+		return testCasesRobot;
+	}
+
+	public void setTestCasesRobot(List<TestCaseRobot> testCasesRobot) {
+		this.testCasesRobot = testCasesRobot;
 	}
 
 	@Override
 	public String toString() {
-		return "Round{" + "id=" + id + ", result=" + result + ", robotId=" + robotId + ", testCases=" + testCases + '}';
+		return "Round [id=" + id + ", result=" + result + ", robotId=" + robotId + ", testCasesPlayer="
+				+ testCasesPlayer + ", testCasesRobot=" + testCasesRobot + "]";
 	}
 }
