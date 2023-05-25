@@ -20,4 +20,8 @@ public class PlayerService {
     public Optional<Player> read(Player player) {
         return facade.getPlayerRepository().findById(player.getId()).stream().findFirst();
     }
+
+    public Player readById(int id){
+        return facade.getPlayerRepository().getReferenceById(id);
+    }
 }

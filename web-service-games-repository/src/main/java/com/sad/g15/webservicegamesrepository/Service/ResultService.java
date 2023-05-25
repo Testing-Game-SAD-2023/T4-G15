@@ -1,5 +1,6 @@
 package com.sad.g15.webservicegamesrepository.Service;
 
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
@@ -23,4 +24,5 @@ public class ResultService {
     public void delete(Result result){
         facade.getResultRepository().delete(result);
     }
+
 }

@@ -2,9 +2,11 @@ package com.sad.g15.webservicegamesrepository.Service;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,7 @@ public class MatchHistoryService {
 
 
     public MatchHistory create(MatchHistory match){
+
         return facade.getMatchHistoryRepository().save(match);
     }
 

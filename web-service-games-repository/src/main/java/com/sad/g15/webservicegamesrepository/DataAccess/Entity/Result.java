@@ -1,9 +1,8 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+
+import java.util.Optional;
 
 @Entity
 public class Result {
@@ -24,6 +23,9 @@ public class Result {
 	private MatchHistory match;
 
 	@Id
+	@SequenceGenerator(name = "result_sequence", sequenceName = "result_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "result_sequence")
+	@Column(name = "id", updatable = false)
 	private int id;
 
 	@OneToOne
@@ -67,5 +69,4 @@ public class Result {
 	public String toString() {
 		return "Result [match=" + match + ", id=" + id + ", player=" + player + ", result=" + result + "]";
 	}
-
 }

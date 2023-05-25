@@ -38,6 +38,8 @@ public class MatchHistory {
 	@OneToMany(orphanRemoval = true)
 	private List<Round> rounds;
 
+	//private List<Result> results; //Bisogna avere un riferimento ai risultati
+
 	public MatchHistory() {
 
 	}
