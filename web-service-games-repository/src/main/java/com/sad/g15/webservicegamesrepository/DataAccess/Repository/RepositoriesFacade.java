@@ -1,5 +1,8 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Repository;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class RepositoriesFacade {
 
 	public RepositoriesFacade(MatchHistoryRepository matchHistoryRepository, PlayerRepository playerRepository,
@@ -23,6 +26,27 @@ public class RepositoriesFacade {
 	private ResultRepository resultRepository;
 
 	// Insert Methods Here
+
+	public MatchHistoryRepository getMatchHistoryRepository() {
+		return matchHistoryRepository;
+	}
+
+	public PlayerRepository getPlayerRepository() {
+		return playerRepository;
+	}
+
+	public RoundRepository getRoundRepository() {
+		return roundRepository;
+	}
+
+	public TestCaseRepository getTestCaseRepository() {
+		return testCaseRepository;
+	}
+
+	public ResultRepository getResultRepository() {
+		return resultRepository;
+	}
+
 
 	// Override services here
 

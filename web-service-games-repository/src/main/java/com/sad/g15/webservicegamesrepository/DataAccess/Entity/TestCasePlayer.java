@@ -17,6 +17,10 @@ public class TestCasePlayer extends TestCase {
 		this.round = round;
 	}
 
+	public TestCasePlayer() {
+
+	}
+
 	@ManyToOne
 	private Player player;
 
