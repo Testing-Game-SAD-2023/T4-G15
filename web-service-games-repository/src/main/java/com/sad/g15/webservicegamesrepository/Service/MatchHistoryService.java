@@ -13,39 +13,37 @@ import java.util.Optional;
 @Service
 public class MatchHistoryService {
 
-    public MatchHistoryService(RepositoriesFacade facade) {
-        this.facade = facade;
-    }
+	public MatchHistoryService(RepositoriesFacade facade) {
+		this.facade = facade;
+	}
 
-    private final RepositoriesFacade facade;
-    private RoundService roundService;
+	private final RepositoriesFacade facade;
+	private RoundService roundService;
 
+	public MatchHistory create(MatchHistory match) {
 
-    public MatchHistory create(MatchHistory match){
+		return facade.getMatchHistoryRepository().save(match);
+	}
 
-        return facade.getMatchHistoryRepository().save(match);
-    }
+	public Optional<MatchHistory> readS(MatchHistory match) {
+		return facade.getMatchHistoryRepository().findById(match.getId());
+	}
 
-    public Optional<MatchHistory> readS(MatchHistory match){
-        return facade.getMatchHistoryRepository().findById(match.getId());
-    }
+	public List<MatchHistory> readM(Player player) {
+		return facade.getResultRepository().findMatchByPlayer(player.getId());
+	}
 
-    public List<MatchHistory> readM(Player player){
-        return facade.getResultRepository().findMatchByPlayer(player.getId());
-    }
+	public void delete(MatchHistory match) {
+		facade.getMatchHistoryRepository().delete(match);
+	}
 
-    public void delete(MatchHistory match){
-        facade.getMatchHistoryRepository().delete(match);
-    }
+	public MatchHistory update(MatchHistory match) {
+		facade.getMatchHistoryRepository().deleteById(match.getId());
+		return facade.getMatchHistoryRepository().save(match);
+	}
 
-    public MatchHistory update(MatchHistory match){
-        facade.getMatchHistoryRepository().deleteById(match.getId());
-        return facade.getMatchHistoryRepository().save(match);
-    }
+	public void addRound(MatchHistory match, Round round) {
 
-    public void addRound(MatchHistory match, Round round){
-        List<Round> rounds = match.getRounds();
-        rounds.add(round);
-        match.setRounds(rounds);
-    }
+		match.setRound(round);
+	}
 }

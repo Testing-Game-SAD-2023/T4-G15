@@ -1,6 +1,7 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -36,7 +37,7 @@ public class MatchHistory {
 	private LocalDateTime endDate;
 
 	@OneToMany(orphanRemoval = true)
-	private List<Round> rounds;
+	private List<Round> rounds = new ArrayList<>();
 
 	//private List<Result> results; //Bisogna avere un riferimento ai risultati
 
@@ -82,6 +83,10 @@ public class MatchHistory {
 
 	public void setRounds(List<Round> rounds) {
 		this.rounds = rounds;
+	}
+	
+	public void setRound(Round round) {
+		this.rounds.add(round);
 	}
 
 	@Override
