@@ -16,16 +16,10 @@ public class RepositoriesFacade {
 	}
 
 	private MatchHistoryRepository matchHistoryRepository;
-
 	private PlayerRepository playerRepository;
-
 	private RoundRepository roundRepository;
-
 	private TestCaseRepository testCaseRepository;
-
 	private ResultRepository resultRepository;
-
-	// Insert Methods Here
 
 	public MatchHistoryRepository getMatchHistoryRepository() {
 		return matchHistoryRepository;
@@ -47,7 +41,5 @@ public class RepositoriesFacade {
 		return resultRepository;
 	}
 
-
-	// Override services here
 
 }

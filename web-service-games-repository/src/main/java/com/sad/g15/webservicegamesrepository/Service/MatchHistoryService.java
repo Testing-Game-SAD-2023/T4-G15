@@ -42,4 +42,10 @@ public class MatchHistoryService {
         facade.getMatchHistoryRepository().deleteById(match.getId());
         return facade.getMatchHistoryRepository().save(match);
     }
+
+    public void addRound(MatchHistory match, Round round){
+        List<Round> rounds = match.getRounds();
+        rounds.add(round);
+        match.setRounds(rounds);
+    }
 }

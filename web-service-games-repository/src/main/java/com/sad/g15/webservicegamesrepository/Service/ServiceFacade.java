@@ -36,24 +36,25 @@ public class ServiceFacade {
      */
     public MatchHistory createMatch(ArrayList<Integer> idPlayers){
 
-        MatchHistory match = new MatchHistory();
-        MatchHistory msaved =  mservice.create(match);
-
         Round round = new Round();
         Round rsaved = rservice.create(round);
+
+        MatchHistory match = new MatchHistory();
+        mservice.addRound(match,rsaved);
+        MatchHistory msaved =  mservice.create(match);
 
         //for each partecipante crea un result e salvalo
         for (Integer i:idPlayers) {
 
             Player player = pservice.readById(i);
             Result result = new Result();
-            result.setPlayer(player);
-            result.setMatch(msaved);
+
+            //Get and Set are in the Data Access Layer. Services could use them without violating layer dependencies.
+            result.setPlayer(player);   //Could define an attachPlayer in Result service if set violates dependencies.
+            result.setMatch(msaved);    //same thing.
             reservice.create(result);
             
         }
-
-        rservice.attachRound(rsaved, msaved);
         return msaved;
     }
 }

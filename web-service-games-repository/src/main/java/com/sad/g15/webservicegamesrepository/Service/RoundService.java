@@ -28,6 +28,7 @@ public class RoundService {
     }
 
     public Round create(Round round){
+        //Does not work
         /*round.getTestCasesPlayer().forEach(testCasePlayer -> {testCaseService.create(testCasePlayer);});
         round.getTestCasesRobot().forEach(testCaseRobot -> {testCaseService.create(testCaseRobot);});*/
 
@@ -41,13 +42,5 @@ public class RoundService {
     public Round update(Round round){
         facade.getRoundRepository().deleteById(round.getId());
         return facade.getRoundRepository().save(round);
-    }
-
-    public void attachRound(Round round, MatchHistory match){
-
-        ArrayList<Round> rounds = new ArrayList<>();
-        rounds.add(round);
-        match.setRounds(rounds);
-
     }
 }

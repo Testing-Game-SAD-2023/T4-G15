@@ -17,8 +17,14 @@ public class MatchController {
     @Autowired
     private ServiceFacade facade;
 
+    /**-----------------------------------------addMatch-----------------------------------------
+     * Il parametro deve essere passato come un JSON Array ["value1","value2",...,"valueN"].
+     * @param idStudents
+     * @return MatchHistory / Object
+     * ------------------------------------------------------------------------------------------
+     */
     @PostMapping(value = "/addMatch", consumes = "application/json")
-    public Object addMatch(@RequestBody ArrayList<Integer> idStudents){
+    public MatchHistory addMatch(@RequestBody ArrayList<Integer> idStudents){
         return facade.createMatch(idStudents);
     }
 }
