@@ -21,7 +21,6 @@ public class MatchHistoryService {
 	private RoundService roundService;
 
 	public MatchHistory create(MatchHistory match) {
-
 		return facade.getMatchHistoryRepository().save(match);
 	}
 

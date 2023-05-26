@@ -1,27 +1,29 @@
 package com.sad.g15.webservicegamesrepository.Service;
 
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 @Service
 public class ServiceFacade {
 
+    //Le funzioni nel facade forse dovrebbero essere nella propria classe service il facade richiamare solo
+    //la funzione implementata. Indagare.
+
     public ServiceFacade(MatchHistoryService mservice, RoundService rservice, ResultService reservice,
-                         PlayerService pservice) {
+                         PlayerService pservice, TestCaseService tservice) {
         this.mservice = mservice;
         this.rservice = rservice;
         this.reservice = reservice;
         this.pservice = pservice;
+        this.tservice = tservice;
     }
 
     private MatchHistoryService mservice;
     private RoundService rservice;
     private ResultService reservice;
     private PlayerService pservice;
+    private TestCaseService tservice;
 
     /**
      * ---------------------------createMatch---------------------------------------------------------------------------
@@ -56,5 +58,14 @@ public class ServiceFacade {
             
         }
         return msaved;
+    }
+
+    public TestCasePlayer createTestP (TestCasePlayer testCasePlayer){
+
+        TestCasePlayer tsaved = (TestCasePlayer) (TestCasePlayer) tservice.create(testCasePlayer);
+        Round round = new Round();
+        round = rservice.readById(testCasePlayer.getPlayer().getId());
+        round.setTestCasePlayer(tsaved);
+        return tsaved;
     }
 }

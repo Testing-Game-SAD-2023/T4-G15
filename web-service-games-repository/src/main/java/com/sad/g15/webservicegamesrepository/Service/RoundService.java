@@ -43,4 +43,8 @@ public class RoundService {
         facade.getRoundRepository().deleteById(round.getId());
         return facade.getRoundRepository().save(round);
     }
+
+    public Round readById(int id){
+        return facade.getRoundRepository().getReferenceById(id);
+    }
 }
