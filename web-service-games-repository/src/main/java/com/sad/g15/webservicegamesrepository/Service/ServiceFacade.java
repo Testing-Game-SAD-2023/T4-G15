@@ -61,10 +61,9 @@ public class ServiceFacade {
     }
 
     public TestCasePlayer createTestP (TestCasePlayer testCasePlayer){
-
         TestCasePlayer tsaved = (TestCasePlayer) (TestCasePlayer) tservice.create(testCasePlayer);
         Round round = new Round();
-        round = rservice.readById(testCasePlayer.getPlayer().getId());
+        round = rservice.readById(testCasePlayer.getRound().getId());
         round.setTestCasePlayer(tsaved);
         return tsaved;
     }
