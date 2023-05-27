@@ -1,5 +1,6 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -32,10 +33,10 @@ public class Round {
 	private int robotId; // aggregation 1 to 1 converted into attribute.
 
 	@OneToMany
-	private List<TestCasePlayer> testCasesPlayer;
+	private List<TestCasePlayer> testCasesPlayer = new ArrayList<>();
 
 	@OneToMany
-	private List<TestCaseRobot> testCasesRobot;
+	private List<TestCaseRobot> testCasesRobot = new ArrayList<>();
 
 	public Round() {
 
@@ -67,6 +68,10 @@ public class Round {
 
 	public List<TestCasePlayer> getTestCasesPlayer() {
 		return testCasesPlayer;
+	}
+
+	public void setTestCasePlayer(TestCasePlayer testCasePlayer){
+		this.testCasesPlayer.add(testCasePlayer);
 	}
 
 	public void setTestCasesPlayer(List<TestCasePlayer> testCasesPlayer) {

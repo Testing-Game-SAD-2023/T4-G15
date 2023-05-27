@@ -45,7 +45,9 @@ public class TestCasePlayer extends TestCase {
 
 	@Override
 	public String toString() {
-		return "TestCasePlayer [player=" + player + ", round=" + round + "]";
+		return "TestCasePlayer{" +
+				"player=" + player +
+				", round=" + round +
+				'}';
 	}
-
 }
