@@ -33,6 +33,16 @@ public class MatchHistoryService {
 		return facade.getResultRepository().findMatchByPlayer(player.getId());
 	}
 
+
+	/**
+	 * Metodo utilizzato per la ricerca di un match tramite ID.
+	 * @param idMatch
+	 * @return single Match
+	 */
+	public MatchHistory readSById(int idMatch){
+		return facade.getMatchHistoryRepository().findById(idMatch).orElse(null);
+	}
+
 	public void delete(MatchHistory match) {
 		facade.getMatchHistoryRepository().delete(match);
 	}

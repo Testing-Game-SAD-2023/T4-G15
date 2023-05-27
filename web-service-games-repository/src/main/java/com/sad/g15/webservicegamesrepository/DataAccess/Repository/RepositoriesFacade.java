@@ -1,5 +1,6 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,6 +16,7 @@ public class RepositoriesFacade {
 		this.resultRepository = resultRepository;
 	}
 
+	@Autowired
 	private MatchHistoryRepository matchHistoryRepository;
 	private PlayerRepository playerRepository;
 	private RoundRepository roundRepository;

@@ -57,4 +57,8 @@ public class ServiceFacade {
         }
         return msaved;
     }
+
+    public MatchHistory readSMatch(int idMatch){
+     return mservice.readSById(idMatch);
+    }
 }
