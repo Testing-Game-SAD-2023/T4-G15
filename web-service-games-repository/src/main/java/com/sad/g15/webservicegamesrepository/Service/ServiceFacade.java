@@ -7,6 +7,9 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 @Service
 public class ServiceFacade {
 
@@ -58,7 +61,31 @@ public class ServiceFacade {
         return msaved;
     }
 
+    /**
+     * -------------------------------------------readSMatch------------------------------------------------------------
+     * @param idMatch
+     * @return
+     * -----------------------------------------------------------------------------------------------------------------
+     */
     public MatchHistory readSMatch(int idMatch){
      return mservice.readSById(idMatch);
+    }
+
+    /**
+     * ------------------------------------------createRound------------------------------------------------------------
+     * La funzione riceve un oggetto match in input con ALMENO il campo id not null. In base all'id fornito si preleva
+     * l'oggetto Match nel database corrispondente e si aggiunge il Round nel suo attribute lista rounds.
+     * @param match
+     * @return dbmatch updated
+     * -----------------------------------------------------------------------------------------------------------------
+     */
+    public MatchHistory createRound(MatchHistory match){
+
+        MatchHistory dbmatch = mservice.readSById(match.getId());
+        List<Round> roundsdb = dbmatch.getRounds();
+        List<Round> newList = Stream.concat(roundsdb.stream(), match.getRounds().stream()).toList();
+        dbmatch.setRounds(newList);
+        return mservice.update(dbmatch);
+
     }
 }

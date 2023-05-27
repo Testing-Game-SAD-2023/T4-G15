@@ -24,6 +24,11 @@ public class MatchController {
         return facade.createMatch(idStudents);
     }
 
+    @PutMapping("updateMatch/addRound")
+    public MatchHistory addRound(@RequestBody MatchHistory match){
+        return facade.createRound(match);
+    }
+
 
     /**
      * Metodo get Riceve sul path indicato l'id del match e ne ritorna uno solo

@@ -15,5 +15,9 @@ public class TestCaseService {
         return facade.getTestCaseRepository().save(testcase);
     }
 
+    public void delete(TestCase testCase){
+        facade.getTestCaseRepository().delete(testCase);
+    }
+
     // We may need to split this class into two to fullfill Player and Robot different TestCases needs
 }

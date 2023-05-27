@@ -6,22 +6,25 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class MatchHistoryService {
 
-	public MatchHistoryService(RepositoriesFacade facade) {
+	public MatchHistoryService(RepositoriesFacade facade, RoundService roundService) {
 		this.facade = facade;
+		this.roundService = roundService;
 	}
 
 	private final RepositoriesFacade facade;
 	private RoundService roundService;
 
+	//A MatchHistory e Round ho dato la responsabilità di creare anche gli oggetti in loro contenuti.
 	public MatchHistory create(MatchHistory match) {
-
+		for (Round r: match.getRounds()) {
+			roundService.create(r);
+		}
 		return facade.getMatchHistoryRepository().save(match);
 	}
 
@@ -48,8 +51,15 @@ public class MatchHistoryService {
 	}
 
 	public MatchHistory update(MatchHistory match) {
+
+		//occorre fare un for each dove si eliminano tutti i round prima di eliminare il match in sè.
+		//stessa cosa per quanto riguarda round e TestCase.
+
+		for (Round r: match.getRounds()) {
+			roundService.delete(r);
+		}
 		facade.getMatchHistoryRepository().deleteById(match.getId());
-		return facade.getMatchHistoryRepository().save(match);
+		return create(match);
 	}
 
 	public void addRound(MatchHistory match, Round round) {
