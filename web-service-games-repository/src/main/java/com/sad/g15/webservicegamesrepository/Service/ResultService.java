@@ -5,6 +5,8 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ResultService {
     public ResultService(RepositoriesFacade facade) {
@@ -23,6 +25,10 @@ public class ResultService {
 
     public void delete(Result result){
         facade.getResultRepository().delete(result);
+    }
+
+    public List<Result> readResultsByMatch(MatchHistory match){
+        return facade.getResultRepository().readResultsByMatchId(match.getId());
     }
 
 }

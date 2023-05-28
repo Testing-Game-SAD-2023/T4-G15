@@ -4,27 +4,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 
 //This Class is also named StoricoPartita in the doc Entity Class Diagram
 @Entity(name = "MatchHistory")
 @Table(name = "matchHistory") // unique constraint go in here
 public class MatchHistory {
 
-	public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, List<Round> rounds) {
+	public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, List<Round> rounds,
+						List<Result> results) {
 		super();
 		this.id = id;
 		this.scenario = scenario;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.rounds = rounds;
+		this.results = results;
 	}
 
 	@Id
@@ -36,10 +32,11 @@ public class MatchHistory {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 
-	@OneToMany(orphanRemoval = true)
+	@OneToMany//(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Round> rounds = new ArrayList<>();
 
-	//private List<Result> results; //Bisogna avere un riferimento ai risultati
+	@OneToMany//(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Result> results = new ArrayList<>(); //Bisogna avere un riferimento ai risultati
 
 	public MatchHistory() {
 
@@ -89,10 +86,23 @@ public class MatchHistory {
 		this.rounds.add(round);
 	}
 
-	@Override
-	public String toString() {
-		return "MatchHistory [id=" + id + ", scenario=" + scenario + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", rounds=" + rounds + "]";
+	public List<Result> getResults() {
+		return results;
 	}
 
+	public void setResults(List<Result> results) {
+		this.results = results;
+	}
+
+	@Override
+	public String toString() {
+		return "MatchHistory{" +
+				"id=" + id +
+				", scenario='" + scenario + '\'' +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				", rounds=" + rounds +
+				", results=" + results +
+				'}';
+	}
 }

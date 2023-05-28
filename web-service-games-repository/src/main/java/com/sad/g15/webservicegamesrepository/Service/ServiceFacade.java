@@ -74,17 +74,25 @@ public class ServiceFacade {
     /**
      * ------------------------------------------createRound------------------------------------------------------------
      * La funzione riceve un oggetto match in input con ALMENO il campo id not null. In base all'id fornito si preleva
-     * l'oggetto Match nel database corrispondente e si aggiunge il Round nel suo attribute lista rounds.
+     * l'oggetto Match nel database corrispondente e si aggiunge il Round/ i Round nel suo attribute lista rounds
+     * dopo averli salvati nel database alla tabella 'rounds'.
      * @param match
-     * @return dbmatch updated
+     * @return match updated
      * -----------------------------------------------------------------------------------------------------------------
      */
     public MatchHistory createRound(MatchHistory match){
 
+        //1. Salvo tutti i round che sto per aggiungere nel database e passo il loro riferimento al match 'contenitore'.
+
+        List<Round> roundsToAdd = new ArrayList<>();
         MatchHistory dbmatch = mservice.readSById(match.getId());
-        List<Round> roundsdb = dbmatch.getRounds();
-        List<Round> newList = Stream.concat(roundsdb.stream(), match.getRounds().stream()).toList();
-        dbmatch.setRounds(newList);
+        for (Round r: match.getRounds()) {
+            Round rbuff = rservice.create(r);
+            mservice.addRound(dbmatch,rbuff);
+        }
+
+        //2. Update del match
+
         return mservice.update(dbmatch);
 
     }

@@ -31,10 +31,6 @@ public class RoundService {
 
     public Round create(Round round){
 
-        //Does not work
-        /*round.getTestCasesPlayer().forEach(testCasePlayer -> {testCaseService.create(testCasePlayer);});
-        round.getTestCasesRobot().forEach(testCaseRobot -> {testCaseService.create(testCaseRobot);});*/
-
         for (TestCasePlayer tp:round.getTestCasesPlayer()) {
             testCaseService.create(tp);
         }
@@ -46,6 +42,7 @@ public class RoundService {
     }
 
     public void delete(Round round){
+
         for (TestCasePlayer tp:round.getTestCasesPlayer()) {
             testCaseService.delete(tp);
         }

@@ -24,7 +24,24 @@ public class MatchController {
         return facade.createMatch(idStudents);
     }
 
-    @PutMapping("updateMatch/addRound")
+    /**-----------------------------------------addRound-----------------------------------------
+     * Il parametro deve essere passato come un JSON Object:
+     *
+     * {
+     *     "id" : 16,
+     *     "rounds" : [{
+     *         "id_robot" : "1"
+     *     }
+     *     ]
+     * }
+     *
+     * Bisogna specificare ID del match per salvare il round (id di round sarà salvato in seguito), il
+     * resto dei parametri è opzionale (come visibile sopra).
+     * @param match
+     * @return MatchHistory / Object
+     * ------------------------------------------------------------------------------------------
+     */
+    @PutMapping("/updateMatch/addRound")
     public MatchHistory addRound(@RequestBody MatchHistory match){
         return facade.createRound(match);
     }
