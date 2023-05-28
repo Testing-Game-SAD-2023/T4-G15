@@ -64,13 +64,14 @@ public class MatchHistoryService {
 		/*for (Round r: deleteMatch.getRounds()) {
 			roundService.delete(r);
 		}
-		*/
+
 		//Adesso elimino anche i result associati al match
 
 		List<Result> results = resultService.readResultsByMatch(match);
 		for (Result r:results) {
 			resultService.delete(r);
-		}
+		}*/
+
 		facade.getMatchHistoryRepository().deleteById(match.getId());
 	}
 
@@ -79,7 +80,6 @@ public class MatchHistoryService {
 	}
 
 	public void addRound(MatchHistory match, Round round) {
-
 		match.setRound(round);
 	}
 }

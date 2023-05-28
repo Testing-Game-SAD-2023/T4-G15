@@ -32,10 +32,10 @@ public class MatchHistory {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 
-	@OneToMany//(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Round> rounds = new ArrayList<>();
 
-	@OneToMany//(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Result> results = new ArrayList<>(); //Bisogna avere un riferimento ai risultati
 
 	public MatchHistory() {
