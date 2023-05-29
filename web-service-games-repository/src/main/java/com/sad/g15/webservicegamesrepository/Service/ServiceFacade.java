@@ -84,7 +84,6 @@ public class ServiceFacade {
 
         //1. Salvo tutti i round che sto per aggiungere nel database e passo il loro riferimento al match 'contenitore'.
 
-        List<Round> roundsToAdd = new ArrayList<>();
         MatchHistory dbmatch = mservice.readSById(match.getId());
         for (Round r: match.getRounds()) {
             Round rbuff = rservice.create(r);
