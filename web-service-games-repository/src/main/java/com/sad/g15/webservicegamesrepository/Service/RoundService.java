@@ -3,6 +3,7 @@ package com.sad.g15.webservicegamesrepository.Service;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -40,6 +41,10 @@ public class RoundService {
 
     public void AddTestCasePlayer(Round round, TestCasePlayer testCasePlayer){
         round.setTestCasePlayer(testCasePlayer);
+    }
+
+    public void AddTestCaseRobot(Round round, TestCaseRobot testCaseRobot){
+        round.setTestCaseRobot(testCaseRobot);
     }
 
     public Round readById(int id){

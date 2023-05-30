@@ -70,6 +70,28 @@ public class MatchController {
         return facade.createTestCasePlayer(match);
     }
 
+    /**-----------------------------------------addTestCaseRobot-----------------------------------------
+     * Il parametro deve essere passato come un JSON Object:
+     *
+     * {
+     *     "id" : 16,
+     *     "rounds" : [{
+     *         "id" : "1"
+     *         "testCasePlayer":[{
+     *         }
+     *     }
+     *     ]
+     * }
+     *
+     * @param match
+     * @return MatchHistory / Object
+     * ------------------------------------------------------------------------------------------
+     */
+    @PutMapping("/updateMatch/updateRound/addTestCaseRobot")
+    public MatchHistory addTestcaseRobot(@RequestBody MatchHistory match){
+        return facade.createTestCaseRobot(match);
+    }
+
 
     /**
      * Metodo get Riceve sul path indicato l'id del match e ne ritorna uno solo

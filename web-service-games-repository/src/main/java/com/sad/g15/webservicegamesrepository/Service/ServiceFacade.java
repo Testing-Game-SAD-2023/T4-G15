@@ -124,4 +124,26 @@ public class ServiceFacade {
         rservice.update(dbround);
     return mservice.update(dbmatch);
     }
+
+    /**
+     *------------------------------------------createTestCaseRobot----------------------------------------------------
+     * Fare riferimento al Class Diagram delle Entity. TestCase--->Round--->Match quindi occorre dato l'id in input
+     * recuperare l'oggetto match con id corrispondente dal db, selezionare il round specificato in input e 'aggiungere'
+     * il nuovo TestCaseRobot dopo averlo salvato nel db attraverso i metodi jpa repository.
+     * @param match
+     * @return match
+     * -----------------------------------------------------------------------------------------------------------------
+     */
+    public  MatchHistory createTestCaseRobot(MatchHistory match){
+
+        MatchHistory dbmatch = mservice.readSById(match.getId());
+
+        Round dbround = rservice.readById(match.getRounds().stream().findFirst().get().getId());
+        for (TestCaseRobot tr: match.getRounds().stream().findFirst().get().getTestCasesRobot()) {
+            TestCaseRobot trbuff = (TestCaseRobot) tservice.create(tr);
+            rservice.AddTestCaseRobot(dbround,trbuff);
+        }
+        rservice.update(dbround);
+        return mservice.update(dbmatch);
+    }
 }
