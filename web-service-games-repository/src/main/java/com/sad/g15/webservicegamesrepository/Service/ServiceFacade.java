@@ -112,12 +112,11 @@ public class ServiceFacade {
         */
         Round dbround = rservice.readById(match.getRounds().stream().findFirst().get().getId());
         for (TestCasePlayer tp: match.getRounds().stream().findFirst().get().getTestCasesPlayer()) {
-
-            //++++
-            //Probabilmente occorre creare repository per testcaseplayer e robot e non usare quella della classe padre.
-            //Indagare!
-
             TestCasePlayer tbuff = (TestCasePlayer) tservice.create(tp);
+            Player pbuff = pservice.readById(tbuff.getPlayer().getId());
+
+            //Forse non conviene utilizzare direttamente un metodo di entity?
+            tbuff.setPlayer(pbuff);
             rservice.AddTestCasePlayer(dbround,tbuff);
         }
         rservice.update(dbround);

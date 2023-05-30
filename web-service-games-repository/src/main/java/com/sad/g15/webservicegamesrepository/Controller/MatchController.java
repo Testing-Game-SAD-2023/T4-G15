@@ -46,19 +46,21 @@ public class MatchController {
         return facade.createRound(match);
     }
 
-    /**-----------------------------------------addRound-----------------------------------------
+    /**-----------------------------------------addTestCasePlayer-----------------------------------------
      * Il parametro deve essere passato come un JSON Object:
      *
      * {
      *     "id" : 16,
      *     "rounds" : [{
-     *         "id_robot" : "1"
+     *         "id" : "1"
+     *         "testCasePlayer":[{
+     *         }
      *     }
      *     ]
      * }
      *
-     * Bisogna specificare ID del match per salvare il round (id di round sarà salvato in seguito), il
-     * resto dei parametri è opzionale (come visibile sopra).
+     * Bisogna specificare ID del match, quello di Round e il player che ha creato il Test. Il resto dei dati è
+     * riguarda tutti i punteggi legati alle metriche di coverage.
      * @param match
      * @return MatchHistory / Object
      * ------------------------------------------------------------------------------------------
