@@ -1,9 +1,6 @@
 package com.sad.g15.webservicegamesrepository.Service;
 
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,17 +11,19 @@ import java.util.stream.Stream;
 public class ServiceFacade {
 
     public ServiceFacade(MatchHistoryService mservice, RoundService rservice, ResultService reservice,
-                         PlayerService pservice) {
+                         PlayerService pservice, TestCaseService tservice) {
         this.mservice = mservice;
         this.rservice = rservice;
         this.reservice = reservice;
         this.pservice = pservice;
+        this.tservice = tservice;
     }
 
     private MatchHistoryService mservice;
     private RoundService rservice;
     private ResultService reservice;
     private PlayerService pservice;
+    private TestCaseService tservice;
 
     /**
      * ---------------------------createMatch---------------------------------------------------------------------------
@@ -56,7 +55,7 @@ public class ServiceFacade {
             result.setPlayer(player);   //Could define an attachPlayer in Result service if set violates dependencies.
             result.setMatch(msaved);    //same thing.
             reservice.create(result);
-            
+
         }
         return msaved;
     }
@@ -94,5 +93,34 @@ public class ServiceFacade {
 
         return mservice.update(dbmatch);
 
+    }
+
+    /**
+     *
+     * @param match
+     * @return
+     */
+    public MatchHistory createTestCasePlayer(MatchHistory match){
+
+        MatchHistory dbmatch = mservice.readSById(match.getId());
+        /*  Qui per ricavare l'id del round a cui stiamo aggiungendo il test case cosa facciamo:
+            1.  Prendiamo la lista di round del match passato come JSON (il round sarà 1 perchè io posso aggiungere
+                ad un solo round dei testcase con una sola chiamata createTestCasePlayer. Detto ciò il primo elemento
+                di tale lista sarà il nostro round.
+            2.  Prelevato Round dalla lista con findFirst() con getId() ci prendiamo l'id e Preleviamo il Round 'vero'
+                dal db.
+        */
+        Round dbround = rservice.readById(match.getRounds().stream().findFirst().get().getId());
+        for (TestCasePlayer tp: match.getRounds().stream().findFirst().get().getTestCasesPlayer()) {
+
+            //++++
+            //Probabilmente occorre creare repository per testcaseplayer e robot e non usare quella della classe padre.
+            //Indagare!
+
+            TestCasePlayer tbuff = (TestCasePlayer) tservice.create(tp);
+            rservice.AddTestCasePlayer(dbround,tbuff);
+        }
+        rservice.update(dbround);
+    return mservice.update(dbmatch);
     }
 }

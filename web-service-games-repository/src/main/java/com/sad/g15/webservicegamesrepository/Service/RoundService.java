@@ -31,31 +31,34 @@ public class RoundService {
 
     public Round create(Round round){
 
-        for (TestCasePlayer tp:round.getTestCasesPlayer()) {
+        /*for (TestCasePlayer tp:round.getTestCasesPlayer()) {
             testCaseService.create(tp);
         }
 
         for (TestCaseRobot tr:round.getTestCasesRobot()) {
             testCaseService.create(tr);
-        }
+        }*/
         return facade.getRoundRepository().save(round);
     }
 
     public void delete(Round round){
 
-        for (TestCasePlayer tp:round.getTestCasesPlayer()) {
+        /*for (TestCasePlayer tp:round.getTestCasesPlayer()) {
             testCaseService.delete(tp);
         }
 
         for (TestCaseRobot tr:round.getTestCasesRobot()) {
             testCaseService.delete(tr);
-        }
+        }*/
         facade.getRoundRepository().delete(round);
     }
 
     public Round update(Round round){
-        facade.getRoundRepository().deleteById(round.getId());
         return facade.getRoundRepository().save(round);
+    }
+
+    public void AddTestCasePlayer(Round round, TestCasePlayer testCasePlayer){
+        round.setTestCasePlayer(testCasePlayer);
     }
 
     public Round readById(int id){
