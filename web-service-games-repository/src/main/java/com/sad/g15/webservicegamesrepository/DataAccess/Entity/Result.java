@@ -1,9 +1,6 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
-
-import java.util.Optional;
 
 @Entity
 public class Result {

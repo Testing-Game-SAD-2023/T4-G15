@@ -2,10 +2,8 @@ package com.sad.g15.webservicegamesrepository.Service;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
+
 
 @Service
 public class ServiceFacade {
@@ -96,9 +94,13 @@ public class ServiceFacade {
     }
 
     /**
-     *
+     *------------------------------------------createTestCasePlayer----------------------------------------------------
+     * Fare riferimento al Class Diagram delle Entity. TestCase--->Round--->Match quindi occorre dato l'id in input
+     * recuperare l'oggetto match con id corrispondente dal db, selezionare il round specificato in input e 'aggiungere'
+     * il nuovo TestCasePlayer dopo averlo salvato nel db attraverso i metodi jpa repository.
      * @param match
-     * @return
+     * @return match
+     * -----------------------------------------------------------------------------------------------------------------
      */
     public MatchHistory createTestCasePlayer(MatchHistory match){
 
@@ -107,7 +109,7 @@ public class ServiceFacade {
             1.  Prendiamo la lista di round del match passato come JSON (il round sarà 1 perchè io posso aggiungere
                 ad un solo round dei testcase con una sola chiamata createTestCasePlayer. Detto ciò il primo elemento
                 di tale lista sarà il nostro round.
-            2.  Prelevato Round dalla lista con findFirst() con getId() ci prendiamo l'id e Preleviamo il Round 'vero'
+            2.  Prelevato Round dalla lista con findFirst(), con getId() ci prendiamo l'id e Preleviamo il Round 'vero'
                 dal db.
         */
         Round dbround = rservice.readById(match.getRounds().stream().findFirst().get().getId());
