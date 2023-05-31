@@ -6,6 +6,7 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -37,12 +38,14 @@ public class ServiceFacade {
      * @return MatchHistory
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public MatchHistory createMatch(ArrayList<Integer> idPlayers){
+    public MatchHistory createMatch(ArrayList<Integer> idPlayers, String scenario){
 
         Round round = new Round();
         Round rsaved = rservice.create(round);
 
         MatchHistory match = new MatchHistory();
+        match.setScenario(scenario);
+        match.setStartDate(LocalDateTime.now());
         mservice.addRound(match,rsaved);
         MatchHistory msaved =  mservice.create(match);
 
