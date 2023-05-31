@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 
 @Service
@@ -95,6 +97,15 @@ public class ServiceFacade {
 
         return mservice.update(dbmatch);
 
+    }
+    
+    public Round updateRound(MatchHistory match, int idRound, boolean result, int idRobot) {
+    	
+    	Predicate<? super Round> predicate = round -> round.getId() == idRound;
+		Round round = match.getRounds().stream().filter(predicate).findFirst().orElse(null);
+		round.setResult(result);
+		round.setRobotId(idRobot);
+		return rservice.update(round);
     }
 
     /**
