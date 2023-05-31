@@ -6,8 +6,6 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,32 +28,23 @@ public class RoundService {
     }
 
     public Round create(Round round){
-
-        for (TestCasePlayer tp:round.getTestCasesPlayer()) {
-            testCaseService.create(tp);
-        }
-
-        for (TestCaseRobot tr:round.getTestCasesRobot()) {
-            testCaseService.create(tr);
-        }
         return facade.getRoundRepository().save(round);
     }
 
     public void delete(Round round){
-
-        for (TestCasePlayer tp:round.getTestCasesPlayer()) {
-            testCaseService.delete(tp);
-        }
-
-        for (TestCaseRobot tr:round.getTestCasesRobot()) {
-            testCaseService.delete(tr);
-        }
         facade.getRoundRepository().delete(round);
     }
 
     public Round update(Round round){
-        facade.getRoundRepository().deleteById(round.getId());
         return facade.getRoundRepository().save(round);
+    }
+
+    public void AddTestCasePlayer(Round round, TestCasePlayer testCasePlayer){
+        round.setTestCasePlayer(testCasePlayer);
+    }
+
+    public void AddTestCaseRobot(Round round, TestCaseRobot testCaseRobot){
+        round.setTestCaseRobot(testCaseRobot);
     }
 
     public Round readById(int id){

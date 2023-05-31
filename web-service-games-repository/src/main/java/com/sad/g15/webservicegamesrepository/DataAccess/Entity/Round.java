@@ -85,6 +85,9 @@ public class Round {
 	public void setTestCasesRobot(List<TestCaseRobot> testCasesRobot) {
 		this.testCasesRobot = testCasesRobot;
 	}
+	public void setTestCaseRobot(TestCaseRobot testCaseRobot){
+		this.testCasesRobot.add(testCaseRobot);
+	}
 
 	@Override
 	public String toString() {

@@ -2,7 +2,6 @@ package com.sad.g15.webservicegamesrepository.Service;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
@@ -25,15 +24,6 @@ public class MatchHistoryService {
 
 	//A MatchHistory e Round ho dato la responsabilità di creare anche gli oggetti in loro contenuti.
 	public MatchHistory create(MatchHistory match) {
-
-		//Generano errore perchè l'oggetto Match non ha in sè, almeno in partenza, la lista di Rounds e Results dal DB.
-		/*for (Round r: match.getRounds()) {
-			roundService.create(r);
-		}
-
-		for (Result r:match.getResults()) {
-			resultService.create(r);
-		}*/
 		return facade.getMatchHistoryRepository().save(match);
 	}
 
@@ -57,21 +47,6 @@ public class MatchHistoryService {
 	}
 
 	public void delete(MatchHistory match) {
-
-		//occorre fare un for each dove si eliminano tutti i round prima di eliminare il match in sè.
-		//stessa cosa per quanto riguarda round e TestCase.
-
-		/*for (Round r: deleteMatch.getRounds()) {
-			roundService.delete(r);
-		}
-
-		//Adesso elimino anche i result associati al match
-
-		List<Result> results = resultService.readResultsByMatch(match);
-		for (Result r:results) {
-			resultService.delete(r);
-		}*/
-
 		facade.getMatchHistoryRepository().deleteById(match.getId());
 	}
 
