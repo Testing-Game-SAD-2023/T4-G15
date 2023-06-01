@@ -99,10 +99,22 @@ public class ServiceFacade {
 
     }
     
-    public Round updateRound(MatchHistory match, int idRound, boolean result, int idRobot) {
+    
+    /**
+     * ------------------------------------------updateRound------------------------------------------------------------
+     * La funzione riceve un valore idMatch, l'ID del match contente il Round, l'id del Round e i nuovi valori di result e idRobot. 
+     * In base all'id fornito si preleva l'oggetto Match nel database corrispondente e si modifica il Round scelto prelevandolo dalla lista rounds.
+     * @param idMatch, idRound, result, idRobot
+     * @return round updated
+     * -----------------------------------------------------------------------------------------------------------------
+     */
+    public Round updateRound(int idMatch, int idRound, boolean result, int idRobot) {
+    	
+    	MatchHistory match = mservice.readSById(idMatch);
     	
     	Predicate<? super Round> predicate = round -> round.getId() == idRound;
-		Round round = match.getRounds().stream().filter(predicate).findFirst().orElse(null);
+		Round round = rservice.readM(match).stream().filter(predicate).findFirst().orElse(null);
+		
 		round.setResult(result);
 		round.setRobotId(idRobot);
 		return rservice.update(round);

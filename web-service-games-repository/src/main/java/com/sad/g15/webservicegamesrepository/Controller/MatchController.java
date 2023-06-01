@@ -84,11 +84,12 @@ public class MatchController {
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound")
 	public ResponseEntity<String> updateRound(@PathVariable int idMatch, @RequestBody JsonNode requestBody) {
-		MatchHistory match = facade.readSMatch(idMatch);
+	
 		int idRound = requestBody.get("idRound").asInt();
 		boolean result = requestBody.get("result").asBoolean();
 		int idRobot = requestBody.get("idRobot").asInt();
-		facade.updateRound(match, idRound, result, idRobot);
+		
+		facade.updateRound(idMatch, idRound, result, idRobot);
 		return ResponseEntity.status(HttpStatus.OK).body("Round updated successfully");
 	}
 
