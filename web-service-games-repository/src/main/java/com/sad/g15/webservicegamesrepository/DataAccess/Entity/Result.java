@@ -1,23 +1,21 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
-
-import java.util.Optional;
 
 @Entity
 public class Result {
 
-	public Result(int id, Player player, boolean result, MatchHistory match) {
+	public Result(int id, boolean result,Player player, MatchHistory match) {
 		super();
 		this.id = id;
-		this.player = player;
 		this.result = result;
+		this.player = player;
 		this.match = match;
 	}
-	
+
 	public Result() {
-		
+
 	}
 
 	@ManyToOne

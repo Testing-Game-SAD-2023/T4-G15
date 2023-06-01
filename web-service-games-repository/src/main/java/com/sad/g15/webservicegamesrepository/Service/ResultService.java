@@ -27,8 +27,9 @@ public class ResultService {
         facade.getResultRepository().delete(result);
     }
 
-    public List<Result> readResultsByMatch(MatchHistory match){
-        return facade.getResultRepository().readResultsByMatchId(match.getId());
-    }
 
+
+    public List<Result> readResultByPlayerId(int idPlayer){
+        return facade.getResultRepository().readResultByPlayerId(idPlayer);
+    }
 }

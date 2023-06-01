@@ -1,11 +1,13 @@
 package com.sad.g15.webservicegamesrepository.Controller;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.Service.ServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 
@@ -52,9 +54,21 @@ public class MatchController {
      * @param idMatch
      * @return single Match.
      */
-    @GetMapping("/controller/{idMatch}")
+    @GetMapping("/getSingleMatch/{idMatch}")
         public MatchHistory getMatchS(@PathVariable int idMatch){
             return facade.readSMatch(idMatch);
         }
 
+
+
+    @GetMapping(path = "/getResultPlayer/{idPlayer}")
+    @ResponseBody
+    public List<Result> getResultPlayer(@PathVariable int idPlayer) {
+
+        return facade.readResultByPlayerId(idPlayer);
+    }
 }
+
+
+
+
