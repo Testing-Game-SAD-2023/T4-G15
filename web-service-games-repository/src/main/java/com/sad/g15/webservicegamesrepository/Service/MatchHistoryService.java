@@ -41,9 +41,9 @@ public class MatchHistoryService {
 		return facade.getMatchHistoryRepository().findById(match.getId());
 	}
 
-	public List<MatchHistory> readM(Player player) {
+	/**public List<MatchHistory> readM(Player player) {
 		return facade.getResultRepository().findMatchByPlayer(player.getId());
-	}
+	}*/
 
 
 	/**

@@ -1,9 +1,15 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+
+
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "match")
+
 public class Result {
 
 	public Result(int id, boolean result,Player player, MatchHistory match) {
@@ -18,6 +24,7 @@ public class Result {
 
 	}
 
+	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne
 	private MatchHistory match;
 
@@ -27,6 +34,7 @@ public class Result {
 	@Column(name = "id", updatable = false)
 	private int id;
 
+	@JsonIgnore
 	@OneToOne
 	private Player player;
 

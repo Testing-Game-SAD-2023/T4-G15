@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 
 //This Class is also named StoricoPartita in the doc Entity Class Diagram
 @Entity(name = "MatchHistory")
 @Table(name = "matchHistory") // unique constraint go in here
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class MatchHistory {
 
 	public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, List<Round> rounds,
