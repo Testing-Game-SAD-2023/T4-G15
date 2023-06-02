@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 public class Result {
 
-	public Result(int id, Player player, boolean result) {
+	public Result(int id, Player player, String result) {
 		super();
 		this.id = id;
 		this.player = player;
@@ -28,7 +28,7 @@ public class Result {
 	@OneToOne
 	private Player player;
 
-	private boolean result;
+	private String result;
 
 	public int getId() {
 		return id;
@@ -46,11 +46,11 @@ public class Result {
 		this.player = player;
 	}
 
-	public boolean isResult() {
+	public String getResult() {
 		return result;
 	}
 
-	public void setResult(boolean result) {
+	public void setResult(String result) {
 		this.result = result;
 	}
 

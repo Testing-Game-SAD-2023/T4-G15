@@ -96,6 +96,38 @@ public class MatchController {
 	}
 
 	/**
+	 * -----------------------------------------updateMatch---------------------------------------
+	 * Il parametro deve essere passato come un JSON Object:
+	 *
+	 * {
+	 *     "id": 1,
+	 *     "scenario": "scenario",
+	 *     "endDate": "2023-06-02T21:00:00",
+	 *     "results": [
+	 *         {
+	 *             "id": 1,
+	 *             "result": "sconfitta"
+	 *         }
+	 *     ]
+	 * }
+	 *
+	 * Bisogna specificare ID del match nell'URI, nel JSON i parametri che si vogliono modificare come
+	 * scenario, endDate e results
+	 *
+	 * @param idMatch, match
+	 * @return "Match updated successfully"
+	 * ------------------------------------------------------------------------------------------
+	 */
+	@PutMapping(value = "/updateMatch/{idMatch}", consumes = "application/json")
+	public ResponseEntity<String> updateMatch(@PathVariable int idMatch, @RequestBody MatchHistory match) {
+
+		MatchHistory updated_match = facade.updateMatch(idMatch, match);
+
+		if(updated_match!=null) return ResponseEntity.status(HttpStatus.OK).body("Match updated successfully");
+		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not update Match");
+	}
+
+	/**
 	 * -----------------------------------------addTestCasePlayer-----------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
