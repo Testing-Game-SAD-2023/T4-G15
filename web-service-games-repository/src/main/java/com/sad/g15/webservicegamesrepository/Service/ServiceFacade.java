@@ -47,7 +47,7 @@ public class ServiceFacade {
         match.setScenario(scenario);
         match.setStartDate(LocalDateTime.now());
         mservice.addRound(match,rsaved);
-        MatchHistory msaved =  mservice.create(match);
+        
 
         //for each partecipante crea un result e salvalo
         for (Integer i:idPlayers) {
@@ -57,10 +57,11 @@ public class ServiceFacade {
 
             //Get and Set are in the Data Access Layer. Services could use them without violating layer dependencies.
             result.setPlayer(player);   //Could define an attachPlayer in Result service if set violates dependencies.
-            result.setMatch(msaved);    //same thing.
             reservice.create(result);
+            mservice.addResult(match, result);
 
         }
+        MatchHistory msaved =  mservice.create(match);
         return msaved;
     }
 
@@ -108,14 +109,13 @@ public class ServiceFacade {
      * @return round updated
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public Round updateRound(int idMatch, int idRound, boolean result, int idRobot) {
+    public Round updateRound(int idMatch, int idRound, int idRobot) {
     	
     	MatchHistory match = mservice.readSById(idMatch);
     	
     	Predicate<? super Round> predicate = round -> round.getId() == idRound;
 		Round round = rservice.readM(match).stream().filter(predicate).findFirst().orElse(null);
 		
-		round.setResult(result);
 		round.setRobotId(idRobot);
 		return rservice.update(round);
     }

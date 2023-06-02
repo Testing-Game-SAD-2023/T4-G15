@@ -73,7 +73,7 @@ public class MatchController {
 	 * -----------------------------------------updateRound-----------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
-	 * { "idRound" : 16, "result" : "true", "idRobot" : 121 }
+	 * { "idRound" : 16, "idRobot" : 121 }
 	 *
 	 * Bisogna specificare ID del round, il nuovo risultato e il nuovo ID del Robot, l'ID
 	 * del match viene invece indicato nell'URI
@@ -86,10 +86,9 @@ public class MatchController {
 	public ResponseEntity<String> updateRound(@PathVariable int idMatch, @RequestBody JsonNode requestBody) {
 	
 		int idRound = requestBody.get("idRound").asInt();
-		boolean result = requestBody.get("result").asBoolean();
 		int idRobot = requestBody.get("idRobot").asInt();
 		
-		facade.updateRound(idMatch, idRound, result, idRobot);
+		facade.updateRound(idMatch, idRound, idRobot);
 		return ResponseEntity.status(HttpStatus.OK).body("Round updated successfully");
 	}
 

@@ -15,11 +15,10 @@ import jakarta.persistence.Table;
 @Table(name = "round")
 public class Round {
 
-	public Round(int id, Boolean result, int robotId, List<TestCasePlayer> testCasesPlayer,
+	public Round(int id, int robotId, List<TestCasePlayer> testCasesPlayer,
 			List<TestCaseRobot> testCasesRobot) {
 		super();
 		this.id = id;
-		this.result = result;
 		this.robotId = robotId;
 		this.testCasesPlayer = testCasesPlayer;
 		this.testCasesRobot = testCasesRobot;
@@ -29,7 +28,6 @@ public class Round {
 	@SequenceGenerator(name = "round_sequence", sequenceName = "round_sequence", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "round_sequence")
 	private int id;
-	private Boolean result;
 	private int robotId; // aggregation 1 to 1 converted into attribute.
 
 	@OneToMany
@@ -58,13 +56,6 @@ public class Round {
 		this.robotId = robotId;
 	}
 
-	public Boolean getResult() {
-		return result;
-	}
-
-	public void setResult(Boolean result) {
-		this.result = result;
-	}
 
 	public List<TestCasePlayer> getTestCasesPlayer() {
 		return testCasesPlayer;
@@ -91,7 +82,7 @@ public class Round {
 
 	@Override
 	public String toString() {
-		return "Round [id=" + id + ", result=" + result + ", robotId=" + robotId + ", testCasesPlayer="
+		return "Round [id=" + id + ", robotId=" + robotId + ", testCasesPlayer="
 				+ testCasesPlayer + ", testCasesRobot=" + testCasesRobot + "]";
 	}
 }

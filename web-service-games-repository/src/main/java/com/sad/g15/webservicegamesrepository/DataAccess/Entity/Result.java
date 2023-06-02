@@ -5,20 +5,16 @@ import jakarta.persistence.*;
 @Entity
 public class Result {
 
-	public Result(int id, Player player, boolean result, MatchHistory match) {
+	public Result(int id, Player player, boolean result) {
 		super();
 		this.id = id;
 		this.player = player;
 		this.result = result;
-		this.match = match;
-	}
-	
-	public Result() {
-		
 	}
 
-	@ManyToOne
-	private MatchHistory match;
+	public Result() {
+
+	}
 
 	@Id
 	@SequenceGenerator(name = "result_sequence", sequenceName = "result_sequence", allocationSize = 1)
@@ -55,16 +51,8 @@ public class Result {
 		this.result = result;
 	}
 
-	public MatchHistory getMatch() {
-		return match;
-	}
-
-	public void setMatch(MatchHistory match) {
-		this.match = match;
-	}
-
 	@Override
 	public String toString() {
-		return "Result [match=" + match + ", id=" + id + ", player=" + player + ", result=" + result + "]";
+		return "Result [id=" + id + ", player=" + player + ", result=" + result + "]";
 	}
 }

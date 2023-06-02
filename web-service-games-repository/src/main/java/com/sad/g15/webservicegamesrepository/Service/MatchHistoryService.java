@@ -2,6 +2,7 @@ package com.sad.g15.webservicegamesrepository.Service;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,9 @@ public class MatchHistoryService {
 
 	public void addRound(MatchHistory match, Round round) {
 		match.setRound(round);
+	}
+	
+	public void addResult(MatchHistory match, Result result) {
+		match.setResult(result);	
 	}
 }

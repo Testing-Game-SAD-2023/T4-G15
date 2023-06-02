@@ -93,6 +93,10 @@ public class MatchHistory {
 	public void setResults(List<Result> results) {
 		this.results = results;
 	}
+	
+	public void setResult(Result result) {
+		this.results.add(result);
+	}
 
 	@Override
 	public String toString() {
