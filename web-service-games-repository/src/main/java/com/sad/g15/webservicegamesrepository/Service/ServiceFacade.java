@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -172,5 +173,15 @@ public class ServiceFacade {
         }
         rservice.update(dbround);
         return mservice.update(dbmatch);
+    }
+    /**
+     *------------------------------------------readResultIdPlayer----------------------------------------------------
+     * Dato in input l'IdPlayer il metodo ritorna la lista dei risultati del player identificato.
+     * @param idPlayer
+     * @return List<Result>
+     * -----------------------------------------------------------------------------------------------------------------
+     */
+    public List<Result> readResultIdPlayer(int idPlayer){
+        return reservice.readResultByIdPlayer(idPlayer);
     }
 }

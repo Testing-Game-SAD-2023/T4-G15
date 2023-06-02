@@ -1,5 +1,6 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +22,8 @@ public class Result {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "result_sequence")
 	@Column(name = "id", updatable = false)
 	private int id;
+
+
 
 	@OneToOne
 	private Player player;

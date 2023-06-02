@@ -18,4 +18,8 @@ public interface ResultRepository extends JpaRepository<Result,Integer> {
     @Query(value = "select * from result r where r.match_id = ?1", nativeQuery = true)
     public  List<Result> readResultsByMatchId(int match_id);
 
+    @Query(value = "select * from result r where r.player_id = ?1", nativeQuery = true)
+    public List<Result>  readResultByPlayerId(int player_id);
+
+
 }

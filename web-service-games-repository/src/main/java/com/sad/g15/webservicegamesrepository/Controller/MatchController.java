@@ -1,6 +1,7 @@
 package com.sad.g15.webservicegamesrepository.Controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
+
 import com.sad.g15.webservicegamesrepository.Service.ServiceFacade;
 
 @RestController
@@ -127,14 +130,29 @@ public class MatchController {
 	}
 
 	/**
+	 * -----------------------------------------getResultByIdPlayer-----------------------------------------
 	 * Metodo get Riceve sul path indicato l'id del match e ne ritorna uno solo
 	 * 
 	 * @param idMatch
 	 * @return single Match.
+	 *         ------------------------------------------------------------------------------------------
 	 */
-	@GetMapping("/controller/{idMatch}")
+	@GetMapping("/getSingleMatch/{idMatch}")
 	public MatchHistory getMatchS(@PathVariable int idMatch) {
 		return facade.readSMatch(idMatch);
 	}
 
+
+	/**
+	 * -----------------------------------------getResultByIdPlayer-----------------------------------------
+	 * Il parametro deve essere passato interno di IdPlayer
+	 *
+	 * @param idPlayer
+	 * @return List<Result>
+	 *         ------------------------------------------------------------------------------------------
+	 */
+	@GetMapping("/getResultPlayer/{idPlayer}")
+	public List<Result> getResultByIdPlayer(@PathVariable int idPlayer){
+		return facade.readResultIdPlayer(idPlayer);
+	}
 }

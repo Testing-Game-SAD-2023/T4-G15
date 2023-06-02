@@ -31,4 +31,8 @@ public class ResultService {
         return facade.getResultRepository().readResultsByMatchId(match.getId());
     }
 
+    public List<Result> readResultByIdPlayer(int idPlayer){
+      return   facade.getResultRepository().readResultByPlayerId(idPlayer);
+    }
+
 }
