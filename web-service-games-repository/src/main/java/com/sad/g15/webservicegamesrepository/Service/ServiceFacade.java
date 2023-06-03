@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
-
 
 @Service
 public class ServiceFacade {
@@ -68,8 +66,9 @@ public class ServiceFacade {
 
     /**
      * -------------------------------------------readSMatch------------------------------------------------------------
+     * Legge dato in ingresso un id match, restituisce il riferimento per quel match.
      * @param idMatch
-     * @return
+     * @return match
      * -----------------------------------------------------------------------------------------------------------------
      */
     public MatchHistory readSMatch(int idMatch){
@@ -178,7 +177,7 @@ public class ServiceFacade {
     }
 
     /**
-     *------------------------------------------createTestCaseRobot----------------------------------------------------
+     *------------------------------------------createTestCaseRobot-----------------------------------------------------
      * Fare riferimento al Class Diagram delle Entity. TestCase--->Round--->Match quindi occorre dato l'id in input
      * recuperare l'oggetto match con id corrispondente dal db, selezionare il round specificato in input e 'aggiungere'
      * il nuovo TestCaseRobot dopo averlo salvato nel db attraverso i metodi jpa repository.
@@ -225,7 +224,13 @@ public class ServiceFacade {
         return reservice.readResultByIdPlayer(idPlayer);
     }
 
-
+    /**---------------------------------------------updateMatch---------------------------------------------------------
+     * Aggiorna il match.
+     * @param idMatch,match
+     * @param match
+     * @return match updated
+     * -----------------------------------------------------------------------------------------------------------------
+     */
     public MatchHistory updateMatch(int idMatch, MatchHistory match) {
         MatchHistory dbmatch = mservice.readSById(idMatch);
 

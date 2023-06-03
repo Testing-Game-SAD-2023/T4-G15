@@ -32,8 +32,4 @@ public interface ResultRepository extends JpaRepository<Result,Integer> {
             "  )", nativeQuery = true)
     public List<Result>  readResultByPlayerId(int player_id);
 
-
-
-
-
 }

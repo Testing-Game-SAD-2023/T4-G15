@@ -2,8 +2,6 @@ package com.sad.g15.webservicegamesrepository.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
@@ -32,14 +30,14 @@ public class MatchController {
 	private ServiceFacade facade;
 
 	/**
-	 * -----------------------------------------addMatch-----------------------------------------
+	 * -----------------------------------------addMatch----------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON body:
 	 * 
 	 * { "idStudents": [value1, value2,...,valueN], "scenario": "exampleScenario" }
 	 *
 	 * @param requestBody
 	 * @return "Match added successfully"
-	 * ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PostMapping(value = "/addMatch", consumes = "application/json")
 	public ResponseEntity<String> addMatch(@RequestBody JsonNode requestBody) {
@@ -58,7 +56,7 @@ public class MatchController {
 	}
 
 	/**
-	 * -----------------------------------------addRound-----------------------------------------
+	 * -----------------------------------------addRound----------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
 	 * { "id_robot" : "1", ecc... }
@@ -69,15 +67,18 @@ public class MatchController {
 	 * 
 	 * @param idMatch,round
 	 * @return MatchHistory / Object
-	 * ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/addRound")
-	public MatchHistory addRound(@PathVariable int idMatch, @RequestBody Round round) {
-		return facade.createRound(idMatch, round);
+	public ResponseEntity<String> addRound(@PathVariable int idMatch, @RequestBody Round round) {
+		MatchHistory matchAddedRound = facade.createRound(idMatch, round);
+
+		if(matchAddedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("Round added to the specified Match");
+		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add Round");
 	}
 	
 	/**
-	 * -----------------------------------------updateRound-----------------------------------------
+	 * -----------------------------------------updateRound-------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
 	 * { "idRound" : 16, "idRobot" : 121 }
@@ -87,7 +88,7 @@ public class MatchController {
 	 *  
 	 * @param idMatch,requestBody
 	 * @return "Round updated successfully"
-	 * ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound")
 	public ResponseEntity<String> updateRound(@PathVariable int idMatch, @RequestBody JsonNode requestBody) {
@@ -100,7 +101,7 @@ public class MatchController {
 	}
 
 	/**
-	 * -----------------------------------------updateMatch---------------------------------------
+	 * -----------------------------------------updateMatch-------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
 	 * {
@@ -120,7 +121,7 @@ public class MatchController {
 	 *
 	 * @param idMatch, match
 	 * @return "Match updated successfully"
-	 * ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping(value = "/updateMatch/{idMatch}", consumes = "application/json")
 	public ResponseEntity<String> updateMatch(@PathVariable int idMatch, @RequestBody MatchHistory match) {
@@ -132,7 +133,7 @@ public class MatchController {
 	}
 
 	/**
-	 * -----------------------------------------addTestCasePlayer-----------------------------------------
+	 * -----------------------------------------addTestCasePlayer-------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
 	 * { "totalResult" : 12568, "compilingResult" : 1212, ecc...} <---- per gli altri campi vedere TestCasePlayer entity
@@ -143,16 +144,21 @@ public class MatchController {
 	 * 
 	 * @param idMatch,idRound,idPlayer,testCasePlayer
 	 * @return MatchHistory / Object
-	 * ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCasePlayer/{idPlayer}")
-	public Round addTestcasePlayer(@PathVariable int idMatch, @PathVariable int idRound,
+	public ResponseEntity<String> addTestcasePlayer(@PathVariable int idMatch, @PathVariable int idRound,
 										  @PathVariable int idPlayer, @RequestBody TestCasePlayer testCasePlayer) {
-		return facade.createTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
+
+		Round updatedRound = facade.createTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
+
+		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCasePlayer added to the " +
+				"specified round");
+		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add TestCasePlayer");
 	}
 
 	/**
-	 * -----------------------------------------addTestCaseRobot-----------------------------------------
+	 * -----------------------------------------addTestCaseRobot--------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
 	 * { "totalResult" : 12568, "compilingResult" : 1212, ecc...}
@@ -163,21 +169,26 @@ public class MatchController {
 	 *
 	 * @param idMatch,idRound,testCaseRobot
 	 * @return MatchHistory / Object
-	 * ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCaseRobot")
-	public Round addTestcaseRobot(@PathVariable int idMatch, @PathVariable int idRound,
+	public ResponseEntity<String> addTestcaseRobot(@PathVariable int idMatch, @PathVariable int idRound,
 										 @RequestBody TestCaseRobot testCaseRobot) {
-		return facade.createTestCaseRobot(idMatch, idRound, testCaseRobot);
+
+		Round updatedRound = facade.createTestCaseRobot(idMatch, idRound, testCaseRobot);
+
+		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCaseRobot added to the " +
+				"specified round");
+		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add TestCaseRobot");
 	}
 
 	/**
-	 * -----------------------------------------getResultByIdPlayer-----------------------------------------
-	 * Metodo get Riceve sul path indicato l'id del match e ne ritorna uno solo
+	 * -----------------------------------------getMatchbyId------------------------------------------------------------
+	 * Metodo get Riceve sul path indicato un id e restituisce il match con l'id indicato.
 	 * 
 	 * @param idMatch
 	 * @return single Match.
-	 *         ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getSingleMatch/{idMatch}")
 	public MatchHistory getMatchS(@PathVariable int idMatch) {
@@ -186,12 +197,13 @@ public class MatchController {
 
 
 	/**
-	 * -----------------------------------------getResultByIdPlayer-----------------------------------------
-	 * Il parametro deve essere passato interno di IdPlayer
+	 * -----------------------------------------getResultByIdPlayer-----------------------------------------------------
+	 * Il seguente metodo mostra, dato l'id di un determinato giocatore, il risultato di tutte le partite
+	 * che ha giocato.
 	 *
 	 * @param idPlayer
 	 * @return List<Result>
-	 *         ------------------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getResultPlayer/{idPlayer}")
 	public List<Result> getResultByIdPlayer(@PathVariable int idPlayer){

@@ -1,6 +1,5 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
