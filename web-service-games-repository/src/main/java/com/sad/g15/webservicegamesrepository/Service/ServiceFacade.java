@@ -260,4 +260,8 @@ public class ServiceFacade {
 
         return mservice.update(dbmatch);
     }
+
+	public boolean deleteRoundById(int idRound) {
+		return rservice.deleteById(idRound);
+	}
 }

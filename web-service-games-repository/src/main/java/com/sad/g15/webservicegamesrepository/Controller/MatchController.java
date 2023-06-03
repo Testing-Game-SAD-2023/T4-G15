@@ -3,12 +3,10 @@ package com.sad.g15.webservicegamesrepository.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
-
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
 import com.sad.g15.webservicegamesrepository.Service.ServiceFacade;
 
 @RestController
@@ -209,4 +209,19 @@ public class MatchController {
 	public List<Result> getResultByIdPlayer(@PathVariable int idPlayer){
 		return facade.readResultIdPlayer(idPlayer);
 	}
+	
+	/**
+	 * -----------------------------------------deleteRound-----------------------------------------------------
+	 * Il seguente metodo elimina un round dato il suo id.
+	 * @param idRound
+	 * @return ResponseEntity
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@DeleteMapping("/deleteRound/{idRound}")
+	public ResponseEntity<String> deleteRound(@PathVariable int idRound) {
+		boolean deleted = facade.deleteRoundById(idRound);
+		if (deleted) return ResponseEntity.status(HttpStatus.OK).body("Round deleted successfully");
+		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+	}
+	
 }
