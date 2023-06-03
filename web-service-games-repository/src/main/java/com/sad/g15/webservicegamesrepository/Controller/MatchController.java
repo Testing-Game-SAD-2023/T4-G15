@@ -1,6 +1,7 @@
 package com.sad.g15.webservicegamesrepository.Controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
+
 import com.sad.g15.webservicegamesrepository.Service.ServiceFacade;
 
 @RestController
@@ -97,6 +100,38 @@ public class MatchController {
 	}
 
 	/**
+	 * -----------------------------------------updateMatch---------------------------------------
+	 * Il parametro deve essere passato come un JSON Object:
+	 *
+	 * {
+	 *     "id": 1,
+	 *     "scenario": "scenario",
+	 *     "endDate": "2023-06-02T21:00:00",
+	 *     "results": [
+	 *         {
+	 *             "id": 1,
+	 *             "result": "sconfitta"
+	 *         }
+	 *     ]
+	 * }
+	 *
+	 * Bisogna specificare ID del match nell'URI, nel JSON i parametri che si vogliono modificare come
+	 * scenario, endDate e results
+	 *
+	 * @param idMatch, match
+	 * @return "Match updated successfully"
+	 * ------------------------------------------------------------------------------------------
+	 */
+	@PutMapping(value = "/updateMatch/{idMatch}", consumes = "application/json")
+	public ResponseEntity<String> updateMatch(@PathVariable int idMatch, @RequestBody MatchHistory match) {
+
+		MatchHistory updated_match = facade.updateMatch(idMatch, match);
+
+		if(updated_match!=null) return ResponseEntity.status(HttpStatus.OK).body("Match updated successfully");
+		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not update Match");
+	}
+
+	/**
 	 * -----------------------------------------addTestCasePlayer-----------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
@@ -137,14 +172,29 @@ public class MatchController {
 	}
 
 	/**
+	 * -----------------------------------------getResultByIdPlayer-----------------------------------------
 	 * Metodo get Riceve sul path indicato l'id del match e ne ritorna uno solo
 	 * 
 	 * @param idMatch
 	 * @return single Match.
+	 *         ------------------------------------------------------------------------------------------
 	 */
-	@GetMapping("/controller/{idMatch}")
+	@GetMapping("/getSingleMatch/{idMatch}")
 	public MatchHistory getMatchS(@PathVariable int idMatch) {
 		return facade.readSMatch(idMatch);
 	}
 
+
+	/**
+	 * -----------------------------------------getResultByIdPlayer-----------------------------------------
+	 * Il parametro deve essere passato interno di IdPlayer
+	 *
+	 * @param idPlayer
+	 * @return List<Result>
+	 *         ------------------------------------------------------------------------------------------
+	 */
+	@GetMapping("/getResultPlayer/{idPlayer}")
+	public List<Result> getResultByIdPlayer(@PathVariable int idPlayer){
+		return facade.readResultIdPlayer(idPlayer);
+	}
 }

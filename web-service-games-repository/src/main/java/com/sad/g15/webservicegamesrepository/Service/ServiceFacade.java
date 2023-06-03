@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -211,5 +212,47 @@ public class ServiceFacade {
         rservice.AddTestCaseRobot(dbround, tbuff);
 
         return rservice.update(dbround);
+    }
+
+    /**
+     *------------------------------------------readResultIdPlayer----------------------------------------------------
+     * Dato in input l'IdPlayer il metodo ritorna la lista dei risultati del player identificato.
+     * @param idPlayer
+     * @return List<Result>
+     * -----------------------------------------------------------------------------------------------------------------
+     */
+    public List<Result> readResultIdPlayer(int idPlayer){
+        return reservice.readResultByIdPlayer(idPlayer);
+    }
+
+
+    public MatchHistory updateMatch(int idMatch, MatchHistory match) {
+        MatchHistory dbmatch = mservice.readSById(idMatch);
+
+        if(dbmatch.getId()!=match.getId()) return null;
+
+        if(match.getEndDate()!=null && !match.getEndDate().equals(dbmatch.getEndDate())) dbmatch.setEndDate(match.getEndDate());
+        if(match.getScenario()!=null && !match.getScenario().equals(dbmatch.getScenario())) dbmatch.setScenario(match.getScenario());
+
+        boolean can_add = true;
+
+        for(Result r : match.getResults()){
+            can_add = true;
+
+            for(Result dbr : dbmatch.getResults()){
+                if(r.getId()==dbr.getId()){
+                    can_add=false;
+
+                    if(r.getPlayer()!=null && !r.getPlayer().equals(dbr.getPlayer())) dbr.setPlayer(r.getPlayer());
+                    if(r.getResult()!=null && !r.getResult().equals(dbr.getResult())) dbr.setResult(r.getResult());
+
+                    break;
+                }
+            }
+
+            if(can_add) mservice.addResult(dbmatch, r);
+        }
+
+        return mservice.update(dbmatch);
     }
 }

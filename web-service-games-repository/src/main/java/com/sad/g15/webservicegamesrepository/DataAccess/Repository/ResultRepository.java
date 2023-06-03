@@ -18,4 +18,22 @@ public interface ResultRepository extends JpaRepository<Result,Integer> {
     @Query(value = "select * from result r where r.match_id = ?1", nativeQuery = true)
     public  List<Result> readResultsByMatchId(int match_id);
 
+    @Query(value = "SELECT r.id, r.result, r.player_id\n" +
+            "FROM result r\n" +
+            "WHERE r.player_id = ? \n" +
+            "  AND r.id IN (\n" +
+            "    SELECT mhr.results_id\n" +
+            "    FROM match_history_results mhr\n" +
+            "    WHERE mhr.match_history_id IN (\n" +
+            "      SELECT mh.id\n" +
+            "      FROM match_history mh\n" +
+            "      WHERE mh.end_date IS NOT NULL\n" +
+            "    )\n" +
+            "  )", nativeQuery = true)
+    public List<Result>  readResultByPlayerId(int player_id);
+
+
+
+
+
 }
