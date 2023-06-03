@@ -34,8 +34,8 @@ public class ServiceFacade {
      * in questa funzione attraverso procedure call di Service definiti all'interno dello stesso Layer Service.
      * createMatch: create match (no id key in input) -> create round (no id key in input) -> for each idPlayer fornito
      * crea result (no id key in input); alla fine attach round creato a match.
-     * @param idPlayers, scenario
-     * @return MatchHistory
+     * @param idPlayers,scenario
+     * @return match
      * -----------------------------------------------------------------------------------------------------------------
      */
     public MatchHistory createMatch(ArrayList<Integer> idPlayers, String scenario){
@@ -80,32 +80,35 @@ public class ServiceFacade {
      * La funzione riceve un oggetto match in input con ALMENO il campo id not null. In base all'id fornito si preleva
      * l'oggetto Match nel database corrispondente e si aggiunge il Round/ i Round nel suo attribute lista rounds
      * dopo averli salvati nel database alla tabella 'rounds'.
-     * @param match
-     * @return match updated
+     * @param idMatch,round
+     * @return match updated with added round
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public MatchHistory createRound(MatchHistory match){
+    public MatchHistory createRound(int idMatch, Round round){
 
-        //1. Salvo tutti i round che sto per aggiungere nel database e passo il loro riferimento al match 'contenitore'.
+        MatchHistory dbmatch = mservice.readSById(idMatch);
+        if(dbmatch == null)
+            throw new RuntimeException("The given match does not exist!");
 
-        MatchHistory dbmatch = mservice.readSById(match.getId());
-        for (Round r: match.getRounds()) {
-            Round rbuff = rservice.create(r);
-            mservice.addRound(dbmatch,rbuff);
+        //Facendo l'ipotesi che un robot con id 0 non esista (default value per id)
+        if(round.getRobotId() != 0) {
+            Round rbuff = rservice.create(round);
+            mservice.addRound(dbmatch, rbuff);
+            //2. Update del match
+            return mservice.update(dbmatch);
         }
-
-        //2. Update del match
-
-        return mservice.update(dbmatch);
-
+        else {
+            throw new RuntimeException("Robot id not specified inside the round JSON Object");
+        }
     }
     
     
     /**
      * ------------------------------------------updateRound------------------------------------------------------------
-     * La funzione riceve un valore idMatch, l'ID del match contente il Round, l'id del Round e i nuovi valori di result e idRobot. 
-     * In base all'id fornito si preleva l'oggetto Match nel database corrispondente e si modifica il Round scelto prelevandolo dalla lista rounds.
-     * @param idMatch, idRound, result, idRobot
+     * La funzione riceve un valore idMatch, l'ID del match contente il Round, l'id del Round e i nuovi valori di result
+     * e idRobot. In base all'id fornito si preleva l'oggetto Match nel database corrispondente e si modifica il Round
+     * scelto prelevandolo dalla lista rounds.
+     * @param idMatch,idRound,result,idRobot
      * @return round updated
      * -----------------------------------------------------------------------------------------------------------------
      */
@@ -125,31 +128,52 @@ public class ServiceFacade {
      * Fare riferimento al Class Diagram delle Entity. TestCase--->Round--->Match quindi occorre dato l'id in input
      * recuperare l'oggetto match con id corrispondente dal db, selezionare il round specificato in input e 'aggiungere'
      * il nuovo TestCasePlayer dopo averlo salvato nel db attraverso i metodi jpa repository.
-     * @param match
-     * @return match
+     * @param idMatch,idRound,idPlayer,testCasePlayer
+     * @return round updated with added testCasePlayer
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public MatchHistory createTestCasePlayer(MatchHistory match){
+    public Round createTestCasePlayer(int idMatch, int idRound, int idPlayer, TestCasePlayer testCasePlayer) {
 
-        MatchHistory dbmatch = mservice.readSById(match.getId());
-        /*  Qui per ricavare l'id del round a cui stiamo aggiungendo il test case cosa facciamo:
-            1.  Prendiamo la lista di round del match passato come JSON (il round sarà 1 perchè io posso aggiungere
-                ad un solo round dei testcase con una sola chiamata createTestCasePlayer. Detto ciò il primo elemento
-                di tale lista sarà il nostro round.
-            2.  Prelevato Round dalla lista con findFirst(), con getId() ci prendiamo l'id e Preleviamo il Round 'vero'
-                dal db.
-        */
-        Round dbround = rservice.readById(match.getRounds().stream().findFirst().get().getId());
-        for (TestCasePlayer tp: match.getRounds().stream().findFirst().get().getTestCasesPlayer()) {
-            TestCasePlayer tbuff = (TestCasePlayer) tservice.create(tp);
-            Player pbuff = pservice.readById(tbuff.getPlayer().getId());
+        //Usiamo l'id passato come parametro per prelevare il match dal db
+        MatchHistory dbmatch = mservice.readSById(idMatch);
+        if(dbmatch == null)
+            throw new RuntimeException("The given match does not exist!");
 
-            //Forse non conviene utilizzare direttamente un metodo di entity?
-            tbuff.setPlayer(pbuff);
-            rservice.AddTestCasePlayer(dbround,tbuff);
+        Round dbround = null;
+        //Verifichiamo se il round è nel match selezionato in input
+        for (Round r : dbmatch.getRounds()) {
+            if (r.getId() == idRound) {
+                dbround = rservice.readById(idRound);
+                break;
+            }
         }
-        rservice.update(dbround);
-    return mservice.update(dbmatch);
+        if (dbround == null)
+            throw new RuntimeException("The given match does not contain the given round!");
+
+        Player pbuff = pservice.readById(idPlayer);
+        if(pbuff == null)
+            throw new RuntimeException("The given player does not exist!");
+
+        //Adesso verifichiamo se il player selezionato partecipa effettivamente al match selezionato
+        boolean playerIsInMatch = false;
+        for (Result r: dbmatch.getResults()) {
+            if(r.getPlayer().getId() == idPlayer){
+                playerIsInMatch = true;
+                break;
+            }
+        }
+        if(playerIsInMatch != true)
+            throw new RuntimeException("The given player does not partecipate in this match!");
+
+        /*Al momento non è previsto un update testCase (Anche perchè non avrebbe molto senso) quindi occorre
+          controllare se i campi dell'oggetto passato siano tutti NOT NULL, eccetto player che deve essere inserito
+          dalla funzione a runtime.*/
+
+        testCasePlayer.setPlayer(pbuff);
+        TestCasePlayer tbuff = (TestCasePlayer) tservice.create(testCasePlayer);
+        rservice.AddTestCasePlayer(dbround, tbuff);
+
+        return rservice.update(dbround);
     }
 
     /**
@@ -157,20 +181,35 @@ public class ServiceFacade {
      * Fare riferimento al Class Diagram delle Entity. TestCase--->Round--->Match quindi occorre dato l'id in input
      * recuperare l'oggetto match con id corrispondente dal db, selezionare il round specificato in input e 'aggiungere'
      * il nuovo TestCaseRobot dopo averlo salvato nel db attraverso i metodi jpa repository.
-     * @param match
-     * @return match
+     * @param idMatch,idRobot,testCaseRobot
+     * @return round updated with added testCaseRobot
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public  MatchHistory createTestCaseRobot(MatchHistory match){
+    public  Round createTestCaseRobot(int idMatch, int idRound, TestCaseRobot testCaseRobot){
 
-        MatchHistory dbmatch = mservice.readSById(match.getId());
+        //Usiamo l'id passato come parametro per prelevare il match dal db
+        MatchHistory dbmatch = mservice.readSById(idMatch);
+        if(dbmatch == null)
+            throw new RuntimeException("The given match does not exist!");
 
-        Round dbround = rservice.readById(match.getRounds().stream().findFirst().get().getId());
-        for (TestCaseRobot tr: match.getRounds().stream().findFirst().get().getTestCasesRobot()) {
-            TestCaseRobot trbuff = (TestCaseRobot) tservice.create(tr);
-            rservice.AddTestCaseRobot(dbround,trbuff);
+        Round dbround = null;
+        /*Verifichiamo se il round è nel match selezionato in input.
+          Questo ciclo serve nel caso in cui round non abbia id univoco ma abbia come chiave primaria la coppia
+          idRound, idMatch. Nell'attuale versione (0.8) id di round è univoco quindi basterebbe un readById senza ciclo
+          foreach. Al momento manteniamo il ciclo per non perdere di generalità.
+        */
+        for (Round r : dbmatch.getRounds()) {
+            if (r.getId() == idRound) {
+                dbround = rservice.readById(idRound);
+                break;
+            }
         }
-        rservice.update(dbround);
-        return mservice.update(dbmatch);
+        if (dbround == null)
+            throw new RuntimeException("The given match does not contain the given round!");
+
+        TestCaseRobot tbuff = (TestCaseRobot) tservice.create(testCaseRobot);
+        rservice.AddTestCaseRobot(dbround, tbuff);
+
+        return rservice.update(dbround);
     }
 }

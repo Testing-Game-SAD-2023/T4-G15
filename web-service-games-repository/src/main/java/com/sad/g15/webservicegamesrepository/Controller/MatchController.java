@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +33,10 @@ public class MatchController {
 	 * Il parametro deve essere passato come un JSON body:
 	 * 
 	 * { "idStudents": [value1, value2,...,valueN], "scenario": "exampleScenario" }
-	 * 
+	 *
+	 * @param requestBody
 	 * @return "Match added successfully"
-	 *         ------------------------------------------------------------------------------------------
+	 * ------------------------------------------------------------------------------------------
 	 */
 	@PostMapping(value = "/addMatch", consumes = "application/json")
 	public ResponseEntity<String> addMatch(@RequestBody JsonNode requestBody) {
@@ -54,19 +58,19 @@ public class MatchController {
 	 * -----------------------------------------addRound-----------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
-	 * { "id" : 16, "rounds" : [{ "id_robot" : "1" } ] }
+	 * { "id_robot" : "1", ecc... }
 	 *
 	 * Bisogna specificare ID del match per salvare il round (id di round sarà
-	 * salvato in seguito), il resto dei parametri è opzionale (come visibile
-	 * sopra).
+	 * salvato in seguito), il robot_id deve essere passato all'interno del JSON Object, il resto dei parametri è
+	 * opzionale (come visibile sopra).
 	 * 
-	 * @param match
+	 * @param idMatch,round
 	 * @return MatchHistory / Object
-	 *         ------------------------------------------------------------------------------------------
+	 * ------------------------------------------------------------------------------------------
 	 */
-	@PutMapping("/updateMatch/addRound")
-	public MatchHistory addRound(@RequestBody MatchHistory match) {
-		return facade.createRound(match);
+	@PutMapping("/updateMatch/{idMatch}/addRound")
+	public MatchHistory addRound(@PathVariable int idMatch, @RequestBody Round round) {
+		return facade.createRound(idMatch, round);
 	}
 	
 	/**
@@ -78,9 +82,9 @@ public class MatchController {
 	 * Bisogna specificare ID del round, il nuovo risultato e il nuovo ID del Robot, l'ID
 	 * del match viene invece indicato nell'URI
 	 *  
-	 * @param idMatch, requestBody 
+	 * @param idMatch,requestBody
 	 * @return "Round updated successfully"
-	 *         ------------------------------------------------------------------------------------------
+	 * ------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound")
 	public ResponseEntity<String> updateRound(@PathVariable int idMatch, @RequestBody JsonNode requestBody) {
@@ -96,34 +100,40 @@ public class MatchController {
 	 * -----------------------------------------addTestCasePlayer-----------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
-	 * { "id" : 16, "rounds" : [{ "id" : "1" "testCasePlayer":[{ } } ] }
+	 * { "totalResult" : 12568, "compilingResult" : 1212, ecc...} <---- per gli altri campi vedere TestCasePlayer entity
 	 *
 	 * Bisogna specificare ID del match, quello di Round e il player che ha creato
-	 * il Test. Il resto dei dati è riguarda tutti i punteggi legati alle metriche
-	 * di coverage.
+	 * il Test. Il resto dei dati riguarda i punteggi di coverage e viene passato come JSON Object.
+	 * Gli altri parametri come PathVariables.
 	 * 
-	 * @param match
+	 * @param idMatch,idRound,idPlayer,testCasePlayer
 	 * @return MatchHistory / Object
-	 *         ------------------------------------------------------------------------------------------
+	 * ------------------------------------------------------------------------------------------
 	 */
-	@PutMapping("/updateMatch/updateRound/addTestCasePlayer")
-	public MatchHistory addTestcasePlayer(@RequestBody MatchHistory match) {
-		return facade.createTestCasePlayer(match);
+	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCasePlayer/{idPlayer}")
+	public Round addTestcasePlayer(@PathVariable int idMatch, @PathVariable int idRound,
+										  @PathVariable int idPlayer, @RequestBody TestCasePlayer testCasePlayer) {
+		return facade.createTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
 	}
 
 	/**
 	 * -----------------------------------------addTestCaseRobot-----------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
-	 * { "id" : 16, "rounds" : [{ "id" : "1" "testCasePlayer":[{ } } ] }
+	 * { "totalResult" : 12568, "compilingResult" : 1212, ecc...}
 	 *
-	 * @param match
+	 * Bisogna specificare ID del match e quello del Round a cui aggiungere il test case.
+	 * Il resto dei dati riguarda i punteggi di coverage e viene passato come JSON Object.
+	 * Gli ID come PathVariables.
+	 *
+	 * @param idMatch,idRound,testCaseRobot
 	 * @return MatchHistory / Object
-	 *         ------------------------------------------------------------------------------------------
+	 * ------------------------------------------------------------------------------------------
 	 */
-	@PutMapping("/updateMatch/updateRound/addTestCaseRobot")
-	public MatchHistory addTestcaseRobot(@RequestBody MatchHistory match) {
-		return facade.createTestCaseRobot(match);
+	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCaseRobot")
+	public Round addTestcaseRobot(@PathVariable int idMatch, @PathVariable int idRound,
+										 @RequestBody TestCaseRobot testCaseRobot) {
+		return facade.createTestCaseRobot(idMatch, idRound, testCaseRobot);
 	}
 
 	/**
