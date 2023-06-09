@@ -21,6 +21,12 @@ Other Design Patterns utilized are the [Repository Pattern](https://learn.micros
 <img src="https://github.com/Testing-Game-SAD-2023/T4-G15/blob/Version-0.8/doc/Third%20Iteration/DiagramsPNGs/New/Architecture%20Diagram.png" width="80%">
 </p>
 
+## Game Repository API
+
+The following document describes all the services* exhibited by our [architecture interface](https://github.com/Testing-Game-SAD-2023/T4-G15/blob/main/doc/Third%20Iteration/LegendaInterfaccia.pdf).
+
+*the services exhibited are the only functions implemented at the moment, more functions can be implemented on request. Open an issue on Github to request it.
+
 ## Service Layer
 
 <p align="center" width="100%">
