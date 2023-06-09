@@ -6,10 +6,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class RepositoriesFacade {
 
-	public RepositoriesFacade(MatchHistoryRepository matchHistoryRepository, PlayerRepository playerRepository,
-			RoundRepository roundRepository, TestCaseRepository testCaseRepository, ResultRepository resultRepository) {
+	public RepositoriesFacade(MatchRepository matchRepository, PlayerRepository playerRepository,
+							  RoundRepository roundRepository, TestCaseRepository testCaseRepository, ResultRepository resultRepository) {
 		super();
-		this.matchHistoryRepository = matchHistoryRepository;
+		this.matchRepository = matchRepository;
 		this.playerRepository = playerRepository;
 		this.roundRepository = roundRepository;
 		this.testCaseRepository = testCaseRepository;
@@ -17,14 +17,14 @@ public class RepositoriesFacade {
 	}
 
 	@Autowired
-	private MatchHistoryRepository matchHistoryRepository;
+	private MatchRepository matchRepository;
 	private PlayerRepository playerRepository;
 	private RoundRepository roundRepository;
 	private TestCaseRepository testCaseRepository;
 	private ResultRepository resultRepository;
 
-	public MatchHistoryRepository getMatchHistoryRepository() {
-		return matchHistoryRepository;
+	public MatchRepository getMatchHistoryRepository() {
+		return matchRepository;
 	}
 
 	public PlayerRepository getPlayerRepository() {

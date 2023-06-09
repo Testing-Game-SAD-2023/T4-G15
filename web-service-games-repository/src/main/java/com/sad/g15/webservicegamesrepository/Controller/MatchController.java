@@ -3,6 +3,7 @@ package com.sad.g15.webservicegamesrepository.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
 import com.sad.g15.webservicegamesrepository.Service.ServiceFacade;
 
 @RestController
@@ -66,12 +63,12 @@ public class MatchController {
 	 * opzionale (come visibile sopra).
 	 * 
 	 * @param idMatch,round
-	 * @return MatchHistory / Object
+	 * @return Match / Object
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/addRound")
 	public ResponseEntity<String> addRound(@PathVariable int idMatch, @RequestBody Round round) {
-		MatchHistory matchAddedRound = facade.createRound(idMatch, round);
+		Match matchAddedRound = facade.createRound(idMatch, round);
 
 		if(matchAddedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("Round added to the specified Match");
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add Round");
@@ -124,9 +121,9 @@ public class MatchController {
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping(value = "/updateMatch/{idMatch}", consumes = "application/json")
-	public ResponseEntity<String> updateMatch(@PathVariable int idMatch, @RequestBody MatchHistory match) {
+	public ResponseEntity<String> updateMatch(@PathVariable int idMatch, @RequestBody Match match) {
 
-		MatchHistory updated_match = facade.updateMatch(idMatch, match);
+		Match updated_match = facade.updateMatch(idMatch, match);
 
 		if(updated_match!=null) return ResponseEntity.status(HttpStatus.OK).body("Match updated successfully");
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not update Match");
@@ -143,7 +140,7 @@ public class MatchController {
 	 * Gli altri parametri come PathVariables.
 	 * 
 	 * @param idMatch,idRound,idPlayer,testCasePlayer
-	 * @return MatchHistory / Object
+	 * @return Match / Object
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCasePlayer/{idPlayer}")
@@ -168,7 +165,7 @@ public class MatchController {
 	 * Gli ID come PathVariables.
 	 *
 	 * @param idMatch,idRound,testCaseRobot
-	 * @return MatchHistory / Object
+	 * @return Match / Object
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCaseRobot")
@@ -191,7 +188,7 @@ public class MatchController {
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getSingleMatch/{idMatch}")
-	public MatchHistory getMatchS(@PathVariable int idMatch) {
+	public Match getMatchS(@PathVariable int idMatch) {
 		return facade.readSMatch(idMatch);
 	}
 

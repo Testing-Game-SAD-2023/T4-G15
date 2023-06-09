@@ -6,13 +6,12 @@ import jakarta.persistence.ManyToOne;
 @Entity(name = "TestCasePlayer")
 public class TestCasePlayer extends TestCase {
 
-	public TestCasePlayer(int id, Long totalResult, Long compilingResult, Long coverageMNEResult,
-			Long coverageMethodResult, Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult,
-			Long coverageBranchResult, Long coverageCBResult, Long coverageExceptionResult, int idTestClass,
-			Player player) {
-		super(id, totalResult, compilingResult, coverageMNEResult, coverageMethodResult, coverageWMResult,
-				coverageLineResult, coverageOutputResult, coverageBranchResult, coverageCBResult,
-				coverageExceptionResult, idTestClass);
+	public TestCasePlayer(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult, Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult, Long coverageCBResult, Long coverageExceptionResult, int idTestClass, String pathSourceCode, String pathReport, TestClass testedClass, Player player) {
+		super(id, totalResult, compilingResult, coverageMNEResult, coverageMethodResult, coverageWMResult, coverageLineResult, coverageOutputResult, coverageBranchResult, coverageCBResult, coverageExceptionResult, idTestClass, pathSourceCode, pathReport, testedClass);
+		this.player = player;
+	}
+
+	public TestCasePlayer(Player player) {
 		this.player = player;
 	}
 

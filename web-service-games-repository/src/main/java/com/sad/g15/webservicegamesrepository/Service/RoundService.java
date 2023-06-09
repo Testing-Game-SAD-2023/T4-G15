@@ -1,6 +1,6 @@
 package com.sad.g15.webservicegamesrepository.Service;
 
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
@@ -24,7 +24,7 @@ public class RoundService {
 		return facade.getRoundRepository().findById(round_id).stream().findFirst();
 	}
 
-	public List<Round> readM(MatchHistory match) {
+	public List<Round> readM(Match match) {
 		return facade.getRoundRepository().findByMatchId(match.getId());
 	}
 

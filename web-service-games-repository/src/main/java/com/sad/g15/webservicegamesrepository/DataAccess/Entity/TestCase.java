@@ -1,18 +1,11 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
 
 @MappedSuperclass
 public class TestCase {
 
-	public TestCase(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult,
-			Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult,
-			Long coverageCBResult, Long coverageExceptionResult, int idTestClass) {
-		super();
+	public TestCase(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult, Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult, Long coverageCBResult, Long coverageExceptionResult, int idTestClass, String pathSourceCode, String pathReport, TestClass testedClass) {
 		this.id = id;
 		this.totalResult = totalResult;
 		this.compilingResult = compilingResult;
@@ -25,6 +18,9 @@ public class TestCase {
 		this.coverageCBResult = coverageCBResult;
 		this.coverageExceptionResult = coverageExceptionResult;
 		this.idTestClass = idTestClass;
+		this.pathSourceCode = pathSourceCode;
+		this.pathReport = pathReport;
+		this.testedClass = testedClass;
 	}
 
 	@Id
@@ -43,6 +39,12 @@ public class TestCase {
 	private Long coverageCBResult;
 	private Long coverageExceptionResult;
 	private int idTestClass;
+
+	private String pathSourceCode;
+	private String pathReport;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	private TestClass testedClass;
 
 	public TestCase() {
 
@@ -144,14 +146,48 @@ public class TestCase {
 		this.idTestClass = idTestClass;
 	}
 
-	@Override
-	public String toString() {
-		return "TestCase [id=" + id + ", totalResult=" + totalResult + ", compilingResult=" + compilingResult
-				+ ", coverageMNEResult=" + coverageMNEResult + ", coverageMethodResult=" + coverageMethodResult
-				+ ", coverageWMResult=" + coverageWMResult + ", coverageLineResult=" + coverageLineResult
-				+ ", coverageOutputResult=" + coverageOutputResult + ", coverageBranchResult=" + coverageBranchResult
-				+ ", coverageCBResult=" + coverageCBResult + ", coverageExceptionResult=" + coverageExceptionResult
-				+ ", idTestClass=" + idTestClass + "]";
+	public String getPathSourceCode() {
+		return pathSourceCode;
 	}
 
+	public void setPathSourceCode(String pathSourceCode) {
+		this.pathSourceCode = pathSourceCode;
+	}
+
+	public String getPathReport() {
+		return pathReport;
+	}
+
+	public void setPathReport(String pathReport) {
+		this.pathReport = pathReport;
+	}
+
+	public TestClass getTestedClass() {
+		return testedClass;
+	}
+
+	public void setTestedClass(TestClass testedClass) {
+		this.testedClass = testedClass;
+	}
+
+	@Override
+	public String toString() {
+		return "TestCase{" +
+				"id=" + id +
+				", totalResult=" + totalResult +
+				", compilingResult=" + compilingResult +
+				", coverageMNEResult=" + coverageMNEResult +
+				", coverageMethodResult=" + coverageMethodResult +
+				", coverageWMResult=" + coverageWMResult +
+				", coverageLineResult=" + coverageLineResult +
+				", coverageOutputResult=" + coverageOutputResult +
+				", coverageBranchResult=" + coverageBranchResult +
+				", coverageCBResult=" + coverageCBResult +
+				", coverageExceptionResult=" + coverageExceptionResult +
+				", idTestClass=" + idTestClass +
+				", pathSourceCode='" + pathSourceCode + '\'' +
+				", pathReport='" + pathReport + '\'' +
+				", testedClass=" + testedClass +
+				'}';
+	}
 }

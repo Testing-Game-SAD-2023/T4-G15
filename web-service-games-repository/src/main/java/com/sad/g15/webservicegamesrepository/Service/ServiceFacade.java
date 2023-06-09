@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 @Service
 public class ServiceFacade {
 
-    public ServiceFacade(MatchHistoryService mservice, RoundService rservice, ResultService reservice,
+    public ServiceFacade(MatchService mservice, RoundService rservice, ResultService reservice,
                          PlayerService pservice, TestCaseService tservice) {
         this.mservice = mservice;
         this.rservice = rservice;
@@ -20,7 +20,7 @@ public class ServiceFacade {
         this.tservice = tservice;
     }
 
-    private MatchHistoryService mservice;
+    private MatchService mservice;
     private RoundService rservice;
     private ResultService reservice;
     private PlayerService pservice;
@@ -37,12 +37,12 @@ public class ServiceFacade {
      * @return match
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public MatchHistory createMatch(ArrayList<Integer> idPlayers, String scenario){
+    public Match createMatch(ArrayList<Integer> idPlayers, String scenario){
 
         Round round = new Round();
         Round rsaved = rservice.create(round);
 
-        MatchHistory match = new MatchHistory();
+        Match match = new Match();
         match.setScenario(scenario);
         match.setStartDate(LocalDateTime.now());
         mservice.addRound(match,rsaved);
@@ -60,7 +60,7 @@ public class ServiceFacade {
             mservice.addResult(match, result);
 
         }
-        MatchHistory msaved =  mservice.create(match);
+        Match msaved =  mservice.create(match);
         return msaved;
     }
 
@@ -71,7 +71,7 @@ public class ServiceFacade {
      * @return match
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public MatchHistory readSMatch(int idMatch){
+    public Match readSMatch(int idMatch){
      return mservice.readSById(idMatch);
     }
 
@@ -84,15 +84,18 @@ public class ServiceFacade {
      * @return match updated with added round
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public MatchHistory createRound(int idMatch, Round round){
+    public Match createRound(int idMatch, Round round){
 
-        MatchHistory dbmatch = mservice.readSById(idMatch);
+        Match dbmatch = mservice.readSById(idMatch);
         if(dbmatch == null)
             throw new RuntimeException("The given match does not exist!");
 
         //Facendo l'ipotesi che un robot con id 0 non esista (default value per id)
         if(round.getRobotId() != 0) {
             Round rbuff = rservice.create(round);
+
+            rbuff.setStartDate(LocalDateTime.now());
+
             mservice.addRound(dbmatch, rbuff);
             //2. Update del match
             return mservice.update(dbmatch);
@@ -114,7 +117,7 @@ public class ServiceFacade {
      */
     public Round updateRound(int idMatch, int idRound, int idRobot) {
     	
-    	MatchHistory match = mservice.readSById(idMatch);
+    	Match match = mservice.readSById(idMatch);
     	
     	Predicate<? super Round> predicate = round -> round.getId() == idRound;
 		Round round = rservice.readM(match).stream().filter(predicate).findFirst().orElse(null);
@@ -135,7 +138,7 @@ public class ServiceFacade {
     public Round createTestCasePlayer(int idMatch, int idRound, int idPlayer, TestCasePlayer testCasePlayer) {
 
         //Usiamo l'id passato come parametro per prelevare il match dal db
-        MatchHistory dbmatch = mservice.readSById(idMatch);
+        Match dbmatch = mservice.readSById(idMatch);
         if(dbmatch == null)
             throw new RuntimeException("The given match does not exist!");
 
@@ -188,7 +191,7 @@ public class ServiceFacade {
     public  Round createTestCaseRobot(int idMatch, int idRound, TestCaseRobot testCaseRobot){
 
         //Usiamo l'id passato come parametro per prelevare il match dal db
-        MatchHistory dbmatch = mservice.readSById(idMatch);
+        Match dbmatch = mservice.readSById(idMatch);
         if(dbmatch == null)
             throw new RuntimeException("The given match does not exist!");
 
@@ -231,8 +234,8 @@ public class ServiceFacade {
      * @return match updated
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public MatchHistory updateMatch(int idMatch, MatchHistory match) {
-        MatchHistory dbmatch = mservice.readSById(idMatch);
+    public Match updateMatch(int idMatch, Match match) {
+        Match dbmatch = mservice.readSById(idMatch);
 
         if(dbmatch.getId()!=match.getId()) return null;
 
@@ -249,7 +252,7 @@ public class ServiceFacade {
                     can_add=false;
 
                     if(r.getPlayer()!=null && !r.getPlayer().equals(dbr.getPlayer())) dbr.setPlayer(r.getPlayer());
-                    if(r.getResult()!=null && !r.getResult().equals(dbr.getResult())) dbr.setResult(r.getResult());
+                    if(r.getOutcome()!=null && !r.getOutcome().equals(dbr.getOutcome())) dbr.setOutcome(r.getOutcome());
 
                     break;
                 }

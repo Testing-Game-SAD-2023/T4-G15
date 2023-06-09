@@ -5,11 +5,11 @@ import jakarta.persistence.*;
 @Entity
 public class Result {
 
-	public Result(int id, Player player, String result) {
-		super();
+	public Result(int id, long scoreMatch, Player player, String outcome) {
 		this.id = id;
+		this.scoreMatch = scoreMatch;
 		this.player = player;
-		this.result = result;
+		this.outcome = outcome;
 	}
 
 	public Result() {
@@ -22,12 +22,12 @@ public class Result {
 	@Column(name = "id", updatable = false)
 	private int id;
 
-
+	private long scoreMatch;
 
 	@OneToOne
 	private Player player;
 
-	private String result;
+	private String outcome;
 
 	public int getId() {
 		return id;
@@ -45,16 +45,29 @@ public class Result {
 		this.player = player;
 	}
 
-	public String getResult() {
-		return result;
+	public String getOutcome() {
+		return outcome;
 	}
 
-	public void setResult(String result) {
-		this.result = result;
+	public void setOutcome(String result) {
+		this.outcome = result;
+	}
+
+	public long getScoreMatch() {
+		return scoreMatch;
+	}
+
+	public void setScoreMatch(long scoreMatch) {
+		this.scoreMatch = scoreMatch;
 	}
 
 	@Override
 	public String toString() {
-		return "Result [id=" + id + ", player=" + player + ", result=" + result + "]";
+		return "Result{" +
+				"id=" + id +
+				", scoreMatch=" + scoreMatch +
+				", player=" + player +
+				", outcome='" + outcome + '\'' +
+				'}';
 	}
 }

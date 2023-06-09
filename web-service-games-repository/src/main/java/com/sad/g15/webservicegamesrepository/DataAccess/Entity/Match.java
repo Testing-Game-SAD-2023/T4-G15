@@ -10,10 +10,10 @@ import jakarta.persistence.*;
 //This Class is also named StoricoPartita in the doc Entity Class Diagram
 @Entity(name = "MatchHistory")
 @Table(name = "matchHistory") // unique constraint go in here
-public class MatchHistory {
+public class Match {
 
-	public MatchHistory(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, List<Round> rounds,
-						List<Result> results) {
+	public Match(int id, String scenario, LocalDateTime startDate, LocalDateTime endDate, List<Round> rounds,
+				 List<Result> results) {
 		super();
 		this.id = id;
 		this.scenario = scenario;
@@ -38,7 +38,7 @@ public class MatchHistory {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Result> results = new ArrayList<>(); //Bisogna avere un riferimento ai risultati
 
-	public MatchHistory() {
+	public Match() {
 
 	}
 
@@ -100,7 +100,7 @@ public class MatchHistory {
 
 	@Override
 	public String toString() {
-		return "MatchHistory{" +
+		return "Match{" +
 				"id=" + id +
 				", scenario='" + scenario + '\'' +
 				", startDate=" + startDate +

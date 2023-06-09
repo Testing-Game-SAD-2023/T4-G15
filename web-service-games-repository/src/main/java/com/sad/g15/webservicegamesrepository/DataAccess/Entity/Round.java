@@ -1,27 +1,24 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity(name = "Round")
 @Table(name = "round")
 public class Round {
 
-	public Round(int id, int robotId, List<TestCasePlayer> testCasesPlayer,
-			List<TestCaseRobot> testCasesRobot) {
-		super();
+	public Round(int id, int robotId, List<TestCasePlayer> testCasesPlayer, List<TestCaseRobot> testCasesRobot, LocalDateTime startDate, LocalDateTime endDate, Robot robot) {
 		this.id = id;
 		this.robotId = robotId;
 		this.testCasesPlayer = testCasesPlayer;
 		this.testCasesRobot = testCasesRobot;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.robot = robot;
 	}
 
 	@Id
@@ -35,6 +32,12 @@ public class Round {
 
 	@OneToMany
 	private List<TestCaseRobot> testCasesRobot = new ArrayList<>();
+
+	private LocalDateTime startDate;
+	private LocalDateTime endDate;
+
+	@OneToOne
+	private Robot robot;
 
 	public Round() {
 
@@ -80,9 +83,40 @@ public class Round {
 		this.testCasesRobot.add(testCaseRobot);
 	}
 
+	public LocalDateTime getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDateTime startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDateTime getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDateTime endDate) {
+		this.endDate = endDate;
+	}
+
+	public Robot getRobot() {
+		return robot;
+	}
+
+	public void setRobot(Robot robot) {
+		this.robot = robot;
+	}
+
 	@Override
 	public String toString() {
-		return "Round [id=" + id + ", robotId=" + robotId + ", testCasesPlayer="
-				+ testCasesPlayer + ", testCasesRobot=" + testCasesRobot + "]";
+		return "Round{" +
+				"id=" + id +
+				", robotId=" + robotId +
+				", testCasesPlayer=" + testCasesPlayer +
+				", testCasesRobot=" + testCasesRobot +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				", robot=" + robot +
+				'}';
 	}
 }
