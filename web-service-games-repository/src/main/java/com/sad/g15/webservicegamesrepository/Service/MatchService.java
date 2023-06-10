@@ -7,6 +7,7 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +66,13 @@ public class MatchService {
 	
 	public void addResults(Match match, List<Result> results) {
 		match.setResults(results);
+	}
+	
+	public void setMatchScenario(Match match, String scenario) {
+		match.setScenario(scenario);
+	}
+	
+	public void setMatchStartDate(Match match) {
+        match.setStartDate(LocalDateTime.now());
 	}
 }

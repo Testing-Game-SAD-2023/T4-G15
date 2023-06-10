@@ -1,6 +1,7 @@
 package com.sad.g15.webservicegamesrepository.Service;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,18 @@ public class ResultService {
 
     public List<Result> readResultByIdPlayer(int idPlayer){
       return   facade.getResultRepository().readResultByPlayerId(idPlayer);
+    }
+    
+    public void setResultPlayer(Result result, Player player) {
+    	result.setPlayer(player);
+    }
+    
+    public void setResultScore(Result result, long scoreMatch) {
+    	result.setScoreMatch(scoreMatch);
+    }
+    
+    public void setResultOutcome(Result result, String outcome) {
+    	result.setOutcome(outcome);
     }
 
 }

@@ -47,8 +47,7 @@ public class ServiceFacade {
             Player player = pservice.readById(i);
             Result result = new Result();
 
-            //Get and Set are in the Data Access Layer. Services could use them without violating layer dependencies.
-            result.setPlayer(player);   //Could define an attachPlayer in Result service if set violates dependencies.
+            reservice.setResultPlayer(result, player);
             reservice.create(result);
             results.add(result);
         }
@@ -57,9 +56,9 @@ public class ServiceFacade {
         Round rsaved = rservice.create(round);
 
         Match match = new Match();
-        match.setScenario(scenario);
-        match.setStartDate(LocalDateTime.now());
         
+        mservice.setMatchScenario(match, scenario);
+        mservice.setMatchStartDate(match);
         mservice.addRound(match,rsaved);
         mservice.addResults(match, results);
           
