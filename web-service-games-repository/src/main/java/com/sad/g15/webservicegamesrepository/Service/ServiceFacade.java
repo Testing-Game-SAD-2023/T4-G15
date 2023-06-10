@@ -91,7 +91,7 @@ public class ServiceFacade {
             throw new RuntimeException("The given match does not exist!");
 
         //Facendo l'ipotesi che un robot con id 0 non esista (default value per id)
-        if(round.getRobotId() != 0) {
+        if(round.getRobot().getId() != 0) {
             Round rbuff = rservice.create(round);
 
             rbuff.setStartDate(LocalDateTime.now());
@@ -122,7 +122,7 @@ public class ServiceFacade {
     	Predicate<? super Round> predicate = round -> round.getId() == idRound;
 		Round round = rservice.readM(match).stream().filter(predicate).findFirst().orElse(null);
 		
-		round.setRobotId(idRobot);
+		round.getRobot().setId(idRobot);
 		return rservice.update(round);
     }
 
