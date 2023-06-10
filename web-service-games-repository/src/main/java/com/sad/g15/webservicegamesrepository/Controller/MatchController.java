@@ -39,15 +39,15 @@ public class MatchController {
 	@PostMapping(value = "/addMatch", consumes = "application/json")
 	public ResponseEntity<String> addMatch(@RequestBody JsonNode requestBody) {
 
-		ArrayList<Integer> idStudents = new ArrayList<>();
+		ArrayList<Integer> idPlayers = new ArrayList<>();
 
-		for (JsonNode element : requestBody.get("idStudents")) {
-			idStudents.add(element.asInt());
+		for (JsonNode element : requestBody.get("idPlayers")) {
+			idPlayers.add(element.asInt());
 		}
 
 		String scenario = requestBody.get("scenario").asText();
 
-		facade.createMatch(idStudents, scenario);
+		facade.createMatch(idPlayers, scenario);
 
 		return ResponseEntity.status(HttpStatus.OK).body("Match added successfully");
 	}

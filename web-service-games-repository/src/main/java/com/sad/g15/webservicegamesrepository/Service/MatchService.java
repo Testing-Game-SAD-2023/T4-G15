@@ -62,4 +62,8 @@ public class MatchService {
 	public void addResult(Match match, Result result) {
 		match.setResult(result);	
 	}
+	
+	public void addResults(Match match, List<Result> results) {
+		match.setResults(results);
+	}
 }
