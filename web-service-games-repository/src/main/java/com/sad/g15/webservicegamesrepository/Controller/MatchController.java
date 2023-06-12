@@ -30,7 +30,7 @@ public class MatchController {
 	 * -----------------------------------------addMatch----------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON body:
 	 * 
-	 * { "idStudents": [value1, value2,...,valueN], "scenario": "exampleScenario" }
+	 * { "idPlayers": [value1, value2,...,valueN], "scenario": "exampleScenario" }
 	 *
 	 * @param requestBody
 	 * @return "Match added successfully"
@@ -47,9 +47,9 @@ public class MatchController {
 
 		String scenario = requestBody.get("scenario").asText();
 
-		facade.createMatch(idPlayers, scenario);
+		Match matchsaved = facade.createMatch(idPlayers, scenario);
 
-		return ResponseEntity.status(HttpStatus.OK).body("Match added successfully");
+		return ResponseEntity.status(HttpStatus.OK).body("Match added successfully with id:" + matchsaved.getId());
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class MatchController {
 	public ResponseEntity<String> addRound(@PathVariable int idMatch, @RequestBody Round round) {
 		Match matchAddedRound = facade.createRound(idMatch, round);
 
-		if(matchAddedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("Round added to the specified Match");
+		if(matchAddedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("Round added to the specified Match with id" + matchAddedRound.getId());
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add Round");
 	}
 	
@@ -108,7 +108,7 @@ public class MatchController {
 	 *     "results": [
 	 *         {
 	 *             "id": 1,
-	 *             "result": "sconfitta"
+	 *             "outcome": "sconfitta"
 	 *         }
 	 *     ]
 	 * }
@@ -150,7 +150,7 @@ public class MatchController {
 		Round updatedRound = facade.createTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
 
 		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCasePlayer added to the " +
-				"specified round");
+				"specified round with id:");
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add TestCasePlayer");
 	}
 
@@ -202,8 +202,8 @@ public class MatchController {
 	 * @return List<Result>
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
-	@GetMapping("/getResultPlayer/{idPlayer}")
-	public List<Result> getResultByIdPlayer(@PathVariable int idPlayer){
+	@GetMapping("/getMatchesByIdPlayer/{idPlayer}")
+	public List<Result> getMatchesByIdPlayer(@PathVariable int idPlayer){
 		return facade.readResultIdPlayer(idPlayer);
 	}
 	

@@ -96,7 +96,7 @@ public class ServiceFacade {
         if(round.getRobot().getId() != 0) {
             Round rbuff = rservice.create(round);
 
-            rbuff.setStartDate(LocalDateTime.now());
+            rservice.setRoundStartDate(rbuff);
 
             mservice.addRound(dbmatch, rbuff);
             //2. Update del match
@@ -237,6 +237,7 @@ public class ServiceFacade {
      * -----------------------------------------------------------------------------------------------------------------
      */
     public Match updateMatch(int idMatch, Match match) {
+    	
         Match dbmatch = mservice.readSById(idMatch);
 
         if(dbmatch.getId()!=match.getId()) return null;

@@ -75,4 +75,8 @@ public class MatchService {
 	public void setMatchStartDate(Match match) {
         match.setStartDate(LocalDateTime.now());
 	}
+	
+	public void setMatchEndDate(Match match, LocalDateTime endDate) {
+		match.setEndDate(endDate);
+	}
 }

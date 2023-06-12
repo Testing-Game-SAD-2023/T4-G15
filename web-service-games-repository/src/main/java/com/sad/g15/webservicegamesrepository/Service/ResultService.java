@@ -20,7 +20,7 @@ public class ResultService {
     }
 
     public Result update(Result result){
-        facade.getResultRepository().deleteById(result.getId());
+        //facade.getResultRepository().deleteById(result.getId());
         return facade.getResultRepository().save(result);
     }
 

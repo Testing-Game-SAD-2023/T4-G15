@@ -11,7 +11,8 @@ import jakarta.persistence.*;
 @Table(name = "round")
 public class Round {
 
-	public Round(int id, int robotId, List<TestCasePlayer> testCasesPlayer, List<TestCaseRobot> testCasesRobot, LocalDateTime startDate, LocalDateTime endDate, Robot robot) {
+	public Round(int id, int robotId, List<TestCasePlayer> testCasesPlayer, List<TestCaseRobot> testCasesRobot,
+			LocalDateTime startDate, LocalDateTime endDate, Robot robot) {
 		this.id = id;
 		this.testCasesPlayer = testCasesPlayer;
 		this.testCasesRobot = testCasesRobot;
