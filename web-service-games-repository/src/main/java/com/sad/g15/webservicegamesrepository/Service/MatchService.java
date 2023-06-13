@@ -5,6 +5,9 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,25 +19,26 @@ public class MatchService {
 
 	public MatchService(RepositoriesFacade facade, RoundService roundService, ResultService resultService) {
 		this.facade = facade;
-		this.roundService = roundService;
-		this.resultService = resultService;
 	}
 
 	private final RepositoriesFacade facade;
-	private RoundService roundService;
-	private ResultService resultService;
 
 	//A Match e Round ho dato la responsabilità di creare anche gli oggetti in loro contenuti.
 	public Match create(Match match) {
-		return facade.getMatchHistoryRepository().save(match);
+		return (Match) facade.save(match);
 	}
 
-	public Optional<Match> readS(Match match) {
-		return facade.getMatchHistoryRepository().findById(match.getId());
+	public Match readS(Match match) {
+		Optional<Object> matchFound = facade.findById(Match.class, match.getId());
+		if(matchFound.isPresent()) {
+			return (Match) matchFound.get();
+		} else {
+			throw new EntityNotFoundException("Match not found");
+		}
 	}
 
 	public List<Match> readM(Player player) {
-		return facade.getResultRepository().findMatchByPlayer(player.getId());
+		return facade.findMatchByPlayer(player.getId());
 	}
 
 
@@ -45,11 +49,11 @@ public class MatchService {
 	 */
 	public Match readSById(int idMatch){
 
-		return facade.getMatchHistoryRepository().findById(idMatch).orElse(null);
+		return (Match) facade.findById(Match.class, idMatch).orElse(null);
 	}
 
 	public void delete(Match match) {
-		facade.getMatchHistoryRepository().deleteById(match.getId());
+		facade.deleteById(Match.class, match.getId());
 	}
 
 	public Match update(Match match) {

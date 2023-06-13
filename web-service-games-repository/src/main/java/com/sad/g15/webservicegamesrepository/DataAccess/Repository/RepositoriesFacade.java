@@ -1,47 +1,32 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class RepositoriesFacade {
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 
-	public RepositoriesFacade(MatchRepository matchRepository, PlayerRepository playerRepository,
-							  RoundRepository roundRepository, TestCaseRepository testCaseRepository, ResultRepository resultRepository) {
-		super();
-		this.matchRepository = matchRepository;
-		this.playerRepository = playerRepository;
-		this.roundRepository = roundRepository;
-		this.testCaseRepository = testCaseRepository;
-		this.resultRepository = resultRepository;
-	}
+public interface RepositoriesFacade {
+	
+	Object save(Object entity);
+	
+	Optional<Object> findById(Class<?> type, int id);
+	
+	Object getReferenceById(Class<?> entityType, int id);
+	
+	boolean existsById(Class<?> entityType, int id);
+	
+	void deleteById(Class<?> entityType, int id);
 
-	@Autowired
-	private MatchRepository matchRepository;
-	private PlayerRepository playerRepository;
-	private RoundRepository roundRepository;
-	private TestCaseRepository testCaseRepository;
-	private ResultRepository resultRepository;
+    void delete(Object entity);
+    
+    List<Match> findMatchByPlayer(int idPlayer);
 
-	public MatchRepository getMatchHistoryRepository() {
-		return matchRepository;
-	}
+	List<Result> readResultsByMatchId(int id);
 
-	public PlayerRepository getPlayerRepository() {
-		return playerRepository;
-	}
+	List<Result> readResultByPlayerId(int idPlayer);
 
-	public RoundRepository getRoundRepository() {
-		return roundRepository;
-	}
-
-	public TestCaseRepository getTestCaseRepository() {
-		return testCaseRepository;
-	}
-
-	public ResultRepository getResultRepository() {
-		return resultRepository;
-	}
-
+	List<Round> findByMatchId(int id);
 
 }

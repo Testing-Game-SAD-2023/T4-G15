@@ -16,24 +16,23 @@ public class ResultService {
     private final RepositoriesFacade facade;
 
     public Result create(Result result){
-        return facade.getResultRepository().save(result);
+        return (Result) facade.save(result);
     }
 
     public Result update(Result result){
-        //facade.getResultRepository().deleteById(result.getId());
-        return facade.getResultRepository().save(result);
+        return (Result) facade.save(result);
     }
 
     public void delete(Result result){
-        facade.getResultRepository().delete(result);
+        facade.delete(result);
     }
 
     public List<Result> readResultsByMatch(Match match){
-        return facade.getResultRepository().readResultsByMatchId(match.getId());
+        return facade.readResultsByMatchId(match.getId());
     }
 
     public List<Result> readResultByIdPlayer(int idPlayer){
-      return   facade.getResultRepository().readResultByPlayerId(idPlayer);
+      return   facade.readResultByPlayerId(idPlayer);
     }
     
     public void setResultPlayer(Result result, Player player) {

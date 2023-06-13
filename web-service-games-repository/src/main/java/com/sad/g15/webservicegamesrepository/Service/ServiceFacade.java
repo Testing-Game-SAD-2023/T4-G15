@@ -3,7 +3,6 @@ package com.sad.g15.webservicegamesrepository.Service;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -129,7 +128,7 @@ public class ServiceFacade {
     }
 
     /**
-     *------------------------------------------createTestCasePlayer----------------------------------------------------
+     *------------------------------------------addTestCasePlayer----------------------------------------------------
      * Fare riferimento al Class Diagram delle Entity. TestCase--->Round--->Match quindi occorre dato l'id in input
      * recuperare l'oggetto match con id corrispondente dal db, selezionare il round specificato in input e 'aggiungere'
      * il nuovo TestCasePlayer dopo averlo salvato nel db attraverso i metodi jpa repository.
@@ -137,7 +136,7 @@ public class ServiceFacade {
      * @return round updated with added testCasePlayer
      * -----------------------------------------------------------------------------------------------------------------
      */
-    public Round createTestCasePlayer(int idMatch, int idRound, int idPlayer, TestCasePlayer testCasePlayer) {
+    public Round addTestCasePlayer(int idMatch, int idRound, int idPlayer, TestCasePlayer testCasePlayer) {
 
         //Usiamo l'id passato come parametro per prelevare il match dal db
         Match dbmatch = mservice.readSById(idMatch);

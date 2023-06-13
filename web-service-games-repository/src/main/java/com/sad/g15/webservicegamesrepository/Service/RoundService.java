@@ -6,6 +6,9 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,30 +20,33 @@ public class RoundService {
 
 	public RoundService(RepositoriesFacade facade, TestCaseService testCaseService) {
 		this.facade = facade;
-		this.testCaseService = testCaseService;
 	}
 
 	private final RepositoriesFacade facade;
-	private TestCaseService testCaseService;
 
-	public Optional<Round> readS(int round_id) {
-		return facade.getRoundRepository().findById(round_id).stream().findFirst();
+	public Round readS(int round_id) {
+		Optional<Object> roundFound = facade.findById(Round.class, round_id);
+		if(roundFound.isPresent()) {
+			return (Round) roundFound.get();
+		} else {
+			throw new EntityNotFoundException("Round not found");
+		}
 	}
 
 	public List<Round> readM(Match match) {
-		return facade.getRoundRepository().findByMatchId(match.getId());
+		return facade.findByMatchId(match.getId());
 	}
 
 	public Round create(Round round) {
-		return facade.getRoundRepository().save(round);
+		return (Round) facade.save(round);
 	}
 
 	public void delete(Round round) {
-		facade.getRoundRepository().delete(round);
+		facade.delete(round);
 	}
 
 	public Round update(Round round) {
-		return facade.getRoundRepository().save(round);
+		return (Round) facade.save(round);
 	}
 
 	public void AddTestCasePlayer(Round round, TestCasePlayer testCasePlayer) {
@@ -52,13 +58,13 @@ public class RoundService {
 	}
 
 	public Round readById(int id) {
-		return facade.getRoundRepository().getReferenceById(id);
+		return (Round) facade.getReferenceById(Round.class, id);
 	}
 
 	public boolean deleteById(int idRound) {
 
-		if (facade.getRoundRepository().existsById(idRound)) {
-			facade.getRoundRepository().deleteById(idRound);
+		if (facade.existsById(Round.class, idRound)) {
+			facade.deleteById(Round.class, idRound);
 			return true;
 		}
 

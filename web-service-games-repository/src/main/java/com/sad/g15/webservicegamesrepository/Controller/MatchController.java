@@ -147,10 +147,10 @@ public class MatchController {
 	public ResponseEntity<String> addTestcasePlayer(@PathVariable int idMatch, @PathVariable int idRound,
 										  @PathVariable int idPlayer, @RequestBody TestCasePlayer testCasePlayer) {
 
-		Round updatedRound = facade.createTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
+		Round updatedRound = facade.addTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
 
 		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCasePlayer added to the " +
-				"specified round with id:");
+				"specified round");
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add TestCasePlayer");
 	}
 

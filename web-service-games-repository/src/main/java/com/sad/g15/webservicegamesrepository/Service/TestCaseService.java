@@ -12,12 +12,12 @@ public class TestCaseService {
     private final RepositoriesFacade facade;
 
     public TestCase create(TestCase testcase){
-        return facade.getTestCaseRepository().save(testcase);
+        return (TestCase) facade.save(testcase);
     }
 
     public void delete(TestCase testCase){
-        facade.getTestCaseRepository().delete(testCase);
+        facade.delete(testCase);
     }
 
-    // We may need to split this class into two to fullfill Player and Robot different TestCases needs
+    // We may need to split this class into two to fulfill Player and Robot different TestCases needs
 }
