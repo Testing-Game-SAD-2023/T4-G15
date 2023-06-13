@@ -51,7 +51,7 @@ public class Match {
 	}
 
 	public String getScenario() {
-		return scenario;
+		return this.scenario;
 	}
 
 	public void setScenario(String scenario) {
