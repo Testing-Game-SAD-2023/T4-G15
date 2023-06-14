@@ -1,4 +1,8 @@
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
+import com.sad.g15.webservicegamesrepository.Exceptions.MatchNotFoundException;
+import com.sad.g15.webservicegamesrepository.Exceptions.PlayerNotFoundException;
+import com.sad.g15.webservicegamesrepository.Exceptions.RobotNotFoundException;
+import com.sad.g15.webservicegamesrepository.Exceptions.RoundNotFoundException;
 import com.sad.g15.webservicegamesrepository.Service.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +32,8 @@ class ServiceFacadeTest {
     private PlayerService playerService;
     @Mock
     private TestCaseService testCaseService;
-
+    @Mock
+    private RobotService robotService;
     @InjectMocks
     private ServiceFacade serviceFacade;
 
@@ -37,7 +42,7 @@ class ServiceFacadeTest {
     }
 
     @Test
-    void createMatch() {
+    void createMatch() throws PlayerNotFoundException {
         // Mocking the dependencies
         String scenario = "Test scenario";
         Match match = new Match();
@@ -47,7 +52,8 @@ class ServiceFacadeTest {
         Result result = new Result();
         Player player = new Player();
         TestCasePlayer testCasePlayer = new TestCasePlayer();
-
+        Robot robot = new Robot(0,"facile");
+        when(robotService.readById(0)).thenReturn(robot);
         when(matchService.create(any(Match.class))).thenReturn(match);
         when(roundService.create(any(Round.class))).thenReturn(round);
         when(playerService.readById(anyInt())).thenReturn(player);
@@ -55,14 +61,14 @@ class ServiceFacadeTest {
         when(testCaseService.create(any(TestCasePlayer.class))).thenReturn(testCasePlayer);
 
         // Calling the method to be tested
-        Match createdMatch = serviceFacade.createMatch(idPlayers, scenario);
+        Match createdMatch = serviceFacade.createMatch(idPlayers, scenario,0);
      //   System.out.println(createdMatch);
         Assertions.assertNotNull(createdMatch);
     }
 
 
     @Test
-    void createRound(){
+    void createRound() throws RobotNotFoundException, MatchNotFoundException {
         // Mocking the dependencies
         Match match = new Match();
         when(matchService.readSById(0)).thenReturn(match);
@@ -76,11 +82,10 @@ class ServiceFacadeTest {
         when(roundService.create(any(Round.class))).thenReturn(round);
         // Calling the method to be tested
         Match creaRound  = serviceFacade.createRound(match.getId(), round);
-        //   System.out.println(createdMatch);
         Assertions.assertNotNull(creaRound);
     }
     @Test
-    void createRound_Exception() {
+    void createRound_Exception() throws RobotNotFoundException {
         // Mocking the dependencies
         Match match = new Match();
         when(matchService.readSById(1)).thenReturn(match);
@@ -95,14 +100,13 @@ class ServiceFacadeTest {
         // Calling the method to be tested
         try {
             serviceFacade.createRound(match.getId(), round);
-            fail("Expected RuntimeException to be thrown");
-        } catch (RuntimeException e) {
+        } catch (MatchNotFoundException e) {
             assertEquals("The given match does not exist!", e.getMessage());
         }
     }
 
     @Test
-    void createRound_ExceptionRobot() {
+    void createRound_ExceptionRobot() throws MatchNotFoundException,RobotNotFoundException {
         // Mocking the dependencies
         Match match = new Match();
         when(matchService.readSById(0)).thenReturn(match);
@@ -117,14 +121,13 @@ class ServiceFacadeTest {
         // Calling the method to be tested
         try {
             serviceFacade.createRound(match.getId(), round);
-            fail("Expected RuntimeException to be thrown");
-        } catch (RuntimeException e) {
-            assertEquals("Robot id not specified inside the round JSON Object", e.getMessage());
+        } catch (RobotNotFoundException e) {
+            assertEquals("Robot not found", e.getMessage());
         }
     }
 
     @Test
-    public void testUpdateRound() {
+    public void testUpdateRound() throws MatchNotFoundException {
         // Preparazione dei dati di test
         int idMatch = 123;
         int idRound = 456;
@@ -149,7 +152,7 @@ class ServiceFacadeTest {
         when(roundService.update(round)).thenReturn(updatedRound);
 
         // Chiamata del metodo da testare passandogli id match e round già costruiti e il nuovo robot da aggiungere
-        Round result = serviceFacade.updateRound(idMatch, idRound, idRobot);
+        Round result = serviceFacade.updateRound(idMatch, idRound, LocalDateTime.now());
 
         // Verifichiamo che il nuovo robot di result(Nuovo round aggiornato) sia uguale a quello desiderato
         Assert.assertEquals(idRobot, result.getRobot().getId());
@@ -157,24 +160,24 @@ class ServiceFacadeTest {
 
 
     @Test
-    void testCasePlayerCreateMatchNull(){
+    void testCasePlayerCreateMatchNull() throws RoundNotFoundException, PlayerNotFoundException,MatchNotFoundException {
         Round round = new Round();
         round.setRobot(new Robot(0, "facile"));
         Round createdRound = new Round();
+        when(matchService.readSById(0)).thenReturn(new Match());
         when(roundService.create(round)).thenReturn(createdRound);
         TestCasePlayer testCase = new TestCasePlayer();
         when(testCaseService.create(testCase)).thenReturn(testCase);
         try {
            Round testCaseCreate = serviceFacade.addTestCasePlayer(1,1,1,testCase);
-            fail("Expected RuntimeException to be thrown");
-        } catch (RuntimeException e) {
-            assertEquals("The given match does not exist!", e.getMessage());
+        } catch (MatchNotFoundException e) {
+            assertEquals("The given Match does not exist", e.getMessage());
         }
 
     }
 
     @Test
-    void testCasePlayerCreateRoundNull(){
+    void testCasePlayerCreateRoundNull() throws PlayerNotFoundException, MatchNotFoundException {
         Round round = new Round();
         round.setRobot(new Robot(0, "facile"));
         Round createdRound = new Round();
@@ -187,13 +190,13 @@ class ServiceFacadeTest {
         try {
             Round testCaseCreate = serviceFacade.addTestCasePlayer(0,1,1,testCase);
             fail("Expected RuntimeException to be thrown");
-        } catch (RuntimeException e) {
+        } catch (RoundNotFoundException e) {
             assertEquals("The given match does not contain the given round!", e.getMessage());
         }
     }
 
     @Test
-    public void testCasePlayerCreatePlayerNull() {
+    public void testCasePlayerCreatePlayerNull() throws RoundNotFoundException, MatchNotFoundException {
         Match match = new Match();
         match.setId(1);
 
@@ -228,7 +231,7 @@ class ServiceFacadeTest {
         try {
             Round updatedRound = serviceFacade.addTestCasePlayer(1, 1, 1, testCasePlayer);
             fail("Expected RuntimeException to be thrown");
-        } catch (RuntimeException e) {
+        } catch (PlayerNotFoundException e) {
             assertEquals("The given player does not partecipate in this match!", e.getMessage());
         }
 
@@ -236,7 +239,7 @@ class ServiceFacadeTest {
 
 
     @Test
-    void createTestCasePlayer(){
+    void createTestCasePlayer() throws RoundNotFoundException, PlayerNotFoundException, MatchNotFoundException {
         Match match = new Match();
         match.setId(1);
 
@@ -280,7 +283,7 @@ class ServiceFacadeTest {
 
 
     @Test
-    void createTestCaseRobotMatchException(){
+    void createTestCaseRobotMatchException() throws RoundNotFoundException {
         Round round = new Round();
         Round createdRound = new Round();
         when(roundService.create(round)).thenReturn(createdRound);
@@ -288,15 +291,14 @@ class ServiceFacadeTest {
         when(testCaseService.create(testCase)).thenReturn(testCase);
         try {
             Round testCaseCreate = serviceFacade.createTestCaseRobot(1,1,testCase);
-            fail("Expected RuntimeException to be thrown");
-        } catch (RuntimeException e) {
+        } catch (MatchNotFoundException e) {
             assertEquals("The given match does not exist!", e.getMessage());
         }
 
     }
 
     @Test
-    void createTestCaseRobotRoundException(){
+    void createTestCaseRobotRoundException() throws MatchNotFoundException {
         Round round = new Round();
         round.setRobot(new Robot(0, "facile"));
         Round createdRound = new Round();
@@ -309,13 +311,13 @@ class ServiceFacadeTest {
         try {
             Round testCaseCreate = serviceFacade.createTestCaseRobot(0,1,testCase);
             fail("Expected RuntimeException to be thrown");
-        } catch (RuntimeException e) {
+        } catch (RoundNotFoundException e) {
             assertEquals("The given match does not contain the given round!", e.getMessage());
         }
     }
 
     @Test
-    void createTestCaseRobot(){
+    void createTestCaseRobot() throws RoundNotFoundException, MatchNotFoundException {
         Match match = new Match();
         match.setId(1);
 
@@ -352,7 +354,7 @@ class ServiceFacadeTest {
 
 
     @Test
-    void testUpdateMatch(){
+    void testUpdateMatch() throws MatchNotFoundException {
         Match match = new Match();
         match.setId(1);
 
@@ -366,7 +368,7 @@ class ServiceFacadeTest {
         Assertions.assertNotNull(upMatch);
     }
     @Test
-    void testUpdateMatchScenario(){
+    void testUpdateMatchScenario() throws MatchNotFoundException {
         Match match = new Match();
         match.setId(1);
 
@@ -380,7 +382,7 @@ class ServiceFacadeTest {
         Assertions.assertEquals("scenario",upMatch.getScenario());
     }
 @Test
-    void testUpdateMatchEndDate(){
+    void testUpdateMatchEndDate() throws MatchNotFoundException {
         Match match = new Match();
         match.setId(1);
 
