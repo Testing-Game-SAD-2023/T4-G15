@@ -26,16 +26,16 @@ public class Round {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "round_sequence")
 	private int id;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TestCasePlayer> testCasesPlayer = new ArrayList<>();
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TestCaseRobot> testCasesRobot = new ArrayList<>();
 
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 
-	@OneToOne
+	@OneToOne(orphanRemoval = false)
 	private Robot robot;
 
 	public Round() {

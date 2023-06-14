@@ -76,8 +76,8 @@ public class RoundService {
 		round.setStartDate(LocalDateTime.now());
 	}
 	
-	public void setRoundEndDate(Round round) {
-		round.setEndDate(LocalDateTime.now());
+	public void setRoundEndDate(Round round, LocalDateTime end_date) {
+		round.setEndDate(end_date);
 	}
 	
 	public void setRoundRobot(Round round, Robot robota) {

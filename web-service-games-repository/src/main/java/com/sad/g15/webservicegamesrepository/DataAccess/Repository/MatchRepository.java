@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MatchRepository extends JpaRepository<Match,Integer> {
-
     //Repository of the Match History Class, every entity class has one (implement other Repos)
-
 }

@@ -12,14 +12,15 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 public class RepositoriesFacadeImpl implements RepositoriesFacade{
 
 	public RepositoriesFacadeImpl(MatchRepository matchRepository, PlayerRepository playerRepository,
-							  RoundRepository roundRepository, TestCaseRepository testCaseRepository, ResultRepository resultRepository) {
+                                  RoundRepository roundRepository, TestCaseRepository testCaseRepository, ResultRepository resultRepository, RobotRepository robotRepository) {
 		super();
 		this.matchRepository = matchRepository;
 		this.playerRepository = playerRepository;
 		this.roundRepository = roundRepository;
 		this.testCaseRepository = testCaseRepository;
 		this.resultRepository = resultRepository;
-	}
+        this.robotRepository = robotRepository;
+    }
 
 	@Autowired
 	private final MatchRepository matchRepository;
@@ -27,6 +28,7 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 	private final RoundRepository roundRepository;
 	private final TestCaseRepository testCaseRepository;
 	private final ResultRepository resultRepository;
+    private final RobotRepository robotRepository;
 
 	@Override
 	public Object save(Object entity) {
@@ -40,7 +42,9 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 			return testCaseRepository.save((TestCase) entity);
 		} else if (entity instanceof Result) {
 			return resultRepository.save((Result) entity);
-		}
+		} else if (entity instanceof Robot) {
+            return robotRepository.save((Robot) entity);
+        }
 		
 		throw new IllegalArgumentException("Invalid entity type: " + entity.getClass().getName());
 	}
@@ -57,6 +61,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             return roundRepository.findById(id).map(Function.identity());
         } else if (type.equals(TestCase.class)) {
             return testCaseRepository.findById(id).map(Function.identity());
+        } else if (type.equals(Robot.class)) {
+            return robotRepository.findById(id).map(Function.identity());
         }
 		
         return Optional.empty();
@@ -74,6 +80,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             return roundRepository.getReferenceById(id);
         } else if (entityType.equals(TestCase.class)) {
             return testCaseRepository.getReferenceById(id);
+        } else if (entityType.equals(Robot.class)) {
+            return robotRepository.getReferenceById(id);
         }
         
         return null;
@@ -91,7 +99,10 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             return roundRepository.existsById(id);
         } else if (entityType.equals(TestCase.class)) {
             return testCaseRepository.existsById(id);
+        } else if (entityType.equals(Robot.class)) {
+            return robotRepository.existsById(id);
         }
+
         return false;
     }
 	
@@ -107,6 +118,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             roundRepository.deleteById(id);
         } else if (entityType.equals(TestCase.class)) {
             testCaseRepository.deleteById(id);
+        } else if (entityType.equals(Robot.class)) {
+            robotRepository.deleteById(id);
         }
     }
 
@@ -122,6 +135,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             roundRepository.delete((Round) entity);
         } else if (entity instanceof TestCase) {
             testCaseRepository.delete((TestCase) entity);
+        } else if (entity instanceof Robot) {
+            robotRepository.delete((Robot) entity);
         }
     }
 
@@ -144,8 +159,5 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 	public List<Round> findByMatchId(int id) {
 		return roundRepository.findByMatchId(id);
 	}
-	
-	
-
 
 }

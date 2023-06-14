@@ -1,10 +1,14 @@
 package com.sad.g15.webservicegamesrepository.Controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
+import com.sad.g15.webservicegamesrepository.Exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
 import com.sad.g15.webservicegamesrepository.Service.ServiceFacade;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 
@@ -30,7 +35,7 @@ public class MatchController {
 	 * -----------------------------------------addMatch----------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON body:
 	 * 
-	 * { "idPlayers": [value1, value2,...,valueN], "scenario": "exampleScenario" }
+	 * { "idPlayers": [value1, value2,...,valueN], "scenario": "exampleScenario", "idRobot": 1 }
 	 *
 	 * @param requestBody
 	 * @return "Match added successfully"
@@ -47,7 +52,14 @@ public class MatchController {
 
 		String scenario = requestBody.get("scenario").asText();
 
-		Match matchsaved = facade.createMatch(idPlayers, scenario);
+		int idRobot = requestBody.get("idRobot").asInt();
+
+		Match matchsaved = null;
+		try {
+			matchsaved = facade.createMatch(idPlayers, scenario, idRobot);
+		} catch (PlayerNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 
 		return ResponseEntity.status(HttpStatus.OK).body("Match added successfully with id:" + matchsaved.getId());
 	}
@@ -56,7 +68,11 @@ public class MatchController {
 	 * -----------------------------------------addRound----------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
-	 * { "id_robot" : "1", ecc... }
+	 * {
+	 *     "robot": {
+	 *         "id":1
+	 *     }
+	 * }
 	 *
 	 * Bisogna specificare ID del match per salvare il round (id di round sarà
 	 * salvato in seguito), il robot_id deve essere passato all'interno del JSON Object, il resto dei parametri è
@@ -66,21 +82,27 @@ public class MatchController {
 	 * @return Match / Object
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
-	@PutMapping("/updateMatch/{idMatch}/addRound")
+	@PutMapping(value = "/updateMatch/{idMatch}/addRound", consumes = "application/json")
 	public ResponseEntity<String> addRound(@PathVariable int idMatch, @RequestBody Round round) {
-		Match matchAddedRound = facade.createRound(idMatch, round);
+
+		Match matchAddedRound = null;
+		try {
+			matchAddedRound = facade.createRound(idMatch, round);
+		} catch (RobotNotFoundException | MatchNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 
 		if(matchAddedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("Round added to the specified Match with id" + matchAddedRound.getId());
-		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add Round");
+		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not add Round");
 	}
 	
 	/**
 	 * -----------------------------------------updateRound-------------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
-	 * { "idRound" : 16, "idRobot" : 121 }
+	 * { "idRound" : 16, "end_date": "2023-06-02T21:00:00"}
 	 *
-	 * Bisogna specificare ID del round, il nuovo risultato e il nuovo ID del Robot, l'ID
+	 * Bisogna specificare ID del round, l'end_date, l'ID
 	 * del match viene invece indicato nell'URI
 	 *  
 	 * @param idMatch,requestBody
@@ -91,9 +113,15 @@ public class MatchController {
 	public ResponseEntity<String> updateRound(@PathVariable int idMatch, @RequestBody JsonNode requestBody) {
 	
 		int idRound = requestBody.get("idRound").asInt();
-		int idRobot = requestBody.get("idRobot").asInt();
-		
-		facade.updateRound(idMatch, idRound, idRobot);
+		String endDate = requestBody.get("end_date").asText();
+
+		LocalDateTime end_date = LocalDateTime.parse(endDate);
+
+		try {
+			facade.updateRound(idMatch, idRound, end_date);
+		} catch (MatchNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 		return ResponseEntity.status(HttpStatus.OK).body("Round updated successfully");
 	}
 
@@ -123,7 +151,12 @@ public class MatchController {
 	@PutMapping(value = "/updateMatch/{idMatch}", consumes = "application/json")
 	public ResponseEntity<String> updateMatch(@PathVariable int idMatch, @RequestBody Match match) {
 
-		Match updated_match = facade.updateMatch(idMatch, match);
+		Match updated_match = null;
+		try {
+			updated_match = facade.updateMatch(idMatch, match);
+		} catch (MatchNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 
 		if(updated_match!=null) return ResponseEntity.status(HttpStatus.OK).body("Match updated successfully");
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not update Match");
@@ -147,7 +180,12 @@ public class MatchController {
 	public ResponseEntity<String> addTestcasePlayer(@PathVariable int idMatch, @PathVariable int idRound,
 										  @PathVariable int idPlayer, @RequestBody TestCasePlayer testCasePlayer) {
 
-		Round updatedRound = facade.addTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
+		Round updatedRound = null;
+		try {
+			updatedRound = facade.addTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
+		} catch (MatchNotFoundException | RoundNotFoundException | PlayerNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 
 		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCasePlayer added to the " +
 				"specified round");
@@ -172,7 +210,12 @@ public class MatchController {
 	public ResponseEntity<String> addTestcaseRobot(@PathVariable int idMatch, @PathVariable int idRound,
 										 @RequestBody TestCaseRobot testCaseRobot) {
 
-		Round updatedRound = facade.createTestCaseRobot(idMatch, idRound, testCaseRobot);
+		Round updatedRound = null;
+		try {
+			updatedRound = facade.createTestCaseRobot(idMatch, idRound, testCaseRobot);
+		} catch (MatchNotFoundException | RoundNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 
 		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCaseRobot added to the " +
 				"specified round");
@@ -189,7 +232,11 @@ public class MatchController {
 	 */
 	@GetMapping("/getSingleMatch/{idMatch}")
 	public Match getMatchS(@PathVariable int idMatch) {
-		return facade.readSMatch(idMatch);
+		try {
+			return facade.readSMatch(idMatch);
+		} catch (MatchNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 	}
 
 
@@ -204,7 +251,11 @@ public class MatchController {
 	 */
 	@GetMapping("/getMatchesByIdPlayer/{idPlayer}")
 	public List<Result> getMatchesByIdPlayer(@PathVariable int idPlayer){
-		return facade.readResultIdPlayer(idPlayer);
+		try {
+			return facade.readResultIdPlayer(idPlayer);
+		} catch (PlayerNotFoundException | ResultNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -216,9 +267,15 @@ public class MatchController {
 	 */
 	@DeleteMapping("/deleteRound/{idRound}")
 	public ResponseEntity<String> deleteRound(@PathVariable int idRound) {
-		boolean deleted = facade.deleteRoundById(idRound);
+		boolean deleted = false;
+		try {
+			deleted = facade.deleteRoundById(idRound);
+		} catch (RoundNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
 		if (deleted) return ResponseEntity.status(HttpStatus.OK).body("Round deleted successfully");
 		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
 	}
-	
+
 }

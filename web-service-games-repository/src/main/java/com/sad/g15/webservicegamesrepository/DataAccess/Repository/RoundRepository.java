@@ -11,7 +11,7 @@ public interface RoundRepository extends JpaRepository<Round, Integer>{
 	
 	//Override services here
 
-    @Query(value = "select id,result,robot_id from match_history_rounds m inner join round r ON r.id = m.rounds_id where m.match_history_id = ?1"
+    @Query(value = "select id, robot_id, start_date, end_date from match_history_rounds m inner join round r ON r.id = m.rounds_id where m.match_history_id = ?1"
             , nativeQuery = true)
     public List<Round> findByMatchId(int id);
 
