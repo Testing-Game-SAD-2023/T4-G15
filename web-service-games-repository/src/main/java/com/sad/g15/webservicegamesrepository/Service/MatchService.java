@@ -48,8 +48,9 @@ public class MatchService {
 	 * @return single Match
 	 */
 	public Match readSById(int idMatch){
-
-		return (Match) facade.findById(Match.class, idMatch).orElse(null);
+		Match match =  (Match) facade.findById(Match.class, idMatch).orElse(null);
+		if (match!=null) return match;
+		else throw new NullPointerException();
 	}
 
 	public void delete(Match match) {

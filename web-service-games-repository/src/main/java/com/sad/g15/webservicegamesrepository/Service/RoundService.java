@@ -102,8 +102,8 @@ public class RoundService {
 		List<TestCase> testCasesOut = new ArrayList<>();
 		testCasesOut.addAll(round.getTestCasesPlayer());
 		testCasesOut.addAll(round.getTestCasesRobot());
-
-		return testCasesOut;
+		if(testCasesOut.isEmpty()) return null;
+		else return testCasesOut;
 	}
 	
 
