@@ -434,4 +434,8 @@ public class ServiceFacade {
 		return testCasesOut;
 	}
 
+	public boolean deleteTestCaseById(int idTestCase) throws TestNotFoundException {
+		if(tservice.deleteTestCase(idTestCase)==0) throw new TestNotFoundException("Test not found");
+		else return true;
+	}
 }

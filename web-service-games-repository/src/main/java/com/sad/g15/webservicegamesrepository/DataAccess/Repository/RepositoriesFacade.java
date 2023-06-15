@@ -28,4 +28,6 @@ public interface RepositoriesFacade {
 	List<Result> readResultByPlayerId(int idPlayer);
 
 	List<Round> findByMatchId(int id);
+
+	int deleteTestCase(int idTestCase);
 }

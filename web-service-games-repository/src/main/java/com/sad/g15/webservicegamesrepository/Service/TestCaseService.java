@@ -19,5 +19,9 @@ public class TestCaseService {
         facade.delete(testCase);
     }
 
+    public int deleteTestCase(int idTestCase) {
+        return facade.deleteTestCase(idTestCase);
+    }
+
     // We may need to split this class into two to fulfill Player and Robot different TestCases needs
 }

@@ -160,4 +160,14 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 		return roundRepository.findByMatchId(id);
 	}
 
+    @Override
+    public int deleteTestCase(int idTestCase) {
+        int i=0,j=0;
+
+        i=testCaseRepository.deleteTestCasePlayer(idTestCase);
+        j=testCaseRepository.deleteTestCaseRobot(idTestCase);
+
+        return i+j;
+    }
+
 }

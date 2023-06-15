@@ -343,18 +343,18 @@ public class MatchController {
 	 * @return ResponseEntity
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
-	/*@DeleteMapping("/deleteTestCase/{idTestCase}")
-	*public ResponseEntity<String> deleteTestCase(@PathVariable int idTestCase) {
-	*	boolean deleted = false;
-	*	try {
-	*		deleted = facade.deleteTestCaseById(idTestCase);
-	*	} catch (MatchNotFoundException e) {
-	*		throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-	*	}
-	*
-	*	if (deleted) return ResponseEntity.status(HttpStatus.OK).body("Match deleted successfully");
-	*	else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+	@DeleteMapping("/deleteTestCase/{idTestCase}")
+	public ResponseEntity<String> deleteTestCase(@PathVariable int idTestCase) {
+		boolean deleted = false;
+
+		try {
+			deleted = facade.deleteTestCaseById(idTestCase);
+		} catch (TestNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
+		if (deleted) return ResponseEntity.status(HttpStatus.OK).body("TestCase deleted successfully");
+		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
 	}
-	*/
 
 }
