@@ -1,8 +1,5 @@
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
-import com.sad.g15.webservicegamesrepository.Exceptions.MatchNotFoundException;
-import com.sad.g15.webservicegamesrepository.Exceptions.PlayerNotFoundException;
-import com.sad.g15.webservicegamesrepository.Exceptions.RobotNotFoundException;
-import com.sad.g15.webservicegamesrepository.Exceptions.RoundNotFoundException;
+import com.sad.g15.webservicegamesrepository.Exceptions.*;
 import com.sad.g15.webservicegamesrepository.Service.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +12,8 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -395,6 +394,129 @@ class ServiceFacadeTest {
         Match upMatch = serviceFacade.updateMatch(1, updateMatch);
         Assertions.assertEquals(LocalDateTime.parse("2023-06-12T10:00:00"),upMatch.getEndDate());
     }
+
+
+    @Test
+    void readPlayerResultTestExceptionP() throws ResultNotFoundException {
+        Result result = new Result();
+        try {
+            serviceFacade.readResultIdPlayer(1);
+
+        }catch (PlayerNotFoundException e){
+            Assertions.assertEquals("Player not found", e.getMessage());
+        }
+    }
+
+    @Test
+    void readPlayerResultTestExceptionR() throws PlayerNotFoundException {
+        Player player = new Player(1,"matteo");
+        when(playerService.readById(1)).thenReturn(player);
+        try {
+            serviceFacade.readResultIdPlayer(1);
+
+        }catch (ResultNotFoundException e){
+            Assertions.assertEquals("No result available for this player, yet", e.getMessage());
+        }
+    }
+
+    @Test
+    void readPlayerResultTest() throws PlayerNotFoundException, ResultNotFoundException {
+        Player player = new Player(1,"Matteo");
+        when(playerService.readById(1)).thenReturn(player);
+        Result result = new Result();
+        ArrayList<Result> res = new ArrayList<>();
+        res.add(result);
+        when(resultService.readResultByIdPlayer(1)).thenReturn(res);
+        List<Result> listaRisultati = serviceFacade.readResultIdPlayer(1);
+        Assertions.assertEquals(listaRisultati,res);
+
+    }
+
+   @Test
+   void readMTestCasesTestRoundException() throws TestNotFoundException, MatchNotFoundException {
+        Match match = new Match();
+        when(matchService.readSById(0)).thenReturn(match);
+        try{
+            serviceFacade.readMTestCases(0,1);
+        }catch (RoundNotFoundException e){
+            Assertions.assertEquals("Round not found for Match given in input",e.getMessage());
+        }
+   }
+
+   @Test
+    void readMTestCasesTestExecption() throws RoundNotFoundException, MatchNotFoundException {
+        Match match = new Match();
+        when(matchService.readSById(0)).thenReturn(match);
+        Round round = new Round();
+        match.setRound(round);
+        List<Round>rounds = new ArrayList<>();
+        rounds.add(round);
+        when(roundService.readM(match)).thenReturn(rounds);
+        when(roundService.readById(0)).thenReturn(round);
+        try{
+            serviceFacade.readMTestCases(0,0);
+        }catch (TestNotFoundException t){
+            Assertions.assertEquals("No Test associated to given Round", t.getMessage());
+        }
+
+   }
+
+
+   @Test
+    void readMTestCasesTest() throws RoundNotFoundException, TestNotFoundException, MatchNotFoundException {
+       Match match = new Match();
+       when(matchService.readSById(0)).thenReturn(match);
+       Round round = new Round();
+       match.setRound(round);
+       List<Round>rounds = new ArrayList<>();
+       rounds.add(round);
+       when(roundService.readM(match)).thenReturn(rounds);
+       when(roundService.readById(0)).thenReturn(round);
+       TestCase test = new TestCase();
+       List<TestCase> testCases = new ArrayList<>();
+       testCases.add(test);
+       when(roundService.getTestCases(round)).thenReturn(testCases);
+       List<TestCase> testCaseList = serviceFacade.readMTestCases(0,0);
+       Assertions.assertEquals(testCaseList,testCases);
+   }
+
+
+
+   @Test
+    void deleteRoundByIdTestMatchException(){
+        try{
+            serviceFacade.deleteMatchById(0);
+        }catch(MatchNotFoundException e){
+            Assertions.assertEquals("Match not found", e.getMessage());
+       }
+   }
+
+   @Test
+    void deleteRoundByIdTest() throws MatchNotFoundException {
+        Match match = new Match();
+        when(matchService.readSById(0)).thenReturn(match);
+        when(matchService.deleteById(0)).thenReturn(true);
+        Boolean result = serviceFacade.deleteMatchById(0);
+        Assertions.assertTrue(result);
+   }
+
+   @Test
+    void deleteMatchByIdTestException(){
+       try{
+           serviceFacade.deleteMatchById(0);
+       }catch(MatchNotFoundException e) {
+           Assertions.assertEquals("Match not found", e.getMessage());
+       }
+   }
+
+   @Test
+    void deleteMatchByIdTest() throws MatchNotFoundException {
+        Match match = new Match();
+        when(matchService.readSById(0)).thenReturn(match);
+        when(matchService.deleteById(0)).thenReturn(true);
+       Boolean result =  serviceFacade.deleteMatchById(0);
+        Assertions.assertTrue(result);
+   }
 }
 
 
