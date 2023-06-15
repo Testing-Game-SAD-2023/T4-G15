@@ -83,4 +83,13 @@ public class MatchService {
 	public void setMatchEndDate(Match match, LocalDateTime endDate) {
 		match.setEndDate(endDate);
 	}
+
+	public boolean deleteById(int idMatch) {
+		if (facade.existsById(Match.class, idMatch)) {
+			facade.deleteById(Match.class, idMatch);
+			return true;
+		}
+
+		return false;
+	}
 }

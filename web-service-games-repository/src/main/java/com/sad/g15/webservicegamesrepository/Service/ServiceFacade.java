@@ -326,4 +326,17 @@ public class ServiceFacade {
 
 		return rservice.deleteById(idRound);
 	}
+
+	public boolean deleteMatchById(int idMatch) throws MatchNotFoundException {
+		try{
+            Match mToDelete = mservice.readSById(idMatch);
+            for (Round round : mToDelete.getRounds()) {
+            	this.deleteRoundById(round.getId());
+            }
+        } catch(Exception e){
+            throw new MatchNotFoundException("Match not found");
+        }
+
+		return mservice.deleteById(idMatch);
+	}
 }

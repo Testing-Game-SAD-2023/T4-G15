@@ -277,5 +277,46 @@ public class MatchController {
 		if (deleted) return ResponseEntity.status(HttpStatus.OK).body("Round deleted successfully");
 		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
 	}
+	
+	/**
+	 * -----------------------------------------deleteMatch-----------------------------------------------------
+	 * Il seguente metodo elimina un match dato il suo id.
+	 * @param idMatch
+	 * @return ResponseEntity
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@DeleteMapping("/deleteMatch/{idMatch}")
+	public ResponseEntity<String> deleteMatch(@PathVariable int idMatch) {
+		boolean deleted = false;
+		try {
+			deleted = facade.deleteMatchById(idMatch);
+		} catch (MatchNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
+		if (deleted) return ResponseEntity.status(HttpStatus.OK).body("Match deleted successfully");
+		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+	}
+	
+	/**
+	 * -----------------------------------------deleteTestCase-----------------------------------------------------
+	 * Il seguente metodo elimina un TestCase dato il suo id.
+	 * @param idTestCase
+	 * @return ResponseEntity
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	/*@DeleteMapping("/deleteTestCase/{idTestCase}")
+	*public ResponseEntity<String> deleteTestCase(@PathVariable int idTestCase) {
+	*	boolean deleted = false;
+	*	try {
+	*		deleted = facade.deleteTestCaseById(idTestCase);
+	*	} catch (MatchNotFoundException e) {
+	*		throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+	*	}
+	*
+	*	if (deleted) return ResponseEntity.status(HttpStatus.OK).body("Match deleted successfully");
+	*	else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+	}
+	*/
 
 }
