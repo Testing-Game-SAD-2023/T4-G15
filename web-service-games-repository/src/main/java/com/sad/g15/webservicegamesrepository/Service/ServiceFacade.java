@@ -92,12 +92,15 @@ public class ServiceFacade {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	public Match readSMatch(int idMatch) throws MatchNotFoundException {
-		Match match = mservice.readSById(idMatch);
+		Match match = null;
 
-		if (match != null)
-			return match;
-		else
+		try {
+			match = mservice.readSById(idMatch);
+		} catch (Exception e){
 			throw new MatchNotFoundException();
+		}
+
+		return match;
 	}
 
 	/**

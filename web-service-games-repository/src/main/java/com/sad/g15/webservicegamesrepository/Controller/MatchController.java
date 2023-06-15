@@ -274,6 +274,27 @@ public class MatchController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
+
+	/**
+	 * -----------------------------------------getRoundsFromMatch------------------------------------------------------------
+	 * Metodo get Riceve sul path indicato un id e restituisce i round relativi al match con l'id indicato.
+	 *
+	 * @param idMatch
+	 * @return Round list.
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@GetMapping("/getSingleMatch/{idMatch}/rounds")
+	public List<Round> getRoundsFromMatch(@PathVariable int idMatch) {
+		Match match = null;
+
+		try {
+			match = facade.readSMatch(idMatch);
+		} catch (MatchNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
+		return match.getRounds();
+	}
 	
 	/**
 	 * -----------------------------------------deleteRound-----------------------------------------------------
