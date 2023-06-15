@@ -339,4 +339,53 @@ public class ServiceFacade {
 
 		return mservice.deleteById(idMatch);
 	}
+
+    /**---------------------------------------------readMTestCases------------------------------------------------------
+     *Dati idMatch e idRound in output, facendo i dovuti controlli, la seguente funzione restituisce tutti i TestCase
+     * Robot e PLayer associati a quello specifico Round dello specifico Match, non facendo alcuna distinzione tra Test
+     * Case con campi ancora nulli (TestCase ancora in atto nel gioco) o non nulli (TestCase terminati).
+     * @param idMatch
+     * @param idRound
+     * @return List<TestCase> testCases
+     * -----------------------------------------------------------------------------------------------------------------
+     */
+    public List<TestCase> readMTestCases(int idMatch, int idRound) throws MatchNotFoundException, RoundNotFoundException, TestNotFoundException {
+
+        Match mfodd = null;
+
+        //se non lo trova lancia l'eccezione match non trovato
+        try {
+            mfodd = mservice.readSById(idMatch);
+        } catch(Exception e) {
+            throw new MatchNotFoundException();
+        }
+
+        List<Round> rfodds = rservice.readM(mfodd);
+
+        Round rfound = null;
+
+        /* stesso discorso della funzione createTestCasePlayer: per non perdere di generalità vediamo tra i round associati
+         * al match trovato, quale round tra tutti quelli selezionati ha id che corrisponde all'idRound dato in input.
+         */
+
+        for (Round r : rfodds) {
+            if(r.getId() == idRound) {
+                rfound = rservice.readById(r.getId());
+            }
+        }
+
+        //se non lo trova lancia eccezione round non trovato per quel match(rfound rimane nullo)
+        if(rfound == null)
+            throw new RoundNotFoundException("Round not found for Match given in input");
+
+        //se non ha testCase (array list in return vuoto allora lancia eccezione)
+        List<TestCase> testCasesOut = rservice.getTestCases(rfound);
+
+        if(testCasesOut == null)
+            throw new TestNotFoundException("No Test associated to given Round");
+
+        return testCasesOut;
+    }
+
 }
+
