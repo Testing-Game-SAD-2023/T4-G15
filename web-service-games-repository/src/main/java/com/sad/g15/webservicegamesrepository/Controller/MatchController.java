@@ -239,6 +239,23 @@ public class MatchController {
 		}
 	}
 
+	/**
+	 *-----------------------------------------getTestCases-------------------------------------------------------------
+	 * La seguente funzione restituisce tutti i TestCase associati al Round dato in input come id.
+	 * @param idMatch
+	 * @param idRound
+	 * @return List<TestCase> testCasesOut
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@GetMapping("/getSingleMatch/{idMatch}/getTestCasesByRound/{idRound}")
+	public List<TestCase> getTestCases(@PathVariable int idMatch, @PathVariable int idRound){
+		try {
+			return facade.readMTestCases(idMatch, idRound);
+		} catch (MatchNotFoundException | RoundNotFoundException | TestNotFoundException e){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+
 
 	/**
 	 * -----------------------------------------getResultByIdPlayer-----------------------------------------------------

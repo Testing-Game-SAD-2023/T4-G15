@@ -1,10 +1,6 @@
 package com.sad.g15.webservicegamesrepository.Service;
 
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Robot;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCasePlayer;
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCaseRobot;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,6 +95,15 @@ public class RoundService {
 	
 	public void setRoundSingleTestCaseRobot(Round round, TestCaseRobot testCaseRobot) {
 		round.setTestCaseRobot(testCaseRobot);
+	}
+
+	public List<TestCase> getTestCases(Round round){
+
+		List<TestCase> testCasesOut = new ArrayList<>();
+		testCasesOut.addAll(round.getTestCasesPlayer());
+		testCasesOut.addAll(round.getTestCasesRobot());
+
+		return testCasesOut;
 	}
 	
 
