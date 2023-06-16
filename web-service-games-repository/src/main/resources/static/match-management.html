@@ -310,20 +310,6 @@
                     }
                 });
             });
-
-			$('#populate').onclick(function(e) {
-				e.preventDefault();
-				$.ajax({
-					type: 'PUT',
-					url: '/populate',
-					success: function(response) {
-						alert(response);
-					},
-					error: function() {
-						alert('Error populating');
-					}
-				});
-			});
         });
 
 		function populate() {
@@ -344,9 +330,7 @@
     <h1>Match Management</h1>
     <hr>
 
-	<div class="button">
-		<button id="populate" onclick="populate()">Populate</button>
-	</div>
+	<button id="populate" class="button" onclick="populate()">Populate</button>
 
 
     <h2>Add Match</h2>
