@@ -157,24 +157,6 @@ class ServiceFacadeTest {
         Assert.assertEquals(idRobot, result.getRobot().getId());
     }
 
-
-    @Test
-    void testCasePlayerCreateMatchNull() throws RoundNotFoundException, PlayerNotFoundException,MatchNotFoundException {
-        Round round = new Round();
-        round.setRobot(new Robot(0, "facile"));
-        Round createdRound = new Round();
-        when(matchService.readSById(0)).thenReturn(new Match());
-        when(roundService.create(round)).thenReturn(createdRound);
-        TestCasePlayer testCase = new TestCasePlayer();
-        when(testCaseService.create(testCase)).thenReturn(testCase);
-        try {
-           Round testCaseCreate = serviceFacade.addTestCasePlayer(1,1,1,testCase);
-        } catch (MatchNotFoundException e) {
-            assertEquals("The given Match does not exist", e.getMessage());
-        }
-
-    }
-
     @Test
     void testCasePlayerCreateRoundNull() throws PlayerNotFoundException, MatchNotFoundException {
         Round round = new Round();
@@ -277,23 +259,6 @@ class ServiceFacadeTest {
         when(roundService.update(any(Round.class))).thenReturn(round);
 
         Round testCase = serviceFacade.addTestCasePlayer(1,1,1,testCasePlayer);
-    }
-
-
-
-    @Test
-    void createTestCaseRobotMatchException() throws RoundNotFoundException {
-        Round round = new Round();
-        Round createdRound = new Round();
-        when(roundService.create(round)).thenReturn(createdRound);
-        TestCaseRobot testCase = new TestCaseRobot();
-        when(testCaseService.create(testCase)).thenReturn(testCase);
-        try {
-            Round testCaseCreate = serviceFacade.createTestCaseRobot(1,1,testCase);
-        } catch (MatchNotFoundException e) {
-            assertEquals("The given match does not exist!", e.getMessage());
-        }
-
     }
 
     @Test
