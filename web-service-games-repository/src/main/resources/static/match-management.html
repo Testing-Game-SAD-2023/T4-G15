@@ -70,6 +70,22 @@
         .form-group button[type="submit"]:hover {
             background-color: #645E69;
         }
+
+		.button{
+			display: block;
+			width: 150px;
+			margin: 0 auto;
+			padding: 10px;
+			background-color: #645E69;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		.button:hover{
+			background-color: #645E69;
+		}
         
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
@@ -99,7 +115,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify(data),
                     success: function(response) {
-                        alert('Match added successfully with id: ' + response);
+                        alert(response);
                     },
                     error: function() {
                         alert('Error adding match');
@@ -294,12 +310,45 @@
                     }
                 });
             });
+
+			$('#populate').onclick(function(e) {
+				e.preventDefault();
+				$.ajax({
+					type: 'PUT',
+					url: '/populate',
+					success: function(response) {
+						alert(response);
+					},
+					error: function() {
+						alert('Error populating');
+					}
+				});
+			});
         });
+
+		function populate() {
+			$.ajax({
+				type: 'PUT',
+				url: '/populate',
+				success: function(response) {
+					alert(response);
+				},
+				error: function() {
+					alert('Error populating');
+				}
+			});
+		}
     </script>
 </head>
 <body>
     <h1>Match Management</h1>
     <hr>
+
+	<div class="button">
+		<button id="populate" onclick="populate()">Populate</button>
+	</div>
+
+
     <h2>Add Match</h2>
     <form id="addMatchForm">
     	<div class="form-group">

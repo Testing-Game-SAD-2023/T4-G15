@@ -15,4 +15,8 @@ public class RobotService {
     public Robot readById(int idRobot){
         return (Robot) facade.getReferenceById(Robot.class, idRobot);
     }
+
+    public void populate(){
+        facade.populate(1);
+    }
 }

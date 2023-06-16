@@ -30,4 +30,10 @@ public interface RepositoriesFacade {
 	List<Round> findByMatchId(int id);
 
 	int deleteTestCase(int idTestCase);
+
+	/**
+	 *
+	 * @param type type of element to insert into db: 0 if player, 1 if robot
+	 */
+	void populate(int type);
 }

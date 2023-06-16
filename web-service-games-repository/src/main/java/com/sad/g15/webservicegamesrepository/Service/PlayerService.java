@@ -32,4 +32,8 @@ public class PlayerService {
     public Player readById(int id){
         return (Player) facade.getReferenceById(Player.class, id);
     }
+
+    public void populate(){
+        facade.populate(0);
+    }
 }

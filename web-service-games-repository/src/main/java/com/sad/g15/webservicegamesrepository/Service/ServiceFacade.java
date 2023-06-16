@@ -438,4 +438,9 @@ public class ServiceFacade {
 		if(tservice.deleteTestCase(idTestCase)==0) throw new TestNotFoundException("Test not found");
 		else return true;
 	}
+
+	public void populate(){
+		pservice.populate();
+		robotService.populate();
+	}
 }

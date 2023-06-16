@@ -337,7 +337,7 @@ public class MatchController {
 	}
 	
 	/**
-	 * -----------------------------------------deleteTestCase-----------------------------------------------------
+	 * -----------------------------------------deleteTestCase----------------------------------------------------------
 	 * Il seguente metodo elimina un TestCase dato il suo id.
 	 * @param idTestCase
 	 * @return ResponseEntity
@@ -355,6 +355,21 @@ public class MatchController {
 
 		if (deleted) return ResponseEntity.status(HttpStatus.OK).body("TestCase deleted successfully");
 		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+	}
+
+	/**
+	 * -----------------------------------------------populate----------------------------------------------------------
+	 * Popola il database con dei player e robot iniziali.
+	 */
+	@PutMapping("/populate")
+	public ResponseEntity<String> populate(){
+		try {
+			facade.populate();
+		} catch (Exception e){
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body("Database populated successfully");
 	}
 
 }

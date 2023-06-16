@@ -170,4 +170,10 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
         return i+j;
     }
 
+    @Override
+    public void populate(int type){
+        if(type==0) playerRepository.populate();
+        else if(type==1) robotRepository.populate();
+    }
+
 }
