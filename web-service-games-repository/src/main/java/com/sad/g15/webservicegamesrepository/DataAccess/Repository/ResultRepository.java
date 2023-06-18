@@ -1,6 +1,6 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Repository;
 
-import com.sad.g15.webservicegamesrepository.DataAccess.Entity.MatchHistory;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
@@ -13,12 +13,12 @@ public interface ResultRepository extends JpaRepository<Result,Integer> {
     //Repository of the Match History Class, every entity class has one (implement other Repos)
 
     @Query(value = "select * from result r where r.player_id = ?1", nativeQuery = true)
-    public List<MatchHistory> findMatchByPlayer(int player_id);
+    public List<Match> findMatchByPlayer(int player_id);
 
     @Query(value = "select * from result r where r.match_id = ?1", nativeQuery = true)
     public  List<Result> readResultsByMatchId(int match_id);
 
-    @Query(value = "SELECT r.id, r.result, r.player_id\n" +
+    @Query(value = "SELECT r.id, r.outcome, r.score_match, r.player_id\n" +
             "FROM result r\n" +
             "WHERE r.player_id = ? \n" +
             "  AND r.id IN (\n" +

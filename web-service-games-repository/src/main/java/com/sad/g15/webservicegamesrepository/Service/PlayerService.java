@@ -2,6 +2,9 @@ package com.sad.g15.webservicegamesrepository.Service;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Player;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,14 +17,23 @@ public class PlayerService {
     private final RepositoriesFacade facade;
 
     public Player create(Player player){
-        return facade.getPlayerRepository().save(player);
+        return (Player) facade.save(player);
     }
 
-    public Optional<Player> read(Player player) {
-        return facade.getPlayerRepository().findById(player.getId()).stream().findFirst();
+    public Player read(Player player) {
+    	Optional<Object> playerFound = facade.findById(Player.class, player.getId());
+		if(playerFound.isPresent()) {
+			return (Player) playerFound.get();
+		} else {
+			throw new EntityNotFoundException("Player not found");
+		}
     }
 
     public Player readById(int id){
-        return facade.getPlayerRepository().getReferenceById(id);
+        return (Player) facade.getReferenceById(Player.class, id);
+    }
+
+    public void populate(){
+        facade.populate(0);
     }
 }
