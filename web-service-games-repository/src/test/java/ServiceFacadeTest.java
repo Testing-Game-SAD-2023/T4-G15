@@ -158,7 +158,7 @@ class ServiceFacadeTest {
     }
 
     @Test
-    void testCasePlayerCreateRoundNull() throws PlayerNotFoundException, MatchNotFoundException {
+    void testCasePlayerCreateRoundNull() throws PlayerNotFoundException, MatchNotFoundException, TestNotFoundException {
         Round round = new Round();
         round.setRobot(new Robot(0, "facile"));
         Round createdRound = new Round();
@@ -177,7 +177,7 @@ class ServiceFacadeTest {
     }
 
     @Test
-    public void testCasePlayerCreatePlayerNull() throws RoundNotFoundException, MatchNotFoundException {
+    public void testCasePlayerCreatePlayerNull() throws RoundNotFoundException, MatchNotFoundException, TestNotFoundException {
         Match match = new Match();
         match.setId(1);
 
@@ -220,7 +220,7 @@ class ServiceFacadeTest {
 
 
     @Test
-    void createTestCasePlayer() throws RoundNotFoundException, PlayerNotFoundException, MatchNotFoundException {
+    void createTestCasePlayer() throws RoundNotFoundException, PlayerNotFoundException, MatchNotFoundException, TestNotFoundException {
         Match match = new Match();
         match.setId(1);
 

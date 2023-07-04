@@ -41,4 +41,7 @@ public interface RepositoriesFacade {
 	void deleteTestCaseRef(int idTestCase);
 
 	TestCase getTestCaseById(int id) throws Exception;
+
+	List<Integer> getTestCasesRobotFromTestClass(int idTestClass);
+	List<Integer> getTestCasesPlayerFromTestClass(int idTestClass);
 }

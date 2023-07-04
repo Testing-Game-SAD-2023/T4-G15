@@ -3,6 +3,7 @@ package com.sad.g15.webservicegamesrepository.Service;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RobotRepository;
 import com.sad.g15.webservicegamesrepository.Exceptions.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,13 +15,14 @@ import java.util.function.Predicate;
 public class ServiceFacade {
 
 	public ServiceFacade(MatchService mservice, RoundService rservice, ResultService reservice, PlayerService pservice,
-			TestCaseService tservice, RobotService robotService) {
+			TestCaseService tservice, RobotService robotService, TestClassService tcService) {
 		this.mservice = mservice;
 		this.rservice = rservice;
 		this.reservice = reservice;
 		this.pservice = pservice;
 		this.tservice = tservice;
 		this.robotService = robotService;
+		this.tcService = tcService;
 	}
 
 	private MatchService mservice;
@@ -29,6 +31,8 @@ public class ServiceFacade {
 	private PlayerService pservice;
 	private TestCaseService tservice;
 	private RobotService robotService;
+
+	private TestClassService tcService;
 
 	/**
 	 * ---------------------------createMatch---------------------------------------------------------------------------
@@ -224,7 +228,7 @@ public class ServiceFacade {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	public Round addTestCasePlayer(int idMatch, int idRound, int idPlayer, TestCasePlayer testCasePlayer)
-			throws MatchNotFoundException, RoundNotFoundException, PlayerNotFoundException {
+			throws MatchNotFoundException, RoundNotFoundException, PlayerNotFoundException, TestNotFoundException {
 
 		// Usiamo l'id passato come parametro per prelevare il match dal db
 		Match dbmatch = null;
@@ -269,6 +273,20 @@ public class ServiceFacade {
 		 */
 
 		testCasePlayer.setPlayer(pbuff);
+
+
+		TestClass testClassBuff = null;
+
+		int test_class_id = testCasePlayer.getTestedClass().getId();
+		try {
+			testClassBuff = tcService.readById(test_class_id);
+			testClassBuff.getId(); //refactor NullPointerException nel service
+		} catch (EntityNotFoundException e){
+			throw new TestNotFoundException("TestClass specified not found");
+		}
+
+		testCasePlayer.setTestedClass(testClassBuff);
+
 		TestCasePlayer tbuff = (TestCasePlayer) tservice.create(testCasePlayer);
 		rservice.AddTestCasePlayer(dbround, tbuff);
 
@@ -474,6 +492,16 @@ public class ServiceFacade {
 			throw new TestNotFoundException("No Test associated to given Round");
 
 		return testCasesOut;
+	}
+
+
+	public List<Integer> readMTestCasesFromTestClass(int idTestClass) throws TestNotFoundException{
+		List<Integer> out = new ArrayList<Integer>();
+		out.addAll(tservice.getTestCasesPlayerFromTestClass(idTestClass));
+		out.addAll(tservice.getTestCasesRobotFromTestClass(idTestClass));
+
+		if(out.size()==0) throw new TestNotFoundException("No TestCases associated with the given TestClass");
+		else return out;
 	}
 
 	public boolean deleteTestCaseById(int idTestCase) throws TestNotFoundException {

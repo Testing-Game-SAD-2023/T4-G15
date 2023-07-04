@@ -191,7 +191,7 @@ public class MatchController {
 		Round updatedRound = null;
 		try {
 			updatedRound = facade.addTestCasePlayer(idMatch, idRound, idPlayer, testCasePlayer);
-		} catch (MatchNotFoundException | RoundNotFoundException | PlayerNotFoundException e) {
+		} catch (MatchNotFoundException | RoundNotFoundException | TestNotFoundException | PlayerNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
@@ -298,6 +298,22 @@ public class MatchController {
 		}
 	}
 
+	/**
+	 *-----------------------------------------getTestCasesFromTestClass------------------------------------------------
+	 * La seguente funzione restituisce tutti gli id dei TestCase associati ad una TestClass data in input come id.
+	 * @param idTestClass
+	 * @return List<Integer>
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@GetMapping("getTestCases/{idTestClass}")
+	public List<Integer> getTestCasesFromTestClass(@PathVariable int idTestClass){
+		try {
+			return facade.readMTestCasesFromTestClass(idTestClass);
+		} catch (TestNotFoundException e){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+
 
 	/**
 	 * -----------------------------------------getResultByIdPlayer-----------------------------------------------------
@@ -337,7 +353,7 @@ public class MatchController {
 
 		return match.getRounds();
 	}
-	
+
 	/**
 	 * -----------------------------------------deleteRound-----------------------------------------------------
 	 * Il seguente metodo elimina un round dato il suo id.

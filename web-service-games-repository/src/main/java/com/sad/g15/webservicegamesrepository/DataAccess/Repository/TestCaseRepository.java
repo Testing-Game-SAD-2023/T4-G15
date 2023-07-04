@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.Nullable;
 
+import java.util.List;
+
 public interface TestCaseRepository extends JpaRepository<TestCase, Integer>{
 
     @Transactional
@@ -40,4 +42,10 @@ public interface TestCaseRepository extends JpaRepository<TestCase, Integer>{
 
     @Query(value = "select * from test_case_robot t where t.id = ?1", nativeQuery = true)
     public TestCaseRobot getTestCaseRobotById(int id);
+
+    @Query(value = "select id from test_case_robot t where t.tested_class_id = ?1", nativeQuery = true)
+    public List<Integer> getTestCasesRobotFromTestClass(int idTestClass);
+
+    @Query(value = "select id from test_case_player t where t.tested_class_id = ?1", nativeQuery = true)
+    public List<Integer> getTestCasesPlayerFromTestClass(int idTestClass);
 }
