@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCase;
 
 public interface RepositoriesFacade {
 	
@@ -38,4 +39,6 @@ public interface RepositoriesFacade {
 	void populate(int type);
 
 	void deleteTestCaseRef(int idTestCase);
+
+	TestCase getTestCaseById(int id) throws Exception;
 }

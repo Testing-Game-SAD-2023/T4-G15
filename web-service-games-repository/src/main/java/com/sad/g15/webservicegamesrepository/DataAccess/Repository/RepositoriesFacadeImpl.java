@@ -162,6 +162,19 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 	}
 
     @Override
+    public TestCase getTestCaseById(int id) throws Exception{
+        TestCasePlayer tplayer = null;
+        TestCaseRobot trobot = null;
+
+        tplayer = testCaseRepository.getTestCasePlayerById(id);
+        if(tplayer==null){
+            trobot = testCaseRepository.getTestCaseRobotById(id);
+            if(trobot==null) throw new Exception("No TestCase found");
+            else return trobot;
+        } else return tplayer;
+    }
+
+    @Override
     public int deleteTestCase(int idTestCase) {
         int i=0,j=0;
 

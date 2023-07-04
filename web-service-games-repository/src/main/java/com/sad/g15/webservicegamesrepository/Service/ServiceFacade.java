@@ -104,6 +104,48 @@ public class ServiceFacade {
 	}
 
 	/**
+	 * -------------------------------------------readSMatch------------------------------------------------------------
+	 * Legge dato in ingresso un id round, restituisce il riferimento per quel
+	 * round.
+	 *
+	 * @param idRound
+	 * @return round
+	 *         -----------------------------------------------------------------------------------------------------------------
+	 */
+	public Round readSRound(int idRound) throws RoundNotFoundException{
+		Round round = null;
+
+		try {
+			round = rservice.readById(idRound);
+		} catch (Exception e){
+			throw new RoundNotFoundException("Round not found");
+		}
+
+		return round;
+	}
+
+	/**
+	 * -------------------------------------------readSMatch------------------------------------------------------------
+	 * Legge dato in ingresso un id TestCase, restituisce il riferimento per quel
+	 * TestCase.
+	 *
+	 * @param idTestCase
+	 * @return TestCase
+	 *         -----------------------------------------------------------------------------------------------------------------
+	 */
+	public TestCase readSTest(int idTestCase) throws TestNotFoundException{
+		TestCase test = null;
+
+		try {
+			test = tservice.readById(idTestCase);
+		} catch (Exception e){
+			throw new TestNotFoundException("Test not found");
+		}
+
+		return test;
+	}
+
+	/**
 	 * ------------------------------------------createRound------------------------------------------------------------
 	 * La funzione riceve un oggetto match in input con ALMENO il campo id not null.
 	 * In base all'id fornito si preleva l'oggetto Match nel database corrispondente

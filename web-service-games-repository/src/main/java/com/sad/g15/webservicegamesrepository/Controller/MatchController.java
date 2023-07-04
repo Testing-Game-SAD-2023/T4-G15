@@ -231,7 +231,7 @@ public class MatchController {
 	}
 
 	/**
-	 * -----------------------------------------getMatchbyId------------------------------------------------------------
+	 * -----------------------------------------getSingleMatch------------------------------------------------------------
 	 * Metodo get Riceve sul path indicato un id e restituisce il match con l'id indicato.
 	 * 
 	 * @param idMatch
@@ -243,6 +243,40 @@ public class MatchController {
 		try {
 			return facade.readSMatch(idMatch);
 		} catch (MatchNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * -----------------------------------------getSingleRound------------------------------------------------------------
+	 * Metodo get Riceve sul path indicato un id e restituisce il round con l'id indicato.
+	 *
+	 * @param idRound
+	 * @return single Round.
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@GetMapping("/getSingleRound/{idRound}")
+	public Round getRoundS(@PathVariable int idRound) {
+		try {
+			return facade.readSRound(idRound);
+		} catch (RoundNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * -----------------------------------------getSingleTestCase------------------------------------------------------------
+	 * Metodo get Riceve sul path indicato un id e restituisce il test con l'id indicato.
+	 *
+	 * @param idTest
+	 * @return single Test.
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@GetMapping("/getSingleTest/{idTest}")
+	public TestCase getTestS(@PathVariable int idTest) {
+		try {
+			return facade.readSTest(idTest);
+		} catch (TestNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}

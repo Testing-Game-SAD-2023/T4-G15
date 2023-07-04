@@ -1,5 +1,6 @@
 package com.sad.g15.webservicegamesrepository.Service;
 
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCase;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,10 @@ public class TestCaseService {
         this.facade = facade;
     }
     private final RepositoriesFacade facade;
+
+    public TestCase readById(int id) throws Exception{
+        return facade.getTestCaseById(id);
+    }
 
     public TestCase create(TestCase testcase){
         return (TestCase) facade.save(testcase);
