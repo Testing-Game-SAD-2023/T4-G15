@@ -115,6 +115,7 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
         } else if (entityType.equals(Result.class)) {
             resultRepository.deleteById(id);
         } else if (entityType.equals(Round.class)) {
+            roundRepository.deleteAssociation(id);
             roundRepository.deleteById(id);
         } else if (entityType.equals(TestCase.class)) {
             testCaseRepository.deleteById(id);
@@ -168,6 +169,12 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
         j=testCaseRepository.deleteTestCaseRobot(idTestCase);
 
         return i+j;
+    }
+
+    @Override
+    public void deleteTestCaseRef(int idTestCase){
+        testCaseRepository.deleteTestCasePlayerRef(idTestCase);
+        testCaseRepository.deleteTestCaseRobotRef(idTestCase);
     }
 
     @Override

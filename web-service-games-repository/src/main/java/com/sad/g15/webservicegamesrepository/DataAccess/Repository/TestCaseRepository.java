@@ -20,4 +20,16 @@ public interface TestCaseRepository extends JpaRepository<TestCase, Integer>{
     @Nullable
     @Query(value = "delete from test_case_robot tcr where tcr.id = ?1", nativeQuery = true)
     public Integer deleteTestCaseRobot(int idTestCase);
+
+    @Transactional
+    @Modifying(clearAutomatically=true)
+    @Nullable
+    @Query(value = "delete from round_test_cases_player r where r.test_cases_player_id = ?1", nativeQuery = true)
+    void deleteTestCasePlayerRef(int idTestCase);
+
+    @Transactional
+    @Modifying(clearAutomatically=true)
+    @Nullable
+    @Query(value = "delete from round_test_cases_robot r where r.test_cases_robot_id = ?1", nativeQuery = true)
+    void deleteTestCaseRobotRef(int idTestCase);
 }

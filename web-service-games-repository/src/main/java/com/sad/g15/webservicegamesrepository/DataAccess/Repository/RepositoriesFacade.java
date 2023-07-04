@@ -36,4 +36,6 @@ public interface RepositoriesFacade {
 	 * @param type type of element to insert into db: 0 if player, 1 if robot
 	 */
 	void populate(int type);
+
+	void deleteTestCaseRef(int idTestCase);
 }

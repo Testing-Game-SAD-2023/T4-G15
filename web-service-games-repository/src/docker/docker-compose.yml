@@ -6,7 +6,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/task4db
     ports:
-      - 8080:8080
+      - "8080:8080"
     restart: always
     depends_on:
       - db
@@ -19,9 +19,10 @@ services:
       - POSTGRES_DB=task4db
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+
 volumes:
   pgdata:

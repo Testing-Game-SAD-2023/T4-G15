@@ -20,6 +20,7 @@ public class TestCaseService {
     }
 
     public int deleteTestCase(int idTestCase) {
+        facade.deleteTestCaseRef(idTestCase);
         return facade.deleteTestCase(idTestCase);
     }
 

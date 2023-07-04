@@ -92,7 +92,9 @@ public class MatchController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
-		if(matchAddedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("Round added to the specified Match with id" + matchAddedRound.getId());
+
+		if(matchAddedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("Round added to the specified Match with id: " +
+				matchAddedRound.getRounds().get(matchAddedRound.getRounds().size()-1).getId());
 		else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not add Round");
 	}
 	
@@ -141,19 +143,19 @@ public class MatchController {
 	 *     ]
 	 * }
 	 *
-	 * Bisogna specificare ID del match nell'URI, nel JSON i parametri che si vogliono modificare come
-	 * scenario, endDate e results
+	 * Nel JSON i parametri che si vogliono modificare come
+	 * scenario (possibili parametri: Scenario, EndDate, Results)
 	 *
-	 * @param idMatch, match
+	 * @param match
 	 * @return "Match updated successfully"
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
-	@PutMapping(value = "/updateMatch/{idMatch}", consumes = "application/json")
-	public ResponseEntity<String> updateMatch(@PathVariable int idMatch, @RequestBody Match match) {
+	@PutMapping(value = "/updateMatch", consumes = "application/json")
+	public ResponseEntity<String> updateMatch(@RequestBody Match match) {
 
 		Match updated_match = null;
 		try {
-			updated_match = facade.updateMatch(idMatch, match);
+			updated_match = facade.updateMatch(match.getId(), match);
 		} catch (MatchNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
@@ -166,7 +168,13 @@ public class MatchController {
 	 * -----------------------------------------addTestCasePlayer-------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
-	 * { "totalResult" : 12568, "compilingResult" : 1212, ecc...} <---- per gli altri campi vedere TestCasePlayer entity
+	 * {
+	 * 		"TestedClass":{
+	 * 		 	"id": id di una classe da testare presente nel database
+	 * 		}
+	 * 		"totalResult" : 12568,
+	 * 		"compilingResult" : 1212,
+	 * 		ecc...} <---- per gli altri campi vedere TestCasePlayer entity
 	 *
 	 * Bisogna specificare ID del match, quello di Round e il player che ha creato
 	 * il Test. Il resto dei dati riguarda i punteggi di coverage e viene passato come JSON Object.
