@@ -2,6 +2,7 @@ package com.sad.g15.webservicegamesrepository.Service;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestClass;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
+import com.sad.g15.webservicegamesrepository.Exceptions.TestNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +14,15 @@ public class TestClassService {
         this.facade = facade;
     }
 
-    public TestClass readById(int idTestClass){
-        return (TestClass) facade.getReferenceById(TestClass.class, idTestClass);
+    public TestClass readById(int idTestClass) throws TestNotFoundException{
+        TestClass testClass = (TestClass) facade.findById(TestClass.class, idTestClass).orElse(null);
+        if(testClass!=null) return testClass;
+        else throw new NullPointerException();
     }
+
+    /**
+     * Match match =  (Match) facade.findById(Match.class, idMatch).orElse(null);
+     * 		if (match!=null) return match;
+     * 		else throw new NullPointerException();
+     */
 }

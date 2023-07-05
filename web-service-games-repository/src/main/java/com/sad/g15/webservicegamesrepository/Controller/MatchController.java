@@ -1,15 +1,18 @@
 package com.sad.g15.webservicegamesrepository.Controller;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import com.sad.g15.webservicegamesrepository.Exceptions.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
 import com.sad.g15.webservicegamesrepository.Service.ServiceFacade;
 import org.springframework.web.server.ResponseStatusException;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 
@@ -41,6 +45,7 @@ public class MatchController {
 	 * @return "Match added successfully"
 	 * -----------------------------------------------------------------------------------------------------------------
 	 */
+	@Operation(summary = "Aggiunge un match", parameters = @Parameter(name = "requestBody", in = ParameterIn.DEFAULT, required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = JsonNode.class, example = "{ \"idPlayers\": [value1, value2,...,valueN], \"scenario\": \"exampleScenario\", \"idRobot\": 1 }"))))
 	@PostMapping(value = "/addMatch", consumes = "application/json")
 	public ResponseEntity<String> addMatch(@RequestBody JsonNode requestBody) {
 
@@ -165,6 +170,27 @@ public class MatchController {
 	}
 
 	/**
+	 * -----------------------------------------updateResult-------------------------------------------------------------
+	 * { "scoreMatch": long, "outcome": "exampleOutcome"}
+	 * @param idMatch, idPlayer, result
+	 * @return "Result updated successfully"
+	 * -----------------------------------------------------------------------------------------------------------------
+	 */
+	@PutMapping(value = "/updateMatch/{idMatch}/{idPlayer}/updateResult", consumes = "application/json")
+	public ResponseEntity<String> updateResult(@PathVariable int idMatch, @PathVariable int idPlayer, @RequestBody JsonNode result) {
+
+		Result updated_result = null;
+		try {
+			updated_result = facade.updateResult(idMatch, idPlayer, result.get("scoreMatch").asLong(), result.get("outcome").asText());
+		} catch (MatchNotFoundException | PlayerNotFoundException | ResultNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+
+		if(updated_result!=null) return ResponseEntity.status(HttpStatus.OK).body("Result updated successfully");
+		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not update Result");
+	}
+
+	/**
 	 * -----------------------------------------addTestCasePlayer-------------------------------------------------------
 	 * Il parametro deve essere passato come un JSON Object:
 	 *
@@ -195,8 +221,10 @@ public class MatchController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
+		int test_case_id = updatedRound.getTestCasesPlayer().get(updatedRound.getTestCasesPlayer().size()-1).getId();
+
 		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCasePlayer added to the " +
-				"specified round");
+				"specified round with id: " + test_case_id);
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add TestCasePlayer");
 	}
 
@@ -221,12 +249,14 @@ public class MatchController {
 		Round updatedRound = null;
 		try {
 			updatedRound = facade.createTestCaseRobot(idMatch, idRound, testCaseRobot);
-		} catch (MatchNotFoundException | RoundNotFoundException e) {
+		} catch (MatchNotFoundException | RoundNotFoundException | TestNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
+		int test_case_id = updatedRound.getTestCasesRobot().get(updatedRound.getTestCasesRobot().size()-1).getId();
+
 		if(updatedRound!=null) return ResponseEntity.status(HttpStatus.OK).body("TestCaseRobot added to the " +
-				"specified round");
+				"specified round with id: " + test_case_id);
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request - Could not add TestCaseRobot");
 	}
 

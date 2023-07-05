@@ -15,7 +15,7 @@ public interface ResultRepository extends JpaRepository<Result,Integer> {
     @Query(value = "select * from result r where r.player_id = ?1", nativeQuery = true)
     public List<Match> findMatchByPlayer(int player_id);
 
-    @Query(value = "select * from result r where r.match_id = ?1", nativeQuery = true)
+    @Query(value = "select r.id, r.outcome, r.score_match, r.player_id from match_history_results mr join result r on mr.results_id = r.id where match_history_id=?1", nativeQuery = true)
     public  List<Result> readResultsByMatchId(int match_id);
 
     @Query(value = "SELECT r.id, r.outcome, r.score_match, r.player_id\n" +

@@ -280,8 +280,7 @@ public class ServiceFacade {
 		int test_class_id = testCasePlayer.getTestedClass().getId();
 		try {
 			testClassBuff = tcService.readById(test_class_id);
-			testClassBuff.getId(); //refactor NullPointerException nel service
-		} catch (EntityNotFoundException e){
+		} catch (Exception e){
 			throw new TestNotFoundException("TestClass specified not found");
 		}
 
@@ -306,7 +305,7 @@ public class ServiceFacade {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	public Round createTestCaseRobot(int idMatch, int idRound, TestCaseRobot testCaseRobot)
-			throws MatchNotFoundException, RoundNotFoundException {
+			throws MatchNotFoundException, RoundNotFoundException, TestNotFoundException {
 
 		// Usiamo l'id passato come parametro per prelevare il match dal db
 		Match dbmatch = null;
@@ -333,6 +332,17 @@ public class ServiceFacade {
 		}
 		if (dbround == null)
 			throw new RoundNotFoundException("The given match does not contain the given round!");
+
+		TestClass testClassBuff = null;
+
+		int test_class_id = testCaseRobot.getTestedClass().getId();
+		try {
+			testClassBuff = tcService.readById(test_class_id);
+		} catch (Exception e){
+			throw new TestNotFoundException("TestClass specified not found");
+		}
+
+		testCaseRobot.setTestedClass(testClassBuff);
 
 		TestCaseRobot tbuff = (TestCaseRobot) tservice.create(testCaseRobot);
 		rservice.AddTestCaseRobot(dbround, tbuff);
@@ -413,6 +423,42 @@ public class ServiceFacade {
 		}
 
 		return mservice.update(dbmatch);
+	}
+
+	public Result updateResult(int idMatch, int idPlayer, long scoreMatch, String outcome) throws MatchNotFoundException, PlayerNotFoundException, ResultNotFoundException {
+		Match dbmatch = null;
+		try {
+			dbmatch = mservice.readSById(idMatch);
+		} catch (Exception e) {
+			throw new MatchNotFoundException();
+		}
+
+		Player dbplayer = null;
+		try {
+			dbplayer = pservice.readById(idPlayer);
+		} catch (Exception e) {
+			throw new PlayerNotFoundException("Given Player not found");
+		}
+
+		Result dbresult = null;
+		try {
+			//dbresult = (Result) reservice.readResultsByMatch(dbmatch).stream().filter(result -> result.getPlayer().getId()==idPlayer);
+
+			for (Result r : reservice.readResultsByMatch(dbmatch)) {
+				if(r.getPlayer().getId()==idPlayer) {
+					dbresult = r;
+					break;
+				}
+			}
+
+			dbresult.setScoreMatch(scoreMatch);
+			dbresult.setOutcome(outcome);
+
+		} catch (Exception e) {
+			throw new ResultNotFoundException("Result not found");
+		}
+
+		return reservice.update(dbresult);
 	}
 
 	public boolean deleteRoundById(int idRound) throws RoundNotFoundException {

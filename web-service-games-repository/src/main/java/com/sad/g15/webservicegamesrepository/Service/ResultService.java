@@ -19,6 +19,12 @@ public class ResultService {
         return (Result) facade.save(result);
     }
 
+    public Result readById(int idResult){
+        Result result = (Result) facade.findById(Result.class, idResult).orElse(null);
+        if(result!=null) return result;
+        else throw new NullPointerException();
+    }
+
     public Result update(Result result){
         return (Result) facade.save(result);
     }

@@ -262,7 +262,7 @@ class ServiceFacadeTest {
     }
 
     @Test
-    void createTestCaseRobotRoundException() throws MatchNotFoundException {
+    void createTestCaseRobotRoundException() throws MatchNotFoundException, TestNotFoundException {
         Round round = new Round();
         round.setRobot(new Robot(0, "facile"));
         Round createdRound = new Round();
@@ -281,7 +281,7 @@ class ServiceFacadeTest {
     }
 
     @Test
-    void createTestCaseRobot() throws RoundNotFoundException, MatchNotFoundException {
+    void createTestCaseRobot() throws RoundNotFoundException, MatchNotFoundException, TestNotFoundException {
         Match match = new Match();
         match.setId(1);
 

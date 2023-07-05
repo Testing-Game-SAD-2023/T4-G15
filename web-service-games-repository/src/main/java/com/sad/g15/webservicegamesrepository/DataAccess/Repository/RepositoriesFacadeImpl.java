@@ -68,6 +68,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             return testCaseRepository.findById(id).map(Function.identity());
         } else if (type.equals(Robot.class)) {
             return robotRepository.findById(id).map(Function.identity());
+        } else if (type.equals(TestClass.class)) {
+            return testClassRepository.findById(id).map(Function.identity());
         }
 		
         return Optional.empty();
