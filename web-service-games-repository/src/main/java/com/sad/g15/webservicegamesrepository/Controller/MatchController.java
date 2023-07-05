@@ -55,9 +55,9 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PostMapping(value = "/addMatch", consumes = "application/json")
-	@Operation(summary = "Add a Match")
+	@Operation(summary = "Add a Match", tags = "Match")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Bisogna fornire almeno gli idPlayers",
+            description = "Bisogna fornire almeno gli idPlayers e idRobot",
             required = true,
             content = @Content(
                     mediaType = "application/json",
@@ -102,6 +102,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping(value = "/updateMatch/{idMatch}/addRound", consumes = "application/json")
+	@Operation(summary = "Add a Round to a specified Match", tags = "Round")
 	public ResponseEntity<String> addRound(@PathVariable int idMatch, @RequestBody Round round) {
 
 		Match matchAddedRound = null;
@@ -132,6 +133,16 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound")
+	@Operation(summary = "Update a Round of a specified Match", tags = "Round")
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Bisogna fornire almeno l'id del Match e l'id del Round nel JSON Node",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = JsonNode.class),
+                    examples = @ExampleObject(name = "Esempio di input", value = "{\"idRound\": \"2\", \"end_date\": \"2023-06-02T21:00:00\"}")
+            )
+    )
 	public ResponseEntity<String> updateRound(@PathVariable int idMatch, @RequestBody JsonNode requestBody) {
 
 		int idRound = requestBody.get("idRound").asInt();
@@ -162,6 +173,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping(value = "/updateMatch", consumes = "application/json")
+	@Operation(summary = "Update a Match", tags = "Match")
 	public ResponseEntity<String> updateMatch(@RequestBody Match match) {
 
 		Match updated_match = null;
@@ -186,6 +198,16 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping(value = "/updateMatch/{idMatch}/{idPlayer}/updateResult", consumes = "application/json")
+	@Operation(summary = "Update a Result by the idMatch and the idPlayer", tags = "Match")
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Bisogna fornire almeno l'id del Match e l'id del Player nel JSON Node",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = JsonNode.class),
+                    examples = @ExampleObject(name = "Esempio di input", value = "{\"scoreMatch\": \"2\", \"outcome\": \"vittoria\"}")
+            )
+    )
 	public ResponseEntity<String> updateResult(@PathVariable int idMatch, @PathVariable int idPlayer,
 			@RequestBody JsonNode result) {
 
@@ -220,6 +242,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCasePlayer/{idPlayer}")
+	@Operation(summary = "Add a TestCase of a Player to a specified Round", tags = "TestCase")
 	public ResponseEntity<String> addTestcasePlayer(@PathVariable int idMatch, @PathVariable int idRound,
 			@PathVariable int idPlayer, @RequestBody TestCasePlayer testCasePlayer) {
 
@@ -254,6 +277,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCaseRobot")
+	@Operation(summary = "Add a TestCase of a Robot to a specified Round", tags = "TestCase")
 	public ResponseEntity<String> addTestcaseRobot(@PathVariable int idMatch, @PathVariable int idRound,
 			@RequestBody TestCaseRobot testCaseRobot) {
 
@@ -283,6 +307,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getSingleMatch/{idMatch}")
+	@Operation(summary = "Get a single Match by its id", tags = "Match")
 	public Match getMatchS(@PathVariable int idMatch) {
 		try {
 			return facade.readSMatch(idMatch);
@@ -301,6 +326,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getSingleRound/{idRound}")
+	@Operation(summary = "Get a single Round by its ID", tags = "Round")
 	public Round getRoundS(@PathVariable int idRound) {
 		try {
 			return facade.readSRound(idRound);
@@ -319,6 +345,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getSingleTest/{idTest}")
+	@Operation(summary = "Get a single TestCase by its ID", tags = "TestCase")
 	public TestCase getTestS(@PathVariable int idTest) {
 		try {
 			return facade.readSTest(idTest);
@@ -338,6 +365,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getSingleMatch/{idMatch}/getTestCasesByRound/{idRound}")
+	@Operation(summary = "Get the TestCases of a Round", tags = "TestCase")
 	public List<TestCase> getTestCases(@PathVariable int idMatch, @PathVariable int idRound) {
 		try {
 			return facade.readMTestCases(idMatch, idRound);
@@ -356,6 +384,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("getTestCases/{idTestClass}")
+	@Operation(summary = "Get all of the TestCases for a single TestClass", tags = "TestCase")
 	public List<Integer> getTestCasesFromTestClass(@PathVariable int idTestClass) {
 		try {
 			return facade.readMTestCasesFromTestClass(idTestClass);
@@ -374,6 +403,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getMatchesByIdPlayer/{idPlayer}")
+	@Operation(summary = "Get the Results of a single Player", tags = "Match")
 	public List<Result> getMatchesByIdPlayer(@PathVariable int idPlayer) {
 		try {
 			return facade.readResultIdPlayer(idPlayer);
@@ -392,6 +422,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@GetMapping("/getSingleMatch/{idMatch}/rounds")
+	@Operation(summary = "Get all the Rounds of a Match", tags = "Match")
 	public List<Round> getRoundsFromMatch(@PathVariable int idMatch) {
 		Match match = null;
 
@@ -413,6 +444,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@DeleteMapping("/deleteRound/{idRound}")
+	@Operation(summary = "Delete a Round by its ID", tags = "Round")
 	public ResponseEntity<String> deleteRound(@PathVariable int idRound) {
 		boolean deleted = false;
 		try {
@@ -436,6 +468,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@DeleteMapping("/deleteMatch/{idMatch}")
+	@Operation(summary = "Delete a Match by its ID", tags = "Match")
 	public ResponseEntity<String> deleteMatch(@PathVariable int idMatch) {
 		boolean deleted = false;
 		try {
@@ -459,6 +492,7 @@ public class MatchController {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	@DeleteMapping("/deleteTestCase/{idTestCase}")
+	@Operation(summary = "Delete a TestCase by its ID", tags = "TestCase")
 	public ResponseEntity<String> deleteTestCase(@PathVariable int idTestCase) {
 		boolean deleted = false;
 
@@ -479,6 +513,7 @@ public class MatchController {
 	 * Popola il database con dei player e robot iniziali.
 	 */
 	@PutMapping("/populate")
+	@Operation(summary = "Populate the Database")
 	public ResponseEntity<String> populate() {
 		try {
 			facade.populate();
