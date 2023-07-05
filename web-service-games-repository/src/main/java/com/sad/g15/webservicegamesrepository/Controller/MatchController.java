@@ -69,7 +69,7 @@ public class MatchController {
     )
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match added successfully with id: 1"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Player/Robot not found"))})})
 	public ResponseEntity<String> addMatch(@RequestBody JsonNode requestBody) {
 
@@ -86,7 +86,7 @@ public class MatchController {
 		Match matchsaved = null;
 		try {
 			matchsaved = facade.createMatch(idPlayers, scenario, idRobot);
-		} catch (PlayerNotFoundException e) {
+		} catch (PlayerNotFoundException | RobotNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
@@ -113,7 +113,7 @@ public class MatchController {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Round added to the specified Match with id: "))}),
             @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match/Robot not found"))})})
-	
+
 	public ResponseEntity<String> addRound(@PathVariable int idMatch, @RequestBody Round round) {
 
 		Match matchAddedRound = null;
@@ -138,7 +138,7 @@ public class MatchController {
 	 *
 	 * Bisogna specificare ID del round, l'end_date, l'ID del match viene invece
 	 * indicato nell'URI
-	 * 
+	 *
 	 * @param idMatch,requestBody
 	 * @return "Round updated successfully"
 	 *         -----------------------------------------------------------------------------------------------------------------
@@ -156,9 +156,9 @@ public class MatchController {
     )
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Round updated successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match/Round not found"))})})
-	
+
 	public ResponseEntity<String> updateRound(@PathVariable int idMatch, @RequestBody JsonNode requestBody) {
 
 		int idRound = requestBody.get("idRound").asInt();
@@ -192,9 +192,9 @@ public class MatchController {
 	@Operation(summary = "Update a Match", tags = "Match")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match updated successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match not found"))})})
-	
+
 	public ResponseEntity<String> updateMatch(@RequestBody Match match) {
 
 		Match updated_match = null;
@@ -213,7 +213,7 @@ public class MatchController {
 	/**
 	 * -----------------------------------------updateResult-------------------------------------------------------------
 	 * { "scoreMatch": long, "outcome": "exampleOutcome"}
-	 * 
+	 *
 	 * @param idMatch, idPlayer, result
 	 * @return "Result updated successfully"
 	 *         -----------------------------------------------------------------------------------------------------------------
@@ -231,9 +231,9 @@ public class MatchController {
     )
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match added successfully with id: 1"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Player not in DB"))})})
-	
+
 	public ResponseEntity<String> updateResult(@PathVariable int idMatch, @PathVariable int idPlayer,
 			@RequestBody JsonNode result) {
 
@@ -271,9 +271,9 @@ public class MatchController {
 	@Operation(summary = "Add a TestCase of a Player to a specified Round", tags = "TestCase")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCasePlayer added to the specified round with id: "))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Player/Match/Round not found"))})})
-	
+
 	public ResponseEntity<String> addTestcasePlayer(@PathVariable int idMatch, @PathVariable int idRound,
 			@PathVariable int idPlayer, @RequestBody TestCasePlayer testCasePlayer) {
 
@@ -311,9 +311,9 @@ public class MatchController {
 	@Operation(summary = "Add a TestCase of a Robot to a specified Round", tags = "TestCase")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCaseRobot added to the specified round with id: "))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match/Round not found"))})})
-	
+
 	public ResponseEntity<String> addTestcaseRobot(@PathVariable int idMatch, @PathVariable int idRound,
 			@RequestBody TestCaseRobot testCaseRobot) {
 
@@ -346,9 +346,9 @@ public class MatchController {
 	@Operation(summary = "Get a single Match by its id", tags = "Match")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match returned successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}), 
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match not found"))})})
-	
+
 	public Match getMatchS(@PathVariable int idMatch) {
 		try {
 			return facade.readSMatch(idMatch);
@@ -370,9 +370,9 @@ public class MatchController {
 	@Operation(summary = "Get a single Round by its ID", tags = "Round")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Round returned successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}), 
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match/Round not found"))})})
-	
+
 	public Round getRoundS(@PathVariable int idRound) {
 		try {
 			return facade.readSRound(idRound);
@@ -394,9 +394,9 @@ public class MatchController {
 	@Operation(summary = "Get a single TestCase by its ID", tags = "TestCase")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCase returned successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}), 
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCase not found"))})})
-	
+
 	public TestCase getTestS(@PathVariable int idTest) {
 		try {
 			return facade.readSTest(idTest);
@@ -409,7 +409,7 @@ public class MatchController {
 	 * -----------------------------------------getTestCases-------------------------------------------------------------
 	 * La seguente funzione restituisce tutti i TestCase associati al Round dato in
 	 * input come id.
-	 * 
+	 *
 	 * @param idMatch
 	 * @param idRound
 	 * @return List<TestCase> testCasesOut
@@ -419,9 +419,9 @@ public class MatchController {
 	@Operation(summary = "Get the TestCases of a Round", tags = "TestCase")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCases returned successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}), 
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match/Round/TestCase not found"))})})
-	
+
 	public List<TestCase> getTestCases(@PathVariable int idMatch, @PathVariable int idRound) {
 		try {
 			return facade.readMTestCases(idMatch, idRound);
@@ -434,7 +434,7 @@ public class MatchController {
 	 * -----------------------------------------getTestCasesFromTestClass------------------------------------------------
 	 * La seguente funzione restituisce tutti gli id dei TestCase associati ad una
 	 * TestClass data in input come id.
-	 * 
+	 *
 	 * @param idTestClass
 	 * @return List<Integer>
 	 *         -----------------------------------------------------------------------------------------------------------------
@@ -443,9 +443,9 @@ public class MatchController {
 	@Operation(summary = "Get all of the TestCases for a single TestClass", tags = "TestCase")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCases returned successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}), 
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCase/TestClass not found"))})})
-	
+
 	public List<Integer> getTestCasesFromTestClass(@PathVariable int idTestClass) {
 		try {
 			return facade.readMTestCasesFromTestClass(idTestClass);
@@ -467,9 +467,9 @@ public class MatchController {
 	@Operation(summary = "Get the Results of a single Player", tags = "Match")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Results returned successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}), 
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Player/Result not found"))})})
-	
+
 	public List<Result> getMatchesByIdPlayer(@PathVariable int idPlayer) {
 		try {
 			return facade.readResultIdPlayer(idPlayer);
@@ -491,9 +491,9 @@ public class MatchController {
 	@Operation(summary = "Get all the Rounds of a Match", tags = "Match")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match returned successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}), 
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = ""))}),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match not found"))})})
-	
+
 	public List<Round> getRoundsFromMatch(@PathVariable int idMatch) {
 		Match match = null;
 
@@ -509,7 +509,7 @@ public class MatchController {
 	/**
 	 * -----------------------------------------deleteRound-----------------------------------------------------
 	 * Il seguente metodo elimina un round dato il suo id.
-	 * 
+	 *
 	 * @param idRound
 	 * @return ResponseEntity
 	 *         -----------------------------------------------------------------------------------------------------------------
@@ -518,9 +518,9 @@ public class MatchController {
 	@Operation(summary = "Delete a Round by its ID", tags = "Round")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Round deleted successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Round not found"))})})
-	
+
 	public ResponseEntity<String> deleteRound(@PathVariable int idRound) {
 		boolean deleted = false;
 		try {
@@ -538,7 +538,7 @@ public class MatchController {
 	/**
 	 * -----------------------------------------deleteMatch-----------------------------------------------------
 	 * Il seguente metodo elimina un match dato il suo id.
-	 * 
+	 *
 	 * @param idMatch
 	 * @return ResponseEntity
 	 *         -----------------------------------------------------------------------------------------------------------------
@@ -547,9 +547,9 @@ public class MatchController {
 	@Operation(summary = "Delete a Match by its ID", tags = "Match")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match deleted successfully "))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match not found"))})})
-	
+
 	public ResponseEntity<String> deleteMatch(@PathVariable int idMatch) {
 		boolean deleted = false;
 		try {
@@ -567,7 +567,7 @@ public class MatchController {
 	/**
 	 * -----------------------------------------deleteTestCase----------------------------------------------------------
 	 * Il seguente metodo elimina un TestCase dato il suo id.
-	 * 
+	 *
 	 * @param idTestCase
 	 * @return ResponseEntity
 	 *         -----------------------------------------------------------------------------------------------------------------
@@ -576,9 +576,9 @@ public class MatchController {
 	@Operation(summary = "Delete a TestCase by its ID", tags = "TestCase")
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCase deleted successfully"))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error."), 
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCase not found"))})})
-	
+
 	public ResponseEntity<String> deleteTestCase(@PathVariable int idTestCase) {
 		boolean deleted = false;
 

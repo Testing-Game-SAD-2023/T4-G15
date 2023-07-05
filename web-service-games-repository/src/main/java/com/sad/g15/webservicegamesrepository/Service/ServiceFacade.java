@@ -48,7 +48,7 @@ public class ServiceFacade {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	public Match createMatch(ArrayList<Integer> idPlayers, String scenario, int idRobot)
-			throws PlayerNotFoundException {
+			throws PlayerNotFoundException, RobotNotFoundException {
 
 		List<Result> results = new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class ServiceFacade {
 			try {
 				reservice.create(result);
 			} catch (Exception e) {
-				throw new PlayerNotFoundException("Player not in DB");
+				throw new PlayerNotFoundException("Player not found");
 			}
 
 			results.add(result);
@@ -72,7 +72,13 @@ public class ServiceFacade {
 		Round round = new Round();
 		rservice.setRoundStartDate(round);
 
-		rservice.setRoundRobot(round, robotService.readById(idRobot));
+		try{
+			rservice.setRoundRobot(round, robotService.readById(idRobot));
+		} catch (Exception e){
+			throw new RobotNotFoundException("Robot not found");
+		}
+
+
 		Round rsaved = rservice.create(round);
 
 		Match match = new Match();
