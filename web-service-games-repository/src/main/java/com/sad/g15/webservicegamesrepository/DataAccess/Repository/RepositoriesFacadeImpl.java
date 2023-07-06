@@ -213,6 +213,7 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
     public void populate(int type){
         if(type==0) playerRepository.populate();
         else if(type==1) robotRepository.populate();
+        else if(type==2) testClassRepository.populate();
     }
 
 }

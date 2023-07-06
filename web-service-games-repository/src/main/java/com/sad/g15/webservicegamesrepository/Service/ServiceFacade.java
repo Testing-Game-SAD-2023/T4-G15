@@ -467,14 +467,14 @@ public class ServiceFacade {
 		return reservice.update(dbresult);
 	}
 
-	public boolean deleteRoundById(int idRound) throws RoundNotFoundException {
+	public void deleteRoundById(int idRound) throws RoundNotFoundException {
 		try {
 			rservice.readById(idRound);
 		} catch (Exception e) {
 			throw new RoundNotFoundException("Round not found");
 		}
 
-		return rservice.deleteById(idRound);
+		rservice.deleteById(idRound);
 	}
 
 	public boolean deleteMatchById(int idMatch) throws MatchNotFoundException {
@@ -564,5 +564,6 @@ public class ServiceFacade {
 	public void populate(){
 		pservice.populate();
 		robotService.populate();
+		tcService.populate();
 	}
 }

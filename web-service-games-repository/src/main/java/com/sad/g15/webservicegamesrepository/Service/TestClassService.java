@@ -20,9 +20,7 @@ public class TestClassService {
         else throw new NullPointerException();
     }
 
-    /**
-     * Match match =  (Match) facade.findById(Match.class, idMatch).orElse(null);
-     * 		if (match!=null) return match;
-     * 		else throw new NullPointerException();
-     */
+    public void populate(){
+        facade.populate(2);
+    }
 }

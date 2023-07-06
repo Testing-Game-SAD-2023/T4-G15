@@ -41,7 +41,7 @@ class ServiceFacadeTest {
     }
 
     @Test
-    void createMatch() throws PlayerNotFoundException {
+    void createMatch() throws PlayerNotFoundException, RobotNotFoundException {
         // Mocking the dependencies
         String scenario = "Test scenario";
         Match match = new Match();

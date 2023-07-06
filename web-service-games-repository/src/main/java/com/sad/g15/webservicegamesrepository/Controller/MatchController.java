@@ -109,6 +109,17 @@ public class MatchController {
 	 */
 	@PutMapping(value = "/updateMatch/{idMatch}/addRound", consumes = "application/json")
 	@Operation(summary = "Add a Round to a specified Match", tags = "Round")
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Bisogna specificare ID del match per salvare il round (id di round sarà " +
+					"salvato in seguito), il robot_id deve essere passato all'interno del JSON " +
+					"Object, il resto dei parametri è opzionale (come visibile sopra).",
+			required = true,
+			content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = JsonNode.class),
+					examples = @ExampleObject(name = "Esempio di input", value = "{ \"robot\": { \"id\":1 } }")
+			)
+	)
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Round added to the specified Match with id: "))}),
             @ApiResponse(responseCode = "500", description = "Internal server error."),
@@ -260,7 +271,7 @@ public class MatchController {
 	 * campi vedere TestCasePlayer entity
 	 *
 	 * Bisogna specificare ID del match, quello di Round e il player che ha creato
-	 * il Test. Il resto dei dati riguarda i punteggi di coverage e viene passato
+	 * il Test. Il resto dei dati riguardante classe testata e i punteggi di coverage vengono passati
 	 * come JSON Object. Gli altri parametri come PathVariables.
 	 * 
 	 * @param idMatch,idRound,idPlayer,testCasePlayer
@@ -269,6 +280,15 @@ public class MatchController {
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCasePlayer/{idPlayer}")
 	@Operation(summary = "Add a TestCase of a Player to a specified Round", tags = "TestCase")
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Il resto dei dati riguardante classe testata e i punteggi di coverage vengono passati come JSON Object",
+			required = true,
+			content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = JsonNode.class),
+					examples = @ExampleObject(name = "Esempio di input", value = "{ \"TestedClass\":{ \"id\": 0}, \"totalResult\" : 12568, \"compilingResult\" : 1212}")
+			)
+	)
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCasePlayer added to the specified round with id: "))}),
             @ApiResponse(responseCode = "500", description = "Internal server error."),
@@ -309,6 +329,15 @@ public class MatchController {
 	 */
 	@PutMapping("/updateMatch/{idMatch}/updateRound/{idRound}/addTestCaseRobot")
 	@Operation(summary = "Add a TestCase of a Robot to a specified Round", tags = "TestCase")
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Il resto dei dati riguardante classe testata e i punteggi di coverage vengono passati come JSON Object",
+			required = true,
+			content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = JsonNode.class),
+					examples = @ExampleObject(name = "Esempio di input", value = "{ \"TestedClass\":{ \"id\": 0}, \"totalResult\" : 12568, \"compilingResult\" : 1212}")
+			)
+	)
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "TestCaseRobot added to the specified round with id: "))}),
             @ApiResponse(responseCode = "500", description = "Internal server error."),
@@ -522,17 +551,13 @@ public class MatchController {
             @ApiResponse(responseCode = "404", description = "Not Found.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Round not found"))})})
 
 	public ResponseEntity<String> deleteRound(@PathVariable int idRound) {
-		boolean deleted = false;
 		try {
-			deleted = facade.deleteRoundById(idRound);
+			facade.deleteRoundById(idRound);
 		} catch (RoundNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
-		if (deleted)
-			return ResponseEntity.status(HttpStatus.OK).body("Round deleted successfully");
-		else
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+		return ResponseEntity.status(HttpStatus.OK).body("Round deleted successfully");
 	}
 
 	/**
