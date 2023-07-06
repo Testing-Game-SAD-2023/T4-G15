@@ -208,7 +208,7 @@ public class MatchController {
 			content = @Content(
 					mediaType = "application/json",
 					schema = @Schema(implementation = JsonNode.class),
-					examples = @ExampleObject(name = "Esempio di input", value = "{ \"id\": 1, \"scenario\": \"scenario\", \"endDate\": \"2023-06-02T21:00:00\"")
+					examples = @ExampleObject(name = "Esempio di input", value = "{ \"id\": 1, \"scenario\": \"scenario\", \"endDate\": \"2023-06-02T21:00:00\"}")
 			)
 	)
 	@ApiResponses(value = {
