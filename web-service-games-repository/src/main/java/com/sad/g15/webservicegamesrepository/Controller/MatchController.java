@@ -64,7 +64,7 @@ public class MatchController {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = JsonNode.class),
-                    examples = @ExampleObject(name = "Esempio di input", value = "{\"idPlayers\": \"[1,2]\", \"scenario\": \"example_scenario\", \"idRobot\": \"1\"}")
+                    examples = @ExampleObject(name = "Esempio di input", value = "{\"idPlayers\": [\"1\",\"2\"], \"scenario\": \"example_scenario\", \"idRobot\": \"1\"}")
             )
     )
 	@ApiResponses(value = {
@@ -87,7 +87,8 @@ public class MatchController {
 		try {
 			matchsaved = facade.createMatch(idPlayers, scenario, idRobot);
 		} catch (PlayerNotFoundException | RobotNotFoundException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+			if(e.getMessage().equals("No players specified")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+			else throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body("Match added successfully with id:" + matchsaved.getId());
@@ -201,6 +202,15 @@ public class MatchController {
 	 */
 	@PutMapping(value = "/updateMatch", consumes = "application/json")
 	@Operation(summary = "Update a Match", tags = "Match")
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Nel JSON i parametri che si vogliono modificare come scenario (possibili parametri: Scenario, EndDate, Results)",
+			required = true,
+			content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = JsonNode.class),
+					examples = @ExampleObject(name = "Esempio di input", value = "{ \"id\": 1, \"scenario\": \"scenario\", \"endDate\": \"2023-06-02T21:00:00\"")
+			)
+	)
 	@ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The request has succeeded.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "Match updated successfully"))}),
             @ApiResponse(responseCode = "500", description = "Internal server error."),

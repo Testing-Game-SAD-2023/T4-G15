@@ -52,6 +52,8 @@ public class ServiceFacade {
 
 		List<Result> results = new ArrayList<>();
 
+		if(idPlayers.size()==0) throw new PlayerNotFoundException("No players specified");
+
 		// for each partecipante crea un result e salvalo
 		for (Integer i : idPlayers) {
 
