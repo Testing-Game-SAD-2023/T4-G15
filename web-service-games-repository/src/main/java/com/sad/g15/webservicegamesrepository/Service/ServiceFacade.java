@@ -57,12 +57,19 @@ public class ServiceFacade {
 		// for each partecipante crea un result e salvalo
 		for (Integer i : idPlayers) {
 
-			Player player = pservice.readById(i);
+			Player player = null;
+			try{
+				player = pservice.readById(i);
+			} catch (NullPointerException e){
+				throw new PlayerNotFoundException("Player with specified id: " + i + "does not exist");
+			}
+
 			Result result = new Result();
 
-			reservice.setResultPlayer(result, player);
+			//reservice.setResultPlayer(result, player);
 
 			try {
+				reservice.setResultPlayer(result, player);
 				reservice.create(result);
 			} catch (Exception e) {
 				throw new PlayerNotFoundException("Player not found");
@@ -205,7 +212,7 @@ public class ServiceFacade {
 	 * @return round updated
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
-	public Round updateRound(int idMatch, int idRound, LocalDateTime end_date) throws MatchNotFoundException {
+	public Round updateRound(int idMatch, int idRound, LocalDateTime end_date) throws MatchNotFoundException, RoundNotFoundException {
 
 		Match match = null;
 
@@ -218,6 +225,7 @@ public class ServiceFacade {
 		Predicate<? super Round> predicate = round -> round.getId() == idRound;
 		Round round = rservice.readM(match).stream().filter(predicate).findFirst().orElse(null);
 
+		if(round==null) throw new RoundNotFoundException("Round not found");
 		rservice.setRoundEndDate(round, end_date);
 
 		return rservice.update(round);
@@ -258,9 +266,12 @@ public class ServiceFacade {
 		if (dbround == null)
 			throw new RoundNotFoundException("The given match does not contain the given round!");
 
-		Player pbuff = pservice.readById(idPlayer);
-		if (pbuff == null)
+		Player pbuff = null;
+		try{
+			pbuff = pservice.readById(idPlayer);
+		} catch (NullPointerException e){
 			throw new PlayerNotFoundException("The given player does not exist!");
+		}
 
 		// Adesso verifichiamo se il player selezionato partecipa effettivamente al
 		// match selezionato

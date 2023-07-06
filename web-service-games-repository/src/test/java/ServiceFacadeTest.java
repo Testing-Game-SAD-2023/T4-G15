@@ -126,7 +126,7 @@ class ServiceFacadeTest {
     }
 
     @Test
-    public void testUpdateRound() throws MatchNotFoundException {
+    public void testUpdateRound() throws MatchNotFoundException, RoundNotFoundException {
         // Preparazione dei dati di test
         int idMatch = 123;
         int idRound = 456;

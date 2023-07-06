@@ -180,7 +180,7 @@ public class MatchController {
 
 		try {
 			facade.updateRound(idMatch, idRound, end_date);
-		} catch (MatchNotFoundException e) {
+		} catch (MatchNotFoundException | RoundNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Round updated successfully");
@@ -296,7 +296,7 @@ public class MatchController {
 			content = @Content(
 					mediaType = "application/json",
 					schema = @Schema(implementation = JsonNode.class),
-					examples = @ExampleObject(name = "Esempio di input", value = "{ \"TestedClass\":{ \"id\": 0}, \"totalResult\" : 12568, \"compilingResult\" : 1212}")
+					examples = @ExampleObject(name = "Esempio di input", value = "{ \"testedClass\":{ \"id\": 1}, \"totalResult\" : 12568, \"compilingResult\" : 1212}")
 			)
 	)
 	@ApiResponses(value = {
@@ -345,7 +345,7 @@ public class MatchController {
 			content = @Content(
 					mediaType = "application/json",
 					schema = @Schema(implementation = JsonNode.class),
-					examples = @ExampleObject(name = "Esempio di input", value = "{ \"TestedClass\":{ \"id\": 0}, \"totalResult\" : 12568, \"compilingResult\" : 1212}")
+					examples = @ExampleObject(name = "Esempio di input", value = "{ \"testedClass\":{ \"id\": 1}, \"totalResult\" : 12568, \"compilingResult\" : 1212}")
 			)
 	)
 	@ApiResponses(value = {
