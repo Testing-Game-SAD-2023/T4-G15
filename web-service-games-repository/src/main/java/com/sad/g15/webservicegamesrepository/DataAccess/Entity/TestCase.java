@@ -17,7 +17,6 @@ public class TestCase {
 		this.coverageBranchResult = coverageBranchResult;
 		this.coverageCBResult = coverageCBResult;
 		this.coverageExceptionResult = coverageExceptionResult;
-		this.idTestClass = idTestClass;
 		this.pathSourceCode = pathSourceCode;
 		this.pathReport = pathReport;
 		this.testedClass = testedClass;
@@ -38,7 +37,6 @@ public class TestCase {
 	private Long coverageBranchResult;
 	private Long coverageCBResult;
 	private Long coverageExceptionResult;
-	private int idTestClass;
 
 	private String pathSourceCode;
 	private String pathReport;
@@ -138,14 +136,6 @@ public class TestCase {
 		this.coverageExceptionResult = coverageExceptionResult;
 	}
 
-	public int getIdTestClass() {
-		return idTestClass;
-	}
-
-	public void setIdTestClass(int idTestClass) {
-		this.idTestClass = idTestClass;
-	}
-
 	public String getPathSourceCode() {
 		return pathSourceCode;
 	}
@@ -184,7 +174,6 @@ public class TestCase {
 				", coverageBranchResult=" + coverageBranchResult +
 				", coverageCBResult=" + coverageCBResult +
 				", coverageExceptionResult=" + coverageExceptionResult +
-				", idTestClass=" + idTestClass +
 				", pathSourceCode='" + pathSourceCode + '\'' +
 				", pathReport='" + pathReport + '\'' +
 				", testedClass=" + testedClass +

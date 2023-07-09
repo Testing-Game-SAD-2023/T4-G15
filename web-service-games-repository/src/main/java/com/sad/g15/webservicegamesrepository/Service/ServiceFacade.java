@@ -3,6 +3,7 @@ package com.sad.g15.webservicegamesrepository.Service;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RobotRepository;
 import com.sad.g15.webservicegamesrepository.Exceptions.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,13 +15,14 @@ import java.util.function.Predicate;
 public class ServiceFacade {
 
 	public ServiceFacade(MatchService mservice, RoundService rservice, ResultService reservice, PlayerService pservice,
-			TestCaseService tservice, RobotService robotService) {
+			TestCaseService tservice, RobotService robotService, TestClassService tcService) {
 		this.mservice = mservice;
 		this.rservice = rservice;
 		this.reservice = reservice;
 		this.pservice = pservice;
 		this.tservice = tservice;
 		this.robotService = robotService;
+		this.tcService = tcService;
 	}
 
 	private MatchService mservice;
@@ -29,6 +31,8 @@ public class ServiceFacade {
 	private PlayerService pservice;
 	private TestCaseService tservice;
 	private RobotService robotService;
+
+	private TestClassService tcService;
 
 	/**
 	 * ---------------------------createMatch---------------------------------------------------------------------------
@@ -44,22 +48,31 @@ public class ServiceFacade {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	public Match createMatch(ArrayList<Integer> idPlayers, String scenario, int idRobot)
-			throws PlayerNotFoundException {
+			throws PlayerNotFoundException, RobotNotFoundException {
 
 		List<Result> results = new ArrayList<>();
+
+		if(idPlayers.size()==0) throw new PlayerNotFoundException("No players specified");
 
 		// for each partecipante crea un result e salvalo
 		for (Integer i : idPlayers) {
 
-			Player player = pservice.readById(i);
+			Player player = null;
+			try{
+				player = pservice.readById(i);
+			} catch (NullPointerException e){
+				throw new PlayerNotFoundException("Player with specified id: " + i + "does not exist");
+			}
+
 			Result result = new Result();
 
-			reservice.setResultPlayer(result, player);
+			//reservice.setResultPlayer(result, player);
 
 			try {
+				reservice.setResultPlayer(result, player);
 				reservice.create(result);
 			} catch (Exception e) {
-				throw new PlayerNotFoundException("Player not in DB");
+				throw new PlayerNotFoundException("Player not found");
 			}
 
 			results.add(result);
@@ -68,7 +81,13 @@ public class ServiceFacade {
 		Round round = new Round();
 		rservice.setRoundStartDate(round);
 
-		rservice.setRoundRobot(round, robotService.readById(idRobot));
+		try{
+			rservice.setRoundRobot(round, robotService.readById(idRobot));
+		} catch (Exception e){
+			throw new RobotNotFoundException("Robot not found");
+		}
+
+
 		Round rsaved = rservice.create(round);
 
 		Match match = new Match();
@@ -101,6 +120,48 @@ public class ServiceFacade {
 		}
 
 		return match;
+	}
+
+	/**
+	 * -------------------------------------------readSMatch------------------------------------------------------------
+	 * Legge dato in ingresso un id round, restituisce il riferimento per quel
+	 * round.
+	 *
+	 * @param idRound
+	 * @return round
+	 *         -----------------------------------------------------------------------------------------------------------------
+	 */
+	public Round readSRound(int idRound) throws RoundNotFoundException{
+		Round round = null;
+
+		try {
+			round = rservice.readById(idRound);
+		} catch (Exception e){
+			throw new RoundNotFoundException("Round not found");
+		}
+
+		return round;
+	}
+
+	/**
+	 * -------------------------------------------readSMatch------------------------------------------------------------
+	 * Legge dato in ingresso un id TestCase, restituisce il riferimento per quel
+	 * TestCase.
+	 *
+	 * @param idTestCase
+	 * @return TestCase
+	 *         -----------------------------------------------------------------------------------------------------------------
+	 */
+	public TestCase readSTest(int idTestCase) throws TestNotFoundException{
+		TestCase test = null;
+
+		try {
+			test = tservice.readById(idTestCase);
+		} catch (Exception e){
+			throw new TestNotFoundException("Test not found");
+		}
+
+		return test;
 	}
 
 	/**
@@ -151,7 +212,7 @@ public class ServiceFacade {
 	 * @return round updated
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
-	public Round updateRound(int idMatch, int idRound, LocalDateTime end_date) throws MatchNotFoundException {
+	public Round updateRound(int idMatch, int idRound, LocalDateTime end_date) throws MatchNotFoundException, RoundNotFoundException {
 
 		Match match = null;
 
@@ -164,6 +225,7 @@ public class ServiceFacade {
 		Predicate<? super Round> predicate = round -> round.getId() == idRound;
 		Round round = rservice.readM(match).stream().filter(predicate).findFirst().orElse(null);
 
+		if(round==null) throw new RoundNotFoundException("Round not found");
 		rservice.setRoundEndDate(round, end_date);
 
 		return rservice.update(round);
@@ -182,7 +244,7 @@ public class ServiceFacade {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	public Round addTestCasePlayer(int idMatch, int idRound, int idPlayer, TestCasePlayer testCasePlayer)
-			throws MatchNotFoundException, RoundNotFoundException, PlayerNotFoundException {
+			throws MatchNotFoundException, RoundNotFoundException, PlayerNotFoundException, TestNotFoundException {
 
 		// Usiamo l'id passato come parametro per prelevare il match dal db
 		Match dbmatch = null;
@@ -204,9 +266,12 @@ public class ServiceFacade {
 		if (dbround == null)
 			throw new RoundNotFoundException("The given match does not contain the given round!");
 
-		Player pbuff = pservice.readById(idPlayer);
-		if (pbuff == null)
+		Player pbuff = null;
+		try{
+			pbuff = pservice.readById(idPlayer);
+		} catch (NullPointerException e){
 			throw new PlayerNotFoundException("The given player does not exist!");
+		}
 
 		// Adesso verifichiamo se il player selezionato partecipa effettivamente al
 		// match selezionato
@@ -227,6 +292,19 @@ public class ServiceFacade {
 		 */
 
 		testCasePlayer.setPlayer(pbuff);
+
+
+		TestClass testClassBuff = null;
+
+		int test_class_id = testCasePlayer.getTestedClass().getId();
+		try {
+			testClassBuff = tcService.readById(test_class_id);
+		} catch (Exception e){
+			throw new TestNotFoundException("TestClass specified not found");
+		}
+
+		testCasePlayer.setTestedClass(testClassBuff);
+
 		TestCasePlayer tbuff = (TestCasePlayer) tservice.create(testCasePlayer);
 		rservice.AddTestCasePlayer(dbround, tbuff);
 
@@ -246,7 +324,7 @@ public class ServiceFacade {
 	 *         -----------------------------------------------------------------------------------------------------------------
 	 */
 	public Round createTestCaseRobot(int idMatch, int idRound, TestCaseRobot testCaseRobot)
-			throws MatchNotFoundException, RoundNotFoundException {
+			throws MatchNotFoundException, RoundNotFoundException, TestNotFoundException {
 
 		// Usiamo l'id passato come parametro per prelevare il match dal db
 		Match dbmatch = null;
@@ -273,6 +351,17 @@ public class ServiceFacade {
 		}
 		if (dbround == null)
 			throw new RoundNotFoundException("The given match does not contain the given round!");
+
+		TestClass testClassBuff = null;
+
+		int test_class_id = testCaseRobot.getTestedClass().getId();
+		try {
+			testClassBuff = tcService.readById(test_class_id);
+		} catch (Exception e){
+			throw new TestNotFoundException("TestClass specified not found");
+		}
+
+		testCaseRobot.setTestedClass(testClassBuff);
 
 		TestCaseRobot tbuff = (TestCaseRobot) tservice.create(testCaseRobot);
 		rservice.AddTestCaseRobot(dbround, tbuff);
@@ -355,14 +444,50 @@ public class ServiceFacade {
 		return mservice.update(dbmatch);
 	}
 
-	public boolean deleteRoundById(int idRound) throws RoundNotFoundException {
+	public Result updateResult(int idMatch, int idPlayer, long scoreMatch, String outcome) throws MatchNotFoundException, PlayerNotFoundException, ResultNotFoundException {
+		Match dbmatch = null;
+		try {
+			dbmatch = mservice.readSById(idMatch);
+		} catch (Exception e) {
+			throw new MatchNotFoundException();
+		}
+
+		Player dbplayer = null;
+		try {
+			dbplayer = pservice.readById(idPlayer);
+		} catch (Exception e) {
+			throw new PlayerNotFoundException("Given Player not found");
+		}
+
+		Result dbresult = null;
+		try {
+			//dbresult = (Result) reservice.readResultsByMatch(dbmatch).stream().filter(result -> result.getPlayer().getId()==idPlayer);
+
+			for (Result r : reservice.readResultsByMatch(dbmatch)) {
+				if(r.getPlayer().getId()==idPlayer) {
+					dbresult = r;
+					break;
+				}
+			}
+
+			dbresult.setScoreMatch(scoreMatch);
+			dbresult.setOutcome(outcome);
+
+		} catch (Exception e) {
+			throw new ResultNotFoundException("Result not found");
+		}
+
+		return reservice.update(dbresult);
+	}
+
+	public void deleteRoundById(int idRound) throws RoundNotFoundException {
 		try {
 			rservice.readById(idRound);
 		} catch (Exception e) {
 			throw new RoundNotFoundException("Round not found");
 		}
 
-		return rservice.deleteById(idRound);
+		rservice.deleteById(idRound);
 	}
 
 	public boolean deleteMatchById(int idMatch) throws MatchNotFoundException {
@@ -434,6 +559,16 @@ public class ServiceFacade {
 		return testCasesOut;
 	}
 
+
+	public List<Integer> readMTestCasesFromTestClass(int idTestClass) throws TestNotFoundException{
+		List<Integer> out = new ArrayList<Integer>();
+		out.addAll(tservice.getTestCasesPlayerFromTestClass(idTestClass));
+		out.addAll(tservice.getTestCasesRobotFromTestClass(idTestClass));
+
+		if(out.size()==0) throw new TestNotFoundException("No TestCases associated with the given TestClass");
+		else return out;
+	}
+
 	public boolean deleteTestCaseById(int idTestCase) throws TestNotFoundException {
 		if(tservice.deleteTestCase(idTestCase)==0) throw new TestNotFoundException("Test not found");
 		else return true;
@@ -442,5 +577,6 @@ public class ServiceFacade {
 	public void populate(){
 		pservice.populate();
 		robotService.populate();
+		tcService.populate();
 	}
 }

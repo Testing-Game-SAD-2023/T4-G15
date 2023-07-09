@@ -13,7 +13,9 @@ public class RobotService {
     private final RepositoriesFacade facade;
 
     public Robot readById(int idRobot){
-        return (Robot) facade.getReferenceById(Robot.class, idRobot);
+        Robot robot = (Robot) facade.findById(Robot.class, idRobot).orElse(null);
+        if(robot!=null) return robot;
+        else throw new NullPointerException();
     }
 
     public void populate(){

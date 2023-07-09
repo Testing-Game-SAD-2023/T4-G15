@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCase;
 
 public interface RepositoriesFacade {
 	
@@ -36,4 +37,11 @@ public interface RepositoriesFacade {
 	 * @param type type of element to insert into db: 0 if player, 1 if robot
 	 */
 	void populate(int type);
+
+	void deleteTestCaseRef(int idTestCase);
+
+	TestCase getTestCaseById(int id) throws Exception;
+
+	List<Integer> getTestCasesRobotFromTestClass(int idTestClass);
+	List<Integer> getTestCasesPlayerFromTestClass(int idTestClass);
 }

@@ -1,9 +1,12 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -15,4 +18,9 @@ public interface RoundRepository extends JpaRepository<Round, Integer>{
             , nativeQuery = true)
     public List<Round> findByMatchId(int id);
 
+    @Transactional
+    @Modifying(clearAutomatically=true)
+    @Nullable
+    @Query(value = "delete from match_history_rounds mhr where mhr.rounds_id = ?1", nativeQuery = true)
+    void deleteAssociation(int id);
 }

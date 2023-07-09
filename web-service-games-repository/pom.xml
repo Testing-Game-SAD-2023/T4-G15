@@ -65,9 +65,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations-jakarta</artifactId>
+			<version>2.2.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>
+		<finalName>games-repository</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -12,7 +12,9 @@ import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 public class RepositoriesFacadeImpl implements RepositoriesFacade{
 
 	public RepositoriesFacadeImpl(MatchRepository matchRepository, PlayerRepository playerRepository,
-                                  RoundRepository roundRepository, TestCaseRepository testCaseRepository, ResultRepository resultRepository, RobotRepository robotRepository) {
+                                  RoundRepository roundRepository, TestCaseRepository testCaseRepository,
+                                  ResultRepository resultRepository, RobotRepository robotRepository,
+                                  TestClassRepository testClassRepository) {
 		super();
 		this.matchRepository = matchRepository;
 		this.playerRepository = playerRepository;
@@ -20,6 +22,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 		this.testCaseRepository = testCaseRepository;
 		this.resultRepository = resultRepository;
         this.robotRepository = robotRepository;
+        this.testClassRepository = testClassRepository;
+
     }
 
 	@Autowired
@@ -29,6 +33,7 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 	private final TestCaseRepository testCaseRepository;
 	private final ResultRepository resultRepository;
     private final RobotRepository robotRepository;
+    private final TestClassRepository testClassRepository;
 
 	@Override
 	public Object save(Object entity) {
@@ -63,6 +68,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             return testCaseRepository.findById(id).map(Function.identity());
         } else if (type.equals(Robot.class)) {
             return robotRepository.findById(id).map(Function.identity());
+        } else if (type.equals(TestClass.class)) {
+            return testClassRepository.findById(id).map(Function.identity());
         }
 		
         return Optional.empty();
@@ -82,6 +89,8 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
             return testCaseRepository.getReferenceById(id);
         } else if (entityType.equals(Robot.class)) {
             return robotRepository.getReferenceById(id);
+        } else if (entityType.equals(TestClass.class)) {
+            return testClassRepository.getReferenceById(id);
         }
         
         return null;
@@ -115,6 +124,7 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
         } else if (entityType.equals(Result.class)) {
             resultRepository.deleteById(id);
         } else if (entityType.equals(Round.class)) {
+            roundRepository.deleteAssociation(id);
             roundRepository.deleteById(id);
         } else if (entityType.equals(TestCase.class)) {
             testCaseRepository.deleteById(id);
@@ -161,6 +171,29 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
 	}
 
     @Override
+    public TestCase getTestCaseById(int id) throws Exception{
+        TestCasePlayer tplayer = null;
+        TestCaseRobot trobot = null;
+
+        tplayer = testCaseRepository.getTestCasePlayerById(id);
+        if(tplayer==null){
+            trobot = testCaseRepository.getTestCaseRobotById(id);
+            if(trobot==null) throw new Exception("No TestCase found");
+            else return trobot;
+        } else return tplayer;
+    }
+
+    @Override
+    public List<Integer> getTestCasesRobotFromTestClass(int idTestClass) {
+        return testCaseRepository.getTestCasesRobotFromTestClass(idTestClass);
+    }
+
+    @Override
+    public List<Integer> getTestCasesPlayerFromTestClass(int idTestClass) {
+        return testCaseRepository.getTestCasesPlayerFromTestClass(idTestClass);
+    }
+
+    @Override
     public int deleteTestCase(int idTestCase) {
         int i=0,j=0;
 
@@ -171,9 +204,16 @@ public class RepositoriesFacadeImpl implements RepositoriesFacade{
     }
 
     @Override
+    public void deleteTestCaseRef(int idTestCase){
+        testCaseRepository.deleteTestCasePlayerRef(idTestCase);
+        testCaseRepository.deleteTestCaseRobotRef(idTestCase);
+    }
+
+    @Override
     public void populate(int type){
         if(type==0) playerRepository.populate();
         else if(type==1) robotRepository.populate();
+        else if(type==2) testClassRepository.populate();
     }
 
 }

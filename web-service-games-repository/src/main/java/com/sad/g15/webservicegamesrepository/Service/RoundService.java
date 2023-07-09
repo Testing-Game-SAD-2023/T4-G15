@@ -3,6 +3,7 @@ package com.sad.g15.webservicegamesrepository.Service;
 import com.sad.g15.webservicegamesrepository.DataAccess.Entity.*;
 import com.sad.g15.webservicegamesrepository.DataAccess.Repository.RepositoriesFacade;
 
+import com.sad.g15.webservicegamesrepository.Exceptions.RoundNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
@@ -55,18 +56,15 @@ public class RoundService {
 	}
 
 	public Round readById(int id) {
-		return (Round) facade.getReferenceById(Round.class, id);
+		Round round = null;
+		round = (Round) facade.findById(Round.class, id).orElse(null);
+
+		if(round!=null) return round;
+		else throw new NullPointerException();
 	}
 
-	public boolean deleteById(int idRound) {
-
-		if (facade.existsById(Round.class, idRound)) {
-			facade.deleteById(Round.class, idRound);
-			return true;
-		}
-
-		return false;
-
+	public void deleteById(int idRound) {
+		facade.deleteById(Round.class, idRound);
 	}
 	
 	public void setRoundStartDate(Round round) {

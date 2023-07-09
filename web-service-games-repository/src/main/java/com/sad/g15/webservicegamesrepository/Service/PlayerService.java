@@ -20,17 +20,10 @@ public class PlayerService {
         return (Player) facade.save(player);
     }
 
-    public Player read(Player player) {
-    	Optional<Object> playerFound = facade.findById(Player.class, player.getId());
-		if(playerFound.isPresent()) {
-			return (Player) playerFound.get();
-		} else {
-			throw new EntityNotFoundException("Player not found");
-		}
-    }
-
     public Player readById(int id){
-        return (Player) facade.getReferenceById(Player.class, id);
+        Player player = (Player) facade.findById(Player.class, id).orElse(null);
+        if(player!=null) return player;
+        else throw new NullPointerException();
     }
 
     public void populate(){

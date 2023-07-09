@@ -24,7 +24,31 @@ public class TestClass {
     private int id;
     private String levelDifficulty;
     private String path;
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLevelDifficulty() {
+        return levelDifficulty;
+    }
+
+    public void setLevelDifficulty(String levelDifficulty) {
+        this.levelDifficulty = levelDifficulty;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @Override
     public String toString() {
         return "TestClass{" +

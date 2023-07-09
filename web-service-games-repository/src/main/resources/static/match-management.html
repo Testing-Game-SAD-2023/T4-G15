@@ -267,7 +267,7 @@
                 var idTestCasePlayer = $('#deleteTestCasePlayerIdTestCasePlayer').val();
                 $.ajax({
                     type: 'DELETE',
-                    url: '/updateMatch/' + idMatch + '/updateRound/' + idRound + '/deleteTestCasePlayer/' + idTestCasePlayer,
+                    url: '/deleteTestCase/' + idTestCasePlayer,
                     success: function(response) {
                         alert(response);
                     },
