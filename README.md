@@ -4,11 +4,12 @@ Repository for the Software Architecture Design (SAD) course project.
 
 Our progress and current iteration objectives can be seen [here](https://trello.com/b/fC4JYB2y/task-4) on our trello board for the project.
 
-*THE FINAL REPORT IS AVAILABLE [HERE](https://github.com/Testing-Game-SAD-2023/T4-G15/blob/Version-1.0/doc/Fourth%20Iteration/RelazioneFinaleSAD_T4_G15.pdf)*
+*THE FINAL REPORT IS AVAILABLE [HERE](https://github.com/Testing-Game-SAD-2023/T4-G15/blob/main/doc/Fourth%20Iteration/RelazioneFinaleSAD_T4_G15.pdf)*
 
 In the doc Directory we have all the UML documentation files:
 - The Directory **First Iteration** contains all of the files related to the Inception Phase
 - The Directory **Second Iteration** contains all the files created from 01/05 to 09/05 2023
+- The Directory **Fourth Iteration** contains all the finals doc files
 
 # Architecture Outline
 
