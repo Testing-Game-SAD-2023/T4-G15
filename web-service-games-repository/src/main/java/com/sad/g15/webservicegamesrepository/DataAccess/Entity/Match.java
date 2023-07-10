@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 
 
 //This Class is also named StoricoPartita in the doc Entity Class Diagram
-@Entity(name = "MatchHistory")
+@Entity(name = "Match")
 @Table(name = "matchHistory") // unique constraint go in here
 public class Match {
 
