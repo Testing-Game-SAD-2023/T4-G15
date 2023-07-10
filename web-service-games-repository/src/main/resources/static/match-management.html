@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Match Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #DED1E9;
+        }
+        
+        hr {
+            border: 1px solid #645E70;
+            height: 5px;
+            background-color: #645E70;
+            margin-bottom: 20px;
+            border-radius: 20px;
+        }
+
+        h1 {
+        	color: #645E70;
+        	text-align: center;
+        	margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #645E69;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #C5BACF;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #645E70;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #645E70;
+            border-radius: 4px;
+        }
+
+        .form-group button[type="submit"] {
+            display: block;
+            width: 150px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #645E69;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button[type="submit"]:hover {
+            background-color: #645E69;
+        }
+
+		.button{
+			display: block;
+			width: 150px;
+			margin: 0 auto;
+			padding: 10px;
+			background-color: #645E69;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		.button:hover{
+			background-color: #645E69;
+		}
+        
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Add Match
+            $('#addMatchForm').submit(function(e) {
+                e.preventDefault();
+                
+                var idPlayers = $('#idPlayers').val().split(',').map(function(playerId) {
+                	return parseInt(playerId.trim(), 10);
+                });
+                var scenario = $('#scenario').val();
+                var idRobot = parseInt($('#idRobot').val(), 10);
+                
+                var data = { 
+                		"idPlayers": idPlayers,
+                		"scenario": scenario,
+                		"idRobot": idRobot
+               		};
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '/addMatch',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error adding match');
+                    }
+                });
+            });
+
+            // Add Round
+            $('#addRoundForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#idMatch').val();
+                var idRobot = $('#idRobot').val();
+                var data = JSON.stringify({ "idRobot": idRobot });
+                $.ajax({
+                    type: 'PUT',
+                    url: '/updateMatch/' + idMatch + '/addRound',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error adding round');
+                    }
+                });
+            });
+
+            // Update Round
+            $('#updateRoundForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#updateRoundIdMatch').val();
+                var idRound = $('#updateRoundIdRound').val();
+                var idRobot = $('#updateRoundIdRobot').val();
+                var endDate = $('#updateMatchEndDate').val();
+                var data = JSON.stringify({ "idRound": idRound, "idRobot": idRobot, "endDate": endDate });
+                $.ajax({
+                    type: 'PUT',
+                    url: '/updateMatch/' + idMatch + '/updateRound',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error updating round');
+                    }
+                });
+            });
+
+            // Update Match
+            $('#updateMatchForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#updateMatchId').val();
+                var scenario = $('#updateMatchScenario').val();
+                var endDate = $('#updateMatchEndDate').val();
+                var results = [{ "id": 1, "outcome": "sconfitta" }]; // Modify according to your needs
+                var data = JSON.stringify({ "id": idMatch, "scenario": scenario, "endDate": endDate, "results": results });
+                $.ajax({
+                    type: 'PUT',
+                    url: '/updateMatch/' + idMatch,
+                    contentType: 'application/json',
+                    data: data,
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error updating match');
+                    }
+                });
+            });
+
+            // Add TestCasePlayer
+            $('#addTestCasePlayerForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#addTestCasePlayerIdMatch').val();
+                var idRound = $('#addTestCasePlayerIdRound').val();
+                var idPlayer = $('#addTestCasePlayerIdPlayer').val();
+                var success = $('#addTestCasePlayerSuccess').val();
+                var data = JSON.stringify({ "idPlayer": idPlayer, "success": success });
+                $.ajax({
+                    type: 'PUT',
+                    url: '/updateMatch/' + idMatch + '/updateRound/' + idRound + '/addTestCasePlayer',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error adding test case player');
+                    }
+                });
+            });
+         
+         // Get Match By ID
+            $('#getSingleMatchForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#getSingleMatchId').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/getSingleMatch/' + idMatch,
+                    success: function(response) {
+                    	var formattedResponse = JSON.stringify(response, null, 4);
+                    	$('#singleMatchResult code').text(formattedResponse);
+                    	hljs.highlightBlock($('#singleMatchResult code')[0]);
+                    },
+                    error: function() {
+                    	$('#singleMatchResult code').text('Error retrieving single match');
+                    }
+                });
+            });
+         
+         // Get All Rounds For a Match
+            $('#getAllRoundsForMatchForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#getAllRoundsForMatchId').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/getSingleMatch/' + idMatch + "/rounds",
+                    success: function(response) {
+                        alert('All Rounds for Match:\n' + JSON.stringify(response));
+                    },
+                    error: function() {
+                        alert('Error getting rounds for match');
+                    }
+                });
+            });
+         
+         	// Delete Round
+            $('#deleteRoundForm').submit(function(e) {
+                e.preventDefault();
+                var idRound = $('#deleteRoundId').val();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/deleteRound/' + idRound,
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error deleting round');
+                    }
+                });
+            });
+
+            // Delete TestCasePlayer
+            $('#deleteTestCasePlayerForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#deleteTestCasePlayerIdMatch').val();
+                var idRound = $('#deleteTestCasePlayerIdRound').val();
+                var idTestCasePlayer = $('#deleteTestCasePlayerIdTestCasePlayer').val();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/deleteTestCase/' + idTestCasePlayer,
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error deleting test case player');
+                    }
+                });
+            });
+            
+         // Get All Test Cases for a Round
+            $('#getAllTestCasesForRoundForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#getAllTestCasesForRoundMatchId').val();
+                var idRound = $('#getAllTestCasesForRoundRoundId').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/getSingleMatch/' + idMatch + '/getTestCasesByRound' + idRound,
+                    success: function(response) {
+                        alert('All TestCases for Round:\n' + JSON.stringify(response));
+                    },
+                    error: function() {
+                        alert('Error getting TestCasePlayers for round');
+                    }
+                });
+            });
+
+
+            // Delete Match
+            $('#deleteMatchForm').submit(function(e) {
+                e.preventDefault();
+                var idMatch = $('#deleteMatchId').val();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/deleteMatch/' + idMatch,
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error deleting match');
+                    }
+                });
+            });
+        });
+
+		function populate() {
+			$.ajax({
+				type: 'PUT',
+				url: '/populate',
+				success: function(response) {
+					alert(response);
+				},
+				error: function() {
+					alert('Error populating');
+				}
+			});
+		}
+    </script>
+</head>
+<body>
+    <h1>Match Management</h1>
+    <hr>
+
+	<button id="populate" class="button" onclick="populate()">Populate</button>
+
+
+    <h2>Add Match</h2>
+    <form id="addMatchForm">
+    	<div class="form-group">
+        	<label for="idPlayers">Player IDs (comma-separated):</label>
+        	<input type="text" id="idPlayers" name="idPlayers">
+        </div>
+        <div class="form-group">
+        	<label for="scenario">Scenario:</label>
+        	<input type="text" id="scenario" name="scenario">
+       	</div>
+       	<div class="form-group">
+        	<label for="idRobot">Robot ID:</label>
+        	<input type="text" id="idRobot" name="idRobot">
+       	</div>
+       	<div class="form-group">
+        	<button type="submit">Add Match</button>
+        </div>
+    </form>
+
+    <h2>Add Round</h2>
+    <form id="addRoundForm">
+    	<div class="form-group">
+        	<label for="idMatch">Match ID:</label>
+        	<input type="text" id="idMatch" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="idRobot">Robot ID:</label>
+        	<input type="text" id="idRobot" required>
+       	</div>
+       	<div class="form-group">
+        	<button type="submit">Add Round</button>
+       	</div>
+    </form>
+
+    <h2>Update Round</h2>
+    <form id="updateRoundForm">
+    	<div class="form-group">
+        	<label for="updateRoundIdMatch">Match ID:</label>
+        	<input type="text" id="updateRoundIdMatch" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="updateRoundIdRound">Round ID:</label>
+        	<input type="text" id="updateRoundIdRound" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="updateRoundIdRobot">Robot ID:</label>
+       		<input type="text" id="updateRoundIdRobot" required>
+     	</div>	
+   		<div class="form-group">
+        	<button type="submit">Update Round</button>
+       	</div>
+    </form>
+
+    <h2>Update Match</h2>
+    <form id="updateMatchForm">
+    	<div class="form-group">
+        	<label for="updateMatchId">Match ID:</label>
+        	<input type="text" id="updateMatchId" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="updateMatchScenario">Scenario:</label>
+        	<input type="text" id="updateMatchScenario" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="updateMatchEndDate">End Date:</label>
+        	<input type="text" id="updateMatchEndDate" required>
+       	</div>
+       	<div class="form-group">
+        	<button type="submit">Update Match</button>
+       	</div>
+    </form>
+
+    <h2>Add TestCasePlayer</h2>
+    <form id="addTestCasePlayerForm">
+    	<div class="form-group">
+        	<label for="addTestCasePlayerIdMatch">Match ID:</label>
+        	<input type="text" id="addTestCasePlayerIdMatch" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="addTestCasePlayerIdRound">Round ID:</label>
+        	<input type="text" id="addTestCasePlayerIdRound" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="addTestCasePlayerIdPlayer">Player ID:</label>
+        	<input type="text" id="addTestCasePlayerIdPlayer" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="addTestCasePlayerSuccess">Success:</label>
+        	<input type="text" id="addTestCasePlayerSuccess" required>
+       	</div>
+       	<div class="form-group">
+        	<button type="submit">Add TestCasePlayer</button>
+       	</div>
+    </form>
+
+    <h2>Delete TestCasePlayer</h2>
+    <form id="deleteTestCasePlayerForm">
+    	<div class="form-group">
+        	<label for="deleteTestCasePlayerIdMatch">Match ID:</label>
+        	<input type="text" id="deleteTestCasePlayerIdMatch" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="deleteTestCasePlayerIdRound">Round ID:</label>
+        	<input type="text" id="deleteTestCasePlayerIdRound" required>
+       	</div>
+       	<div class="form-group">
+        	<label for="deleteTestCasePlayerIdTestCasePlayer">TestCasePlayer ID:</label>
+        	<input type="text" id="deleteTestCasePlayerIdTestCasePlayer" required>
+       	</div>
+       	<div class="form-group">
+        	<button type="submit">Delete TestCasePlayer</button>
+       	</div>
+    </form>
+    
+
+<h2>Get Single Match By ID</h2>
+<form id="getSingleMatchForm">
+	<div class="form-group">
+    	<label for="getSingleMatchId">Match ID:</label>
+    	<input type="text" id="getSingleMatchId" name="getSingleMatchId">
+   	</div>
+   	<div class="form-group">
+    	<button type="submit">Get Match!</button>
+   	</div>
+</form>
+<pre id="singleMatchResult"><code></code></pre>
+
+<h2>Get All Rounds for a Match</h2>
+<form id="getAllRoundsForMatchForm">
+	<div class="form-group">
+    	<label for="matchIdForRounds">Match ID:</label>
+    	<input type="text" id="matchIdForRounds" required>
+   	</div>
+   	<div class="form-group">
+    	<button type="submit">Get All Rounds for a Match</button>
+   	</div>
+</form>
+<pre><code id="getAllRoundsForMatchResponse"></code></pre>
+
+<h2>Get All TestCases for a Round</h2>
+<form id="getAllTestCasesForRoundForm">
+	<div class="form-group">
+    	<label for="matchIdForTestCasePlayers">Match ID:</label>
+    	<input type="text" id="matchIdForTestCasePlayers" required>
+   	</div>
+   	<div class="form-group">
+    	<label for="roundIdForTestCasePlayers">Round ID:</label>
+    	<input type="text" id="roundIdForTestCasePlayers" required>
+   	</div>
+   	<div class="form-group">
+    	<button type="submit">Get All TestCases for a Round</button>
+   	</div>
+</form>
+<pre><code id="getAllTestCasesForRoundResponse"></code></pre>
+
+<h2>Delete Match</h2>
+<form id="deleteMatchForm">
+	<div class="form-group">
+    	<label for="deleteMatchId">Match ID:</label>
+    	<input type="text" id="deleteMatchId" required>
+   	</div>
+   	<div class="form-group">
+    	<button type="submit">Delete Match</button>
+   	</div>
+</form>
+<pre><code id="deleteMatchResponse"></code></pre>
+
+<h2>Delete Round</h2>
+<form id="deleteRoundForm">
+	<div class="form-group">
+    	<label for="deleteRoundId">Round ID:</label>
+    	<input type="text" id="deleteRoundId" required>
+   	</div>
+   	<div class="form-group">
+    	<button type="submit">Delete Round</button>
+   	</div>
+</form>
+<pre><code id="deleteRoundResponse"></code></pre>
+
+<h2>Delete TestCasePlayer</h2>
+<form id="deleteTestCasePlayerForm">
+	<div class="form-group">
+    	<label for="deleteTestCasePlayerMatchId">Match ID:</label>
+    	<input type="text" id="deleteTestCasePlayerMatchId" required>
+   	</div>
+   	<div class="form-group">
+    	<label for="deleteTestCasePlayerRoundId">Round ID:</label>
+    	<input type="text" id="deleteTestCasePlayerRoundId" required>
+   	</div>
+   	<div class="form-group">
+    	<label for="deleteTestCasePlayerId">TestCasePlayer ID:</label>
+    	<input type="text" id="deleteTestCasePlayerId" required>
+   	</div>
+   	<div class="form-group">
+    	<button type="submit">Delete TestCasePlayer</button>
+   	</div>
+</form>
+<pre><code id="deleteTestCasePlayerResponse"></code></pre>
+    
+</body>
+</html>

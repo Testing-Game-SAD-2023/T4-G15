@@ -2,36 +2,10 @@ package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
 import jakarta.persistence.*;
 
-@Entity (name ="TestCase")
-@Table	(name ="testCase")
+@MappedSuperclass
 public class TestCase {
 
-	@Id
-	@SequenceGenerator(
-			name = "testCase_sequence",
-			sequenceName = "testCase_sequence",
-			allocationSize = 1
-	)
-	@GeneratedValue(
-			strategy = GenerationType.SEQUENCE,
-			generator = "testCase_sequence"
-	)
-	private int id;
-	private Long totalResult;
-	private Long compilingResult;
-	private Long coverageMNEResult;
-	private Long coverageMethodResult;
-	private Long coverageWMResult;
-	private Long coverageLineResult;
-	private Long coverageOutputResult;
-	private Long coverageBranchResult;
-	private Long coverageCBResult;
-	private Long coverageExceptionResult;
-	private int idTestClass;
-
-	public TestCase(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult,
-					Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult,
-					Long coverageCBResult, Long coverageExceptionResult, int idTestClass) {
+	public TestCase(int id, Long totalResult, Long compilingResult, Long coverageMNEResult, Long coverageMethodResult, Long coverageWMResult, Long coverageLineResult, Long coverageOutputResult, Long coverageBranchResult, Long coverageCBResult, Long coverageExceptionResult, int idTestClass, String pathSourceCode, String pathReport, TestClass testedClass) {
 		this.id = id;
 		this.totalResult = totalResult;
 		this.compilingResult = compilingResult;
@@ -43,7 +17,35 @@ public class TestCase {
 		this.coverageBranchResult = coverageBranchResult;
 		this.coverageCBResult = coverageCBResult;
 		this.coverageExceptionResult = coverageExceptionResult;
-		this.idTestClass = idTestClass;
+		this.pathSourceCode = pathSourceCode;
+		this.pathReport = pathReport;
+		this.testedClass = testedClass;
+	}
+
+	@Id
+	@SequenceGenerator(name = "testCase_sequence", sequenceName = "testCase_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "testCase_sequence")
+	private int id;
+
+	private Long totalResult;
+	private Long compilingResult;
+	private Long coverageMNEResult;
+	private Long coverageMethodResult;
+	private Long coverageWMResult;
+	private Long coverageLineResult;
+	private Long coverageOutputResult;
+	private Long coverageBranchResult;
+	private Long coverageCBResult;
+	private Long coverageExceptionResult;
+
+	private String pathSourceCode;
+	private String pathReport;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	private TestClass testedClass;
+
+	public TestCase() {
+
 	}
 
 	public int getId() {
@@ -134,22 +136,47 @@ public class TestCase {
 		this.coverageExceptionResult = coverageExceptionResult;
 	}
 
-	public int getIdTestClass() {
-		return idTestClass;
+	public String getPathSourceCode() {
+		return pathSourceCode;
 	}
 
-	public void setIdTestClass(int idTestClass) {
-		this.idTestClass = idTestClass;
+	public void setPathSourceCode(String pathSourceCode) {
+		this.pathSourceCode = pathSourceCode;
+	}
+
+	public String getPathReport() {
+		return pathReport;
+	}
+
+	public void setPathReport(String pathReport) {
+		this.pathReport = pathReport;
+	}
+
+	public TestClass getTestedClass() {
+		return testedClass;
+	}
+
+	public void setTestedClass(TestClass testedClass) {
+		this.testedClass = testedClass;
 	}
 
 	@Override
 	public String toString() {
-		return "TestCase [id=" + id + ", totalResult=" + totalResult + ", compilingResult=" + compilingResult
-				+ ", coverageMNEResult=" + coverageMNEResult + ", coverageMethodResult=" + coverageMethodResult
-				+ ", coverageWMResult=" + coverageWMResult + ", coverageLineResult=" + coverageLineResult
-				+ ", coverageOutputResult=" + coverageOutputResult + ", coverageBranchResult=" + coverageBranchResult
-				+ ", coverageCBResult=" + coverageCBResult + ", coverageExceptionResult=" + coverageExceptionResult
-				+ "]";
+		return "TestCase{" +
+				"id=" + id +
+				", totalResult=" + totalResult +
+				", compilingResult=" + compilingResult +
+				", coverageMNEResult=" + coverageMNEResult +
+				", coverageMethodResult=" + coverageMethodResult +
+				", coverageWMResult=" + coverageWMResult +
+				", coverageLineResult=" + coverageLineResult +
+				", coverageOutputResult=" + coverageOutputResult +
+				", coverageBranchResult=" + coverageBranchResult +
+				", coverageCBResult=" + coverageCBResult +
+				", coverageExceptionResult=" + coverageExceptionResult +
+				", pathSourceCode='" + pathSourceCode + '\'' +
+				", pathReport='" + pathReport + '\'' +
+				", testedClass=" + testedClass +
+				'}';
 	}
-
 }

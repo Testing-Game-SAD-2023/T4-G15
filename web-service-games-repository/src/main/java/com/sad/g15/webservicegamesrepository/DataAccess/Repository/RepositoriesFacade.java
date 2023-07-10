@@ -1,31 +1,47 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Repository;
 
-public class RepositoriesFacade {
-	
-	public RepositoriesFacade(MatchHistoryRepository matchHistoryRepository, PlayerRepository playerRepository,
-			RoundRepository roundRepository, TestCaseRepository testCaseRepository) {
-		super();
-		this.matchHistoryRepository = matchHistoryRepository;
-		this.playerRepository = playerRepository;
-		this.roundRepository = roundRepository;
-		this.testCaseRepository = testCaseRepository;
-	}
+import java.util.List;
+import java.util.Optional;
 
-	private MatchHistoryRepository matchHistoryRepository;
-	
-	private PlayerRepository playerRepository;
-	
-	private RoundRepository roundRepository;
-	
-	private TestCaseRepository testCaseRepository;
-	
-	//Insert Methods Here
-	
-	//Override services here
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Match;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Result;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.Round;
+import com.sad.g15.webservicegamesrepository.DataAccess.Entity.TestCase;
 
+public interface RepositoriesFacade {
 	
+	Object save(Object entity);
 	
+	Optional<Object> findById(Class<?> type, int id);
 	
+	Object getReferenceById(Class<?> entityType, int id);
 	
+	boolean existsById(Class<?> entityType, int id);
+	
+	void deleteById(Class<?> entityType, int id);
 
+    void delete(Object entity);
+    
+    List<Match> findMatchByPlayer(int idPlayer);
+
+	List<Result> readResultsByMatchId(int id);
+
+	List<Result> readResultByPlayerId(int idPlayer);
+
+	List<Round> findByMatchId(int id);
+
+	int deleteTestCase(int idTestCase);
+
+	/**
+	 *
+	 * @param type type of element to insert into db: 0 if player, 1 if robot
+	 */
+	void populate(int type);
+
+	void deleteTestCaseRef(int idTestCase);
+
+	TestCase getTestCaseById(int id) throws Exception;
+
+	List<Integer> getTestCasesRobotFromTestClass(int idTestClass);
+	List<Integer> getTestCasesPlayerFromTestClass(int idTestClass);
 }

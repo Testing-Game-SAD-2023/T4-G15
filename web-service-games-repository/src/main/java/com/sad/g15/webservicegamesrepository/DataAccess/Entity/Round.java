@@ -1,34 +1,45 @@
 package com.sad.g15.webservicegamesrepository.DataAccess.Entity;
 
-import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity (name = "Round")
-@Table (name = "round")
+import jakarta.persistence.*;
+
+@Entity(name = "Round")
+@Table(name = "round")
 public class Round {
 
-	@Id
-	@SequenceGenerator(
-			name = "round_sequence",
-			sequenceName = "round_sequence",
-			allocationSize = 1
-	)
-	@GeneratedValue(
-			strategy = GenerationType.SEQUENCE,
-			generator = "round_sequence"
-	)
-	private int id;
-	private Boolean result;
-	private int robotId;					//aggregation 1 to 1 converted into attribute.
-	private List<TestCase> testCases;
-
-	public Round(int id, Boolean result, int robotId, List<TestCase> testCases) {
+	public Round(int id, int robotId, List<TestCasePlayer> testCasesPlayer, List<TestCaseRobot> testCasesRobot,
+			LocalDateTime startDate, LocalDateTime endDate, Robot robot) {
 		this.id = id;
-		this.result = result;
-		this.robotId = robotId;
-		this.testCases = new ArrayList<TestCase>();
+		this.testCasesPlayer = testCasesPlayer;
+		this.testCasesRobot = testCasesRobot;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.robot = robot;
+	}
+
+	@Id
+	@SequenceGenerator(name = "round_sequence", sequenceName = "round_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "round_sequence")
+	private int id;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TestCasePlayer> testCasesPlayer = new ArrayList<>();
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TestCaseRobot> testCasesRobot = new ArrayList<>();
+
+	private LocalDateTime startDate;
+	private LocalDateTime endDate;
+
+	@OneToOne(orphanRemoval = false)
+	private Robot robot;
+
+	public Round() {
+
 	}
 
 	public int getId() {
@@ -38,38 +49,63 @@ public class Round {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public int getRobotId() {
-		return robotId;
+
+	public List<TestCasePlayer> getTestCasesPlayer() {
+		return testCasesPlayer;
 	}
 
-	public void setRobotId(int robotId) {
-		this.robotId = robotId;
+	public void setTestCasePlayer(TestCasePlayer testCasePlayer){
+		this.testCasesPlayer.add(testCasePlayer);
 	}
 
-	public Boolean getResult() {
-		return result;
+	public void setTestCasesPlayer(List<TestCasePlayer> testCasesPlayer) {
+		this.testCasesPlayer = testCasesPlayer;
 	}
 
-	public void setResult(Boolean result) {
-		this.result = result;
+	public List<TestCaseRobot> getTestCasesRobot() {
+		return testCasesRobot;
 	}
 
-	public List<TestCase> getTestCases() {
-		return testCases;
+	public void setTestCasesRobot(List<TestCaseRobot> testCasesRobot) {
+		this.testCasesRobot = testCasesRobot;
+	}
+	public void setTestCaseRobot(TestCaseRobot testCaseRobot){
+		this.testCasesRobot.add(testCaseRobot);
 	}
 
-	public void setTestCases(List<TestCase> testCases) {
-		this.testCases = testCases;
+	public LocalDateTime getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDateTime startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDateTime getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDateTime endDate) {
+		this.endDate = endDate;
+	}
+
+	public Robot getRobot() {
+		return robot;
+	}
+
+	public void setRobot(Robot robot) {
+		this.robot = robot;
 	}
 
 	@Override
 	public String toString() {
 		return "Round{" +
 				"id=" + id +
-				", result=" + result +
-				", robotId=" + robotId +
-				", testCases=" + testCases +
+				", testCasesPlayer=" + testCasesPlayer +
+				", testCasesRobot=" + testCasesRobot +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				", robot=" + robot +
 				'}';
 	}
 }
